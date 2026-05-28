@@ -1,0 +1,27 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.63px;
+  height: 20px;
+  padding: 2.63px 5.26px;
+  background: rgba(168, 82, 255, 0.1);
+  border-radius: 6.58px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10.52px;
+  height: 10.52px;
+  flex-shrink: 0;
+}
+
+.text {
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: var(--weight-semi-bold);
+  font-size: var(--text-xxs);
+  line-height: 1;
+  color: var(--color-text-emphasis);
+  white-space: nowrap;
+}

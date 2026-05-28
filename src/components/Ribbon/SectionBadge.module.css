@@ -1,0 +1,102 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+/* States */
+.disabled {
+  background-color: var(--color-icons-faded);
+}
+
+.active {
+  background-color: var(--color-icons-purple);
+  border: 1px solid var(--color-stroke-primary);
+}
+
+.verified {
+  background-color: var(--color-bg-verified-300);
+}
+
+.error {
+  background-color: var(--color-bg-error-300);
+}
+
+/* Letter */
+.letter {
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: var(--weight-bold);
+  font-size: var(--text-base);
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.28px;
+  width: 12px;
+  display: block;
+}
+
+.disabled .letter {
+  color: var(--color-text-disabled-light);
+}
+
+.active .letter {
+  color: var(--color-text-inverted);
+}
+
+.verified .letter {
+  color: var(--color-icons-green);
+}
+
+.error .letter {
+  color: var(--color-icons-red);
+}
+
+/* Count badge (top-right) */
+.badge {
+  position: absolute;
+  top: -4px;
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-icons-purple);
+  border: 1px solid var(--color-stroke-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: var(--weight-bold);
+  font-size: 5px;
+  color: var(--color-text-inverted);
+  line-height: 1;
+}
+
+/* Verified check dot (top-right) */
+.verifiedDot {
+  position: absolute;
+  top: -2px;
+  left: 16px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-icons-green);
+  border: 1px solid #fff;
+}
+
+/* Error dot (top-right) */
+.errorDot {
+  position: absolute;
+  top: -2px;
+  left: 16px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-icons-red);
+  border: 1px solid #fff;
+}

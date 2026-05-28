@@ -1,0 +1,52 @@
+:root {
+  /* Fonts */
+  --font-montserrat: "Montserrat", sans-serif;
+
+  /* Font weights */
+  --weight-regular: 400;
+  --weight-semi-bold: 600;
+  --weight-bold: 700;
+
+  /* Text sizes */
+  --text-xxs: 8px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+
+  /* Colors – icons */
+  --color-icons-purple: #a852ff;
+  --color-icons-green: #11be68;
+  --color-icons-red: #fd6c6c;
+  --color-icons-faded: #e7e7e7;
+
+  /* Colors – backgrounds */
+  --color-bg-primary: #ffffff;
+  --color-bg-verified-300: #e7f9e5;
+  --color-bg-error-300: #fcebeb;
+
+  /* Colors – text */
+  --color-text-primary: #222222;
+  --color-text-inverted: #ffffff;
+  --color-text-emphasis: #a852ff;
+  --color-text-disabled-light: #c3c3c3;
+
+  /* Colors – strokes */
+  --color-stroke-primary: #222222;
+  --color-stroke-subtle: #d9d9d9;
+  --color-stroke-disabled: #c3c3c3;
+
+  /* Colors – buttons */
+  --color-button-primary: #a852ff;
+  --color-button-white: #ffffff;
+
+  /* Spacing */
+  --gap-0: 0px;
+  --gap-4: 4px;
+  --gap-8: 8px;
+  --gap-12: 12px;
+  --gap-16: 16px;
+
+  /* Corner radii */
+  --radius-icons: 3px;
+  --radius-boxes: 10px;
+}
