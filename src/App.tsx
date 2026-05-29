@@ -1,5 +1,6 @@
 import React from "react";
 import { Ribbon } from "./components/Ribbon";
+import { DolphincareLogo } from "./components/DolphincareLogo";
 import "./styles/global.css";
 
 const App: React.FC = () => {
@@ -14,6 +15,18 @@ const App: React.FC = () => {
         margin: "0 auto",
       }}
     >
+      <h2
+        style={{
+          fontFamily: "Montserrat, sans-serif",
+          fontWeight: 600,
+          fontSize: 18,
+          marginBottom: 8,
+        }}
+      >
+        DolphincareLogo
+      </h2>
+      <DolphincareLogo />
+
       <h2
         style={{
           fontFamily: "Montserrat, sans-serif",

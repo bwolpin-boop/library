@@ -1,0 +1,10 @@
+.logo {
+  font-family: var(--font-montserrat);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  letter-spacing: 0.8px;
+  text-align: center;
+  white-space: nowrap;
+  line-height: normal;
+}
