@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Judaica Art — Browse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Figtree', sans-serif;
+      background: #fff;
+      color: #222;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #f7f7f7;
+      border-bottom: 1px solid #ebebeb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 82px;
+      gap: 16px;
+    }
+
+    .nav-left { display: flex; align-items: center; flex-shrink: 0; }
+
+    .logo {
+      width: 23px; height: 23px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* Search + filter centered */
+    .search-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .search-bar {
+      width: 404px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 40px;
+      box-shadow: 0 0 7px rgba(0,0,0,0.05);
+      flex-shrink: 0;
+      cursor: text;
+    }
+
+    .search-left { display: flex; align-items: center; gap: 16px; }
+
+    .search-placeholder {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 17.23px;
+      letter-spacing: -0.01em;
+      color: #676767;
+    }
+
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-chip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px 8px 16px;
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 100px;
+      font-family: 'Figtree', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 18px;
+      letter-spacing: -0.01em;
+      color: #676767;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.15s;
+    }
+    .filter-chip:hover { border-color: #aaa; }
+
+    /* Nav right */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+
+    .switch-hosting {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 27.33px;
+      letter-spacing: -0.01em;
+      color: #363636;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .nav-icon-btn {
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #363636;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px; right: -7px;
+      background: #6b3fa0;
+      color: #faf8f6;
+      font-size: 10px;
+      font-weight: 700;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .user-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: #333;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ── Grid ── */
+    .grid-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 60px;
+      padding: 55px 24px 80px;
+    }
+
+    .grid-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    /* ── Card ── */
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 359px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .card-image-wrap {
+      position: relative;
+      width: 359px;
+      height: 270px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #d9d9d9;
+      flex-shrink: 0;
+    }
+
+    .card-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .free-shipping-badge {
+      position: absolute;
+      top: 11px; left: 11px;
+      background: #eff1e9;
+      border: 1px solid #f5f6f4;
+      border-radius: 40px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 18px;
+      color: #000;
+    }
+
+    .fav-btn {
+      position: absolute;
+      top: 11px; right: 11px;
+      width: 28px; height: 28px;
+      background: rgba(40,40,40,0.55);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .fav-btn:hover { background: rgba(20,20,20,0.75); }
+    .fav-btn.active svg path { fill: #e31c5f; stroke: #e31c5f; }
+
+    .card-body {
+      padding-left: 4px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 17.23px;
+      letter-spacing: -0.01em;
+      color: #222;
+      margin-bottom: 4px;
+    }
+
+    .card-date {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.01em;
+      color: #6a6a6a;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      line-height: 20px;
+      color: #6a6a6a;
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+
+    .star-seller {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #7900fa;
+      margin-left: 2px;
+    }
+
+    /* SVG icons */
+    svg { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="nav">
+  <div class="nav-left">
+    <div class="logo"></div>
+  </div>
+
+  <div class="search-wrap">
+    <!-- Search bar -->
+    <div class="search-bar">
+      <div class="search-left">
+        <!-- Plus / add icon -->
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="9" stroke="#676767" stroke-width="1.5"/>
+          <path d="M10 6v8M6 10h8" stroke="#676767" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span class="search-placeholder">Search for anything</span>
+      </div>
+      <!-- Mic icon -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <rect x="9" y="2" width="6" height="12" rx="3" stroke="#676767" stroke-width="1.8"/>
+        <path d="M5 10a7 7 0 0014 0" stroke="#676767" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="12" y1="20" x2="12" y2="17" stroke="#676767" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="8" y1="22" x2="16" y2="22" stroke="#676767" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="filter-row">
+      <button class="filter-chip">Filters <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#676767" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
+      <button class="filter-chip">Object <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#676767" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
+      <button class="filter-chip">Occasion <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#676767" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
+      <button class="filter-chip">Style <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#676767" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
+      <button class="filter-chip">Material <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#676767" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
+      <button class="filter-chip">Artist <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#676767" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
+      <button class="filter-chip">Price <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#676767" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></button>
+    </div>
+  </div>
+
+  <div class="nav-right">
+    <span class="switch-hosting">Switch to hosting</span>
+
+    <!-- Wishlist -->
+    <button class="nav-icon-btn" aria-label="Wishlist">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 21C12 21 3 14 3 8.5a4.5 4.5 0 018.254-2.506A4.5 4.5 0 0121 8.5C21 14 12 21 12 21z" stroke="#363636" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <!-- Cart -->
+    <button class="nav-icon-btn" aria-label="Cart">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="#363636" stroke-width="1.8" stroke-linejoin="round"/>
+        <line x1="3" y1="6" x2="21" y2="6" stroke="#363636" stroke-width="1.8"/>
+        <path d="M16 10a4 4 0 01-8 0" stroke="#363636" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span class="cart-badge">1</span>
+    </button>
+
+    <!-- Avatar -->
+    <div class="user-avatar">B</div>
+  </div>
+</nav>
+
+<!-- ── Product Grid ── -->
+<div class="grid-wrapper" id="grid"></div>
+
+<script>
+  // Card template
+  function makeCard() {
+    return `
+      <div class="card">
+        <div class="card-image-wrap">
+          <span class="free-shipping-badge">Free Shipping</span>
+          <button class="fav-btn" aria-label="Favorite" onclick="this.classList.toggle('active')">
+            <svg width="14" height="12" viewBox="0 0 24 22" fill="none">
+              <path d="M12 21C12 21 1 13.5 1 7a6 6 0 0111-3.33A6 6 0 0123 7c0 6.5-11 14-11 14z"
+                stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Artwork Painting Sunshine</p>
+          <p class="card-date">May 22-24</p>
+          <div class="card-meta">
+            <span>$15.98</span>
+            <span style="margin:0 4px;color:#ccc">·</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="#222" style="flex-shrink:0">
+              <path d="M6 1l1.3 2.6L10 4l-2 1.95.47 2.75L6 7.4l-2.47 1.3L4 5.95 2 4l2.7-.4L6 1z"/>
+            </svg>
+            <span style="margin-left:2px">1.8</span>
+            <span style="margin:0 4px;color:#ccc">·</span>
+            <span class="star-seller">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="#7900fa" style="flex-shrink:0">
+                <path d="M6 1l1.3 2.6L10 4l-2 1.95.47 2.75L6 7.4l-2.47 1.3L4 5.95 2 4l2.7-.4L6 1z"/>
+              </svg>
+              Star Seller
+            </span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  var grid = document.getElementById('grid');
+  for (var row = 0; row < 5; row++) {
+    var rowEl = document.createElement('div');
+    rowEl.className = 'grid-row';
+    for (var col = 0; col < 4; col++) {
+      rowEl.innerHTML += makeCard();
+    }
+    grid.appendChild(rowEl);
+  }
+</script>
+
+</body>
+</html>
