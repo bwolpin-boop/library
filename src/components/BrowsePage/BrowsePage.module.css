@@ -231,7 +231,7 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 359 / 270;
+  height: 334px;
   border-radius: 20px;
   overflow: hidden;
   background: #d9d9d9;
