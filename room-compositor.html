@@ -145,7 +145,9 @@ const PAINT_FRAG = `
     vec3 h = u_Hinv * vec3(sp, 1.0);
     vec2 uv = h.xy / h.z;
     if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) discard;
-    gl_FragColor = texture2D(u_tex, uv);
+    // Without UNPACK_FLIP_Y, UV(0,0)=top-left; homography maps TL→(0,0) which is correct.
+    // Flip V so top of painting (uv.y=0 from homography) maps to top of texture.
+    gl_FragColor = texture2D(u_tex, vec2(uv.x, 1.0 - uv.y));
   }
 `;
 
@@ -196,7 +198,7 @@ function uploadTexture(gl, img, unit) {
   const tex = gl.createTexture();
   gl.activeTexture(gl.TEXTURE0 + unit);
   gl.bindTexture(gl.TEXTURE_2D, tex);
-  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -282,19 +284,25 @@ function defaultCorners() {
     bgW = cw; bgH = cw / roomAR; bgX = 0; bgY = (ch - bgH) / 2;
   }
 
-  // Place painting as ~38% of bgW wide, centered, vertically centered
-  const pw = bgW * 0.38;
+  // Place painting hung on a wall: horizontally centered, upper third of frame.
+  // Apply a subtle perspective taper so it looks like it's sitting on a flat wall
+  // (top edge slightly wider, bottom edge slightly narrower = looking slightly upward).
+  const pw = bgW * 0.40;
   const ph = pw / paintAR;
+
+  // Vertical position: center of painting sits ~38% down from top of room image
   const cx = bgX + bgW * 0.5;
-  const cy = bgY + bgH * 0.5;
-  const l = cx - pw / 2, r = cx + pw / 2;
-  const t = cy - ph / 2, bot = cy + ph / 2;
+  const cy = bgY + bgH * 0.38;
+  const halfH = ph / 2;
+  const halfWTop = pw / 2 * 1.02;  // top edge slightly wider
+  const halfWBot = pw / 2 * 0.98;  // bottom edge slightly narrower
+  const t = cy - halfH, bot = cy + halfH;
 
   return [
-    { fx: l / cw, fy: t / ch },   // TL
-    { fx: r / cw, fy: t / ch },   // TR
-    { fx: r / cw, fy: bot / ch }, // BR
-    { fx: l / cw, fy: bot / ch }, // BL
+    { fx: (cx - halfWTop) / cw, fy: t / ch },   // TL
+    { fx: (cx + halfWTop) / cw, fy: t / ch },   // TR
+    { fx: (cx + halfWBot) / cw, fy: bot / ch }, // BR
+    { fx: (cx - halfWBot) / cw, fy: bot / ch }, // BL
   ];
 }
 
@@ -355,11 +363,14 @@ function render() {
 
   const { x: uvX, y: uvY, w: uvW, h: uvH } = bgUVRect();
   // clip-space quad: full screen. UV follows letterbox.
+  // Without UNPACK_FLIP_Y, UV(0,0)=top-left. Clip(-1,-1)=bottom, so map
+  // bottom canvas edge to high V (bottom of image) and top to low V (top).
+  const uvT = uvY, uvB = uvY + uvH;
   const bgVerts = new Float32Array([
-    -1,-1, uvX,        uvY,
-     1,-1, uvX + uvW,  uvY,
-    -1, 1, uvX,        uvY + uvH,
-     1, 1, uvX + uvW,  uvY + uvH,
+    -1,-1, uvX,        uvB,
+     1,-1, uvX + uvW,  uvB,
+    -1, 1, uvX,        uvT,
+     1, 1, uvX + uvW,  uvT,
   ]);
   const bgBuf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, bgBuf);
