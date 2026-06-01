@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Room Painting Compositor</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #1a1a1a; color: #e0e0e0; height: 100vh; display: flex; overflow: hidden; }
+
+  #sidebar {
+    width: 280px; min-width: 280px; background: #242424; border-right: 1px solid #333;
+    display: flex; flex-direction: column; gap: 16px; padding: 20px; overflow-y: auto;
+  }
+
+  h1 { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: 0.3px; }
+
+  .upload-zone {
+    border: 2px dashed #444; border-radius: 10px; padding: 14px;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    text-align: center;
+  }
+  .upload-zone:hover, .upload-zone.drag-over { border-color: #7c6af7; background: rgba(124,106,247,0.08); }
+  .upload-zone label { font-size: 11px; font-weight: 600; color: #aaa; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; }
+  .upload-zone .hint { font-size: 11px; color: #666; margin-top: 6px; }
+  .upload-zone input[type=file] { display: none; }
+  .thumb { width: 100%; height: 90px; object-fit: cover; border-radius: 6px; display: none; margin-top: 8px; }
+  .thumb.visible { display: block; }
+  .drop-icon { font-size: 24px; opacity: 0.4; }
+
+  #instructions {
+    font-size: 12px; line-height: 1.6; color: #bbb;
+    background: #1e1e1e; border-radius: 8px; padding: 12px;
+  }
+  #instructions strong { color: #fff; }
+
+  .btn {
+    width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer;
+    font-size: 13px; font-weight: 600; transition: background 0.15s, opacity 0.15s;
+  }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-primary { background: #7c6af7; color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: #6b59e8; }
+  .btn-secondary { background: #333; color: #ccc; }
+  .btn-secondary:hover:not(:disabled) { background: #3e3e3e; }
+  .btn-success { background: #1a9e5c; color: #fff; }
+  .btn-success:hover:not(:disabled) { background: #178a50; }
+
+  #btn-edit { display: none; }
+  #btn-done { display: none; }
+  #btn-reset { display: none; }
+  #btn-download { display: none; }
+
+  #error-msg { font-size: 11px; color: #f87171; background: rgba(248,113,113,0.1); border-radius: 6px; padding: 8px; display: none; }
+
+  #main {
+    flex: 1; display: flex; align-items: stretch; justify-content: stretch;
+    position: relative; overflow: hidden;
+  }
+
+  #glCanvas { width: 100%; height: 100%; display: block; background: #111; }
+
+  #handleCanvas {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; display: none;
+  }
+  #handleCanvas.active { pointer-events: all; display: block; }
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <h1>Room Painting Compositor</h1>
+
+  <div class="upload-zone" id="zone-room">
+    <label for="input-room">Room Photo</label>
+    <div class="drop-icon">🏠</div>
+    <div class="hint">JPG or PNG</div>
+    <input type="file" id="input-room" accept="image/jpeg,image/png,image/webp">
+    <img class="thumb" id="thumb-room" alt="room preview">
+  </div>
+
+  <div class="upload-zone" id="zone-painting">
+    <label for="input-painting">Painting / Object</label>
+    <div class="drop-icon">🖼️</div>
+    <div class="hint">PNG with transparency preferred</div>
+    <input type="file" id="input-painting" accept="image/jpeg,image/png,image/webp">
+    <img class="thumb" id="thumb-painting" alt="painting preview">
+  </div>
+
+  <div id="instructions">Upload both images to begin compositing.</div>
+
+  <div id="error-msg"></div>
+
+  <button class="btn btn-primary" id="btn-edit">Edit Placement</button>
+  <button class="btn btn-success" id="btn-done">Done</button>
+  <button class="btn btn-secondary" id="btn-reset">Reset Corners</button>
+  <button class="btn btn-secondary" id="btn-download">Download</button>
+</div>
+
+<div id="main">
+  <canvas id="glCanvas"></canvas>
+  <canvas id="handleCanvas"></canvas>
+</div>
+
+<script>
+// ─── GLSL Shaders ───────────────────────────────────────────────────────────
+
+const BG_VERT = `
+  attribute vec2 a_pos;
+  attribute vec2 a_uv;
+  varying vec2 v_uv;
+  void main() {
+    gl_Position = vec4(a_pos, 0.0, 1.0);
+    v_uv = a_uv;
+  }
+`;
+
+const BG_FRAG = `
+  precision mediump float;
+  uniform sampler2D u_tex;
+  varying vec2 v_uv;
+  void main() {
+    gl_FragColor = texture2D(u_tex, v_uv);
+  }
+`;
+
+const PAINT_VERT = `
+  attribute vec2 a_pos;
+  uniform vec2 u_res;
+  void main() {
+    vec2 clip = (a_pos / u_res) * 2.0 - 1.0;
+    clip.y = -clip.y;
+    gl_Position = vec4(clip, 0.0, 1.0);
+  }
+`;
+
+const PAINT_FRAG = `
+  precision highp float;
+  uniform sampler2D u_tex;
+  uniform mat3 u_Hinv;
+  uniform vec2 u_res;
+  void main() {
+    vec2 sp = vec2(gl_FragCoord.x, u_res.y - gl_FragCoord.y);
+    vec3 h = u_Hinv * vec3(sp, 1.0);
+    vec2 uv = h.xy / h.z;
+    if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) discard;
+    gl_FragColor = texture2D(u_tex, uv);
+  }
+`;
+
+// ─── State ───────────────────────────────────────────────────────────────────
+
+const state = {
+  phase: 'WAITING_UPLOADS', // | 'COMPOSITED' | 'EDITING'
+  roomImg: null,
+  paintImg: null,
+  // corners as fractions [0,1] of canvas dimensions, order: TL,TR,BR,BL
+  corners: [],
+  savedCorners: [],
+  dragging: null,
+  gl: null,
+  bgProg: null,
+  paintProg: null,
+  roomTex: null,
+  paintTex: null,
+};
+
+// ─── WebGL helpers ───────────────────────────────────────────────────────────
+
+function compileShader(gl, type, src) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+    console.error(gl.getShaderInfoLog(s));
+    gl.deleteShader(s);
+    return null;
+  }
+  return s;
+}
+
+function linkProgram(gl, vsrc, fsrc) {
+  const p = gl.createProgram();
+  gl.attachShader(p, compileShader(gl, gl.VERTEX_SHADER, vsrc));
+  gl.attachShader(p, compileShader(gl, gl.FRAGMENT_SHADER, fsrc));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
+    console.error(gl.getProgramInfoLog(p));
+    return null;
+  }
+  return p;
+}
+
+function uploadTexture(gl, img, unit) {
+  const tex = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0 + unit);
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  return tex;
+}
+
+// ─── Homography math ─────────────────────────────────────────────────────────
+
+// Gaussian elimination with partial pivoting, in-place on augmented matrix [A|b]
+function gaussElim(A, b) {
+  const n = b.length;
+  for (let col = 0; col < n; col++) {
+    // find pivot
+    let maxRow = col;
+    for (let row = col + 1; row < n; row++) {
+      if (Math.abs(A[row][col]) > Math.abs(A[maxRow][col])) maxRow = row;
+    }
+    [A[col], A[maxRow]] = [A[maxRow], A[col]];
+    [b[col], b[maxRow]] = [b[maxRow], b[col]];
+    if (Math.abs(A[col][col]) < 1e-12) return null; // singular
+    for (let row = col + 1; row < n; row++) {
+      const f = A[row][col] / A[col][col];
+      for (let k = col; k < n; k++) A[row][k] -= f * A[col][k];
+      b[row] -= f * b[col];
+    }
+  }
+  const x = new Array(n).fill(0);
+  for (let i = n - 1; i >= 0; i--) {
+    x[i] = b[i];
+    for (let j = i + 1; j < n; j++) x[i] -= A[i][j] * x[j];
+    x[i] /= A[i][i];
+  }
+  return x;
+}
+
+// src4 and dst4 are arrays of {x,y}
+// src is painting UV corners (normalized), dst is canvas pixel corners
+// Returns 9-element flat array h where h[8]=1
+function computeHomography(src4, dst4) {
+  const A = [], bv = [];
+  for (let i = 0; i < 4; i++) {
+    const { x: u, y: v } = src4[i];
+    const { x, y } = dst4[i];
+    // row 1: -u h0 - v h1 - h2 + x*u h6 + x*v h7 = -x   (h8=1 absorbed)
+    A.push([-u, -v, -1, 0, 0, 0, x * u, x * v]);
+    bv.push(-x);
+    // row 2: -u h3 - v h4 - h5 + y*u h6 + y*v h7 = -y
+    A.push([0, 0, 0, -u, -v, -1, y * u, y * v]);
+    bv.push(-y);
+  }
+  const sol = gaussElim(A, bv);
+  if (!sol) return null;
+  return [...sol, 1]; // h8 = 1
+}
+
+function invert3x3(m) {
+  const [a, b, c, d, e, f, g, h, i] = m;
+  const det = a*(e*i - f*h) - b*(d*i - f*g) + c*(d*h - e*g);
+  if (Math.abs(det) < 1e-10) return null;
+  const inv = [
+    (e*i - f*h)/det, (c*h - b*i)/det, (b*f - c*e)/det,
+    (f*g - d*i)/det, (a*i - c*g)/det, (c*d - a*f)/det,
+    (d*h - e*g)/det, (b*g - a*h)/det, (a*e - b*d)/det,
+  ];
+  return inv;
+}
+
+// ─── Default corner placement ─────────────────────────────────────────────────
+
+function defaultCorners() {
+  const cw = glCanvas.clientWidth || glCanvas.width;
+  const ch = glCanvas.clientHeight || glCanvas.height;
+  const paintAR = state.paintImg.naturalWidth / state.paintImg.naturalHeight;
+
+  // Determine letterbox dimensions of room photo on canvas
+  const roomAR = state.roomImg.naturalWidth / state.roomImg.naturalHeight;
+  let bgW, bgH, bgX, bgY;
+  if (cw / ch > roomAR) {
+    bgH = ch; bgW = ch * roomAR; bgX = (cw - bgW) / 2; bgY = 0;
+  } else {
+    bgW = cw; bgH = cw / roomAR; bgX = 0; bgY = (ch - bgH) / 2;
+  }
+
+  // Place painting as ~38% of bgW wide, centered, vertically centered
+  const pw = bgW * 0.38;
+  const ph = pw / paintAR;
+  const cx = bgX + bgW * 0.5;
+  const cy = bgY + bgH * 0.5;
+  const l = cx - pw / 2, r = cx + pw / 2;
+  const t = cy - ph / 2, bot = cy + ph / 2;
+
+  return [
+    { fx: l / cw, fy: t / ch },   // TL
+    { fx: r / cw, fy: t / ch },   // TR
+    { fx: r / cw, fy: bot / ch }, // BR
+    { fx: l / cw, fy: bot / ch }, // BL
+  ];
+}
+
+// ─── Rendering ───────────────────────────────────────────────────────────────
+
+const glCanvas = document.getElementById('glCanvas');
+const handleCanvas = document.getElementById('handleCanvas');
+const hCtx = handleCanvas.getContext('2d');
+
+function initGL() {
+  const gl = glCanvas.getContext('webgl', { alpha: false, preserveDrawingBuffer: true });
+  if (!gl) { showError('WebGL not supported'); return false; }
+  state.gl = gl;
+  state.bgProg = linkProgram(gl, BG_VERT, BG_FRAG);
+  state.paintProg = linkProgram(gl, PAINT_VERT, PAINT_FRAG);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  return true;
+}
+
+// Compute letterbox UV rect for background
+function bgUVRect() {
+  const gl = state.gl;
+  const cw = gl.drawingBufferWidth, ch = gl.drawingBufferHeight;
+  if (!state.roomImg) return { x: 0, y: 0, w: 1, h: 1 };
+  const imgAR = state.roomImg.naturalWidth / state.roomImg.naturalHeight;
+  const canAR = cw / ch;
+  let uvX = 0, uvY = 0, uvW = 1, uvH = 1;
+  if (canAR > imgAR) {
+    // canvas wider than image → horizontal letterbox (black bars on sides)
+    uvW = imgAR / canAR;
+    uvX = (1 - uvW) / 2;
+  } else {
+    uvH = canAR / imgAR;
+    uvY = (1 - uvH) / 2;
+  }
+  return { x: uvX, y: uvY, w: uvW, h: uvH };
+}
+
+function render() {
+  const gl = state.gl;
+  if (!gl || !state.roomImg) return;
+
+  // Sync canvas resolution
+  const cw = glCanvas.clientWidth, ch = glCanvas.clientHeight;
+  if (glCanvas.width !== cw || glCanvas.height !== ch) {
+    glCanvas.width = cw; glCanvas.height = ch;
+    handleCanvas.width = cw; handleCanvas.height = ch;
+  }
+
+  gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+  gl.clearColor(0.07, 0.07, 0.07, 1);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  // ── Pass 1: background ──
+  const bp = state.bgProg;
+  gl.useProgram(bp);
+
+  const { x: uvX, y: uvY, w: uvW, h: uvH } = bgUVRect();
+  // clip-space quad: full screen. UV follows letterbox.
+  const bgVerts = new Float32Array([
+    -1,-1, uvX,        uvY,
+     1,-1, uvX + uvW,  uvY,
+    -1, 1, uvX,        uvY + uvH,
+     1, 1, uvX + uvW,  uvY + uvH,
+  ]);
+  const bgBuf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, bgBuf);
+  gl.bufferData(gl.ARRAY_BUFFER, bgVerts, gl.DYNAMIC_DRAW);
+
+  const aPosB = gl.getAttribLocation(bp, 'a_pos');
+  const aUvB  = gl.getAttribLocation(bp, 'a_uv');
+  gl.enableVertexAttribArray(aPosB);
+  gl.enableVertexAttribArray(aUvB);
+  gl.vertexAttribPointer(aPosB, 2, gl.FLOAT, false, 16, 0);
+  gl.vertexAttribPointer(aUvB,  2, gl.FLOAT, false, 16, 8);
+
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, state.roomTex);
+  gl.uniform1i(gl.getUniformLocation(bp, 'u_tex'), 0);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+  // ── Pass 2: painting ──
+  if ((state.phase === 'COMPOSITED' || state.phase === 'EDITING') &&
+      state.corners.length === 4 && state.paintTex) {
+
+    const dstPx = state.corners.map(c => ({
+      x: c.fx * gl.drawingBufferWidth,
+      y: c.fy * gl.drawingBufferHeight,
+    }));
+
+    // Source UV corners: TL,TR,BR,BL matching dst order
+    const srcUV = [
+      { x: 0, y: 0 }, // TL
+      { x: 1, y: 0 }, // TR
+      { x: 1, y: 1 }, // BR
+      { x: 0, y: 1 }, // BL
+    ];
+
+    const H = computeHomography(srcUV, dstPx);
+    if (!H) { showError('Invalid corner placement — corners may be collinear.'); return; }
+    const Hinv = invert3x3(H);
+    if (!Hinv) { showError('Degenerate homography — please adjust corners.'); return; }
+    clearError();
+
+    const pp = state.paintProg;
+    gl.useProgram(pp);
+
+    // quad vertices in canvas pixel coords (two triangles: TL,TR,BL + TR,BR,BL)
+    const [tl, tr, br, bl] = dstPx;
+    const quadVerts = new Float32Array([
+      tl.x, tl.y,  tr.x, tr.y,  bl.x, bl.y,
+      tr.x, tr.y,  br.x, br.y,  bl.x, bl.y,
+    ]);
+    const qBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, qBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, quadVerts, gl.DYNAMIC_DRAW);
+
+    const aPosP = gl.getAttribLocation(pp, 'a_pos');
+    gl.enableVertexAttribArray(aPosP);
+    gl.vertexAttribPointer(aPosP, 2, gl.FLOAT, false, 8, 0);
+
+    const W = gl.drawingBufferWidth, H2 = gl.drawingBufferHeight;
+    gl.uniform2f(gl.getUniformLocation(pp, 'u_res'), W, H2);
+    // mat3 uniform is column-major in WebGL
+    // Hinv is row-major [r0c0, r0c1, r0c2, r1c0, ...]
+    // Convert to column-major for gl.uniformMatrix3fv
+    const cm = [
+      Hinv[0], Hinv[3], Hinv[6],
+      Hinv[1], Hinv[4], Hinv[7],
+      Hinv[2], Hinv[5], Hinv[8],
+    ];
+    gl.uniformMatrix3fv(gl.getUniformLocation(pp, 'u_Hinv'), false, cm);
+
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, state.paintTex);
+    gl.uniform1i(gl.getUniformLocation(pp, 'u_tex'), 1);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+  }
+}
+
+// ─── Handle overlay ───────────────────────────────────────────────────────────
+
+const CORNER_COLORS = ['#f87171', '#fbbf24', '#34d399', '#60a5fa'];
+const HANDLE_R = 10;
+
+function drawHandles() {
+  const cw = handleCanvas.width, ch = handleCanvas.height;
+  hCtx.clearRect(0, 0, cw, ch);
+  if (state.phase !== 'EDITING' || state.corners.length === 0) return;
+
+  const pts = state.corners.map(c => ({ x: c.fx * cw, y: c.fy * ch }));
+
+  // Draw connecting quad
+  if (pts.length === 4) {
+    hCtx.beginPath();
+    hCtx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < 4; i++) hCtx.lineTo(pts[i].x, pts[i].y);
+    hCtx.closePath();
+    hCtx.strokeStyle = 'rgba(255,255,255,0.5)';
+    hCtx.setLineDash([6, 4]);
+    hCtx.lineWidth = 1.5;
+    hCtx.stroke();
+    hCtx.setLineDash([]);
+  }
+
+  // Draw corner handles
+  pts.forEach((p, i) => {
+    hCtx.beginPath();
+    hCtx.arc(p.x, p.y, HANDLE_R, 0, Math.PI * 2);
+    hCtx.fillStyle = CORNER_COLORS[i];
+    hCtx.fill();
+    hCtx.strokeStyle = '#fff';
+    hCtx.lineWidth = 2;
+    hCtx.stroke();
+
+    // Label
+    const labels = ['TL', 'TR', 'BR', 'BL'];
+    hCtx.fillStyle = '#fff';
+    hCtx.font = 'bold 9px system-ui';
+    hCtx.textAlign = 'center';
+    hCtx.textBaseline = 'middle';
+    hCtx.fillText(labels[i], p.x, p.y);
+  });
+}
+
+// ─── Pointer events ───────────────────────────────────────────────────────────
+
+function canvasXY(e) {
+  const r = handleCanvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - r.left, y: src.clientY - r.top };
+}
+
+function hitCorner(px, py) {
+  const cw = handleCanvas.width, ch = handleCanvas.height;
+  for (let i = 0; i < state.corners.length; i++) {
+    const dx = state.corners[i].fx * cw - px;
+    const dy = state.corners[i].fy * ch - py;
+    if (Math.sqrt(dx*dx + dy*dy) <= HANDLE_R + 4) return i;
+  }
+  return -1;
+}
+
+handleCanvas.addEventListener('mousedown', e => {
+  if (state.phase !== 'EDITING') return;
+  const { x, y } = canvasXY(e);
+  const idx = hitCorner(x, y);
+  if (idx >= 0) { state.dragging = idx; e.preventDefault(); }
+});
+
+handleCanvas.addEventListener('mousemove', e => {
+  if (state.phase !== 'EDITING' || state.dragging === null) return;
+  const { x, y } = canvasXY(e);
+  state.corners[state.dragging] = {
+    fx: Math.max(0, Math.min(1, x / handleCanvas.width)),
+    fy: Math.max(0, Math.min(1, y / handleCanvas.height)),
+  };
+  render(); drawHandles();
+});
+
+handleCanvas.addEventListener('mouseup', () => { state.dragging = null; });
+handleCanvas.addEventListener('mouseleave', () => { state.dragging = null; });
+
+handleCanvas.addEventListener('touchstart', e => {
+  if (state.phase !== 'EDITING') return;
+  const { x, y } = canvasXY(e);
+  const idx = hitCorner(x, y);
+  if (idx >= 0) { state.dragging = idx; e.preventDefault(); }
+}, { passive: false });
+
+handleCanvas.addEventListener('touchmove', e => {
+  if (state.phase !== 'EDITING' || state.dragging === null) return;
+  const { x, y } = canvasXY(e);
+  state.corners[state.dragging] = {
+    fx: Math.max(0, Math.min(1, x / handleCanvas.width)),
+    fy: Math.max(0, Math.min(1, y / handleCanvas.height)),
+  };
+  render(); drawHandles();
+  e.preventDefault();
+}, { passive: false });
+
+handleCanvas.addEventListener('touchend', () => { state.dragging = null; });
+
+// ─── UI helpers ───────────────────────────────────────────────────────────────
+
+const instrEl = document.getElementById('instructions');
+const btnEdit = document.getElementById('btn-edit');
+const btnDone = document.getElementById('btn-done');
+const btnReset = document.getElementById('btn-reset');
+const btnDl   = document.getElementById('btn-download');
+const errEl   = document.getElementById('error-msg');
+
+function showError(msg) {
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+}
+function clearError() {
+  errEl.style.display = 'none';
+}
+
+function setPhase(phase) {
+  state.phase = phase;
+  btnEdit.style.display  = 'none';
+  btnDone.style.display  = 'none';
+  btnReset.style.display = 'none';
+  btnDl.style.display    = 'none';
+  handleCanvas.classList.remove('active');
+
+  if (phase === 'WAITING_UPLOADS') {
+    instrEl.innerHTML = 'Upload both images to begin.';
+  } else if (phase === 'COMPOSITED') {
+    instrEl.innerHTML = '<strong>Painting placed!</strong> Click <em>Edit Placement</em> to adjust the corners.';
+    btnEdit.style.display = 'block';
+    btnDl.style.display   = 'block';
+  } else if (phase === 'EDITING') {
+    instrEl.innerHTML = '<strong>Edit mode:</strong> Drag the colored corner handles to adjust perspective. Click <em>Done</em> when finished.';
+    btnDone.style.display  = 'block';
+    btnReset.style.display = 'block';
+    handleCanvas.classList.add('active');
+  }
+}
+
+// ─── Upload handling ──────────────────────────────────────────────────────────
+
+function loadImageFile(file, thumbId, onLoad) {
+  if (!file || !file.type.startsWith('image/')) return;
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    const thumb = document.getElementById(thumbId);
+    thumb.src = url;
+    thumb.classList.add('visible');
+    onLoad(img);
+    checkBothLoaded();
+  };
+  img.src = url;
+}
+
+function checkBothLoaded() {
+  if (!state.roomImg || !state.paintImg) return;
+  if (!state.gl) { if (!initGL()) return; }
+
+  state.roomTex  = uploadTexture(state.gl, state.roomImg,  0);
+  state.paintTex = uploadTexture(state.gl, state.paintImg, 1);
+
+  // Sync canvas size then place default corners
+  const cw = glCanvas.clientWidth, ch = glCanvas.clientHeight;
+  glCanvas.width = cw; glCanvas.height = ch;
+  handleCanvas.width = cw; handleCanvas.height = ch;
+
+  state.corners = defaultCorners();
+  setPhase('COMPOSITED');
+  render();
+}
+
+function wireUpload(inputId, zoneId, thumbId, onLoad) {
+  const input = document.getElementById(inputId);
+  const zone  = document.getElementById(zoneId);
+
+  input.addEventListener('change', e => loadImageFile(e.target.files[0], thumbId, onLoad));
+
+  zone.addEventListener('click', () => input.click());
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    loadImageFile(e.dataTransfer.files[0], thumbId, onLoad);
+  });
+}
+
+wireUpload('input-room',     'zone-room',     'thumb-room',     img => { state.roomImg  = img; });
+wireUpload('input-painting', 'zone-painting', 'thumb-painting', img => { state.paintImg = img; });
+
+// ─── Button actions ───────────────────────────────────────────────────────────
+
+btnEdit.addEventListener('click', () => {
+  state.savedCorners = state.corners.map(c => ({ ...c }));
+  setPhase('EDITING');
+  drawHandles();
+});
+
+btnDone.addEventListener('click', () => {
+  setPhase('COMPOSITED');
+  render();
+});
+
+btnReset.addEventListener('click', () => {
+  state.corners = state.savedCorners.map(c => ({ ...c }));
+  render();
+  drawHandles();
+});
+
+btnDl.addEventListener('click', () => {
+  render();
+  const url = glCanvas.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'room-composite.png';
+  a.click();
+});
+
+// ─── Resize ───────────────────────────────────────────────────────────────────
+
+new ResizeObserver(() => {
+  render();
+  if (state.phase === 'EDITING') drawHandles();
+}).observe(document.getElementById('main'));
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+
+setPhase('WAITING_UPLOADS');
+</script>
+</body>
+</html>
