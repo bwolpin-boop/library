@@ -205,7 +205,7 @@
 
 /* ── Product grid ── */
 .gridWrapper {
-  padding: 55px 24px 80px;
+  padding: 48px 64px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -213,9 +213,10 @@
 }
 
 .gridRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-  align-items: flex-start;
+  width: 100%;
 }
 
 /* ── Product Card ── */
@@ -223,15 +224,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 359px;
-  flex-shrink: 0;
+  width: 100%;
   cursor: pointer;
 }
 
 .imageWrapper {
   position: relative;
-  width: 359px;
-  height: 270px;
+  width: 100%;
+  aspect-ratio: 359 / 270;
   border-radius: 20px;
   overflow: hidden;
   background: #d9d9d9;
