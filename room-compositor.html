@@ -149,6 +149,22 @@ const PAINT_FRAG = `
   }
 `;
 
+const SOLID_VERT = `
+  attribute vec2 a_pos;
+  uniform vec2 u_res;
+  void main() {
+    vec2 clip = (a_pos / u_res) * 2.0 - 1.0;
+    clip.y = -clip.y;
+    gl_Position = vec4(clip, 0.0, 1.0);
+  }
+`;
+
+const SOLID_FRAG = `
+  precision mediump float;
+  uniform vec4 u_color;
+  void main() { gl_FragColor = u_color; }
+`;
+
 // ─── State ───────────────────────────────────────────────────────────────────
 
 const state = {
@@ -162,6 +178,7 @@ const state = {
   gl: null,
   bgProg: null,
   paintProg: null,
+  solidProg: null,
   roomTex: null,
   paintTex: null,
 };
@@ -282,23 +299,72 @@ function defaultCorners() {
     bgW = cw; bgH = cw / roomAR; bgX = 0; bgY = (ch - bgH) / 2;
   }
 
-  // Place painting centered on back wall, upper portion of frame.
-  // Slight taper (top wider than bottom) mimics a wall viewed from slightly below eye level.
-  const pw = bgW * 0.38;
-  const ph = pw / paintAR;
+  // Place painting on the back wall: smaller size, positioned in upper wall area.
+  // Use a real perspective taper based on a vanishing point in the center of the room.
+  // Vanishing point sits at horizontal center, ~28% down the room image.
+  const vpX = bgX + bgW * 0.50;
+  const vpY = bgY + bgH * 0.28;
+
+  // Reference width at the vertical center of the painting
+  const pw = bgW * 0.24;
   const cx = bgX + bgW * 0.50;
-  const cy = bgY + bgH * 0.36;
+  const cy = bgY + bgH * 0.34;
+  const ph = pw / paintAR;
+
   const t   = cy - ph * 0.5;
   const bot = cy + ph * 0.5;
-  const wTop = pw * 1.015;
-  const wBot = pw * 0.985;
+
+  // Scale half-width at each row by distance from vanishing point
+  // (objects further from VP appear larger, so the bottom of the painting is wider)
+  const distT = Math.abs(t   - vpY) / bgH;
+  const distB = Math.abs(bot - vpY) / bgH;
+  const scale = 0.55; // how strongly perspective affects the width
+  const halfWTop = pw * 0.5 * (1.0 + distT * scale);
+  const halfWBot = pw * 0.5 * (1.0 + distB * scale);
+
+  // Horizontal shift: left/right edges converge toward vpX as they approach the VP
+  const shiftT = (cx - vpX) * distT * 0.18;
+  const shiftB = (cx - vpX) * distB * 0.18;
 
   return [
-    { fx: (cx - wTop / 2) / cw, fy: t / ch },
-    { fx: (cx + wTop / 2) / cw, fy: t / ch },
-    { fx: (cx + wBot / 2) / cw, fy: bot / ch },
-    { fx: (cx - wBot / 2) / cw, fy: bot / ch },
+    { fx: (cx - halfWTop + shiftT) / cw, fy: t   / ch },  // TL
+    { fx: (cx + halfWTop + shiftT) / cw, fy: t   / ch },  // TR
+    { fx: (cx + halfWBot + shiftB) / cw, fy: bot / ch },  // BR
+    { fx: (cx - halfWBot + shiftB) / cw, fy: bot / ch },  // BL
   ];
+}
+
+// ─── Quad helpers ────────────────────────────────────────────────────────────
+
+// Expand a 4-corner pixel quad outward from its centroid by expandPx,
+// then offset by (ox, oy). Returns Float32Array of 12 floats (2 triangles).
+function expandQuad(pts, expandPx, ox, oy) {
+  const cx = (pts[0].x + pts[1].x + pts[2].x + pts[3].x) / 4;
+  const cy = (pts[0].y + pts[1].y + pts[2].y + pts[3].y) / 4;
+  const exp = pts.map(p => {
+    const dx = p.x - cx, dy = p.y - cy;
+    const len = Math.sqrt(dx*dx + dy*dy) || 1;
+    return { x: p.x + (dx/len)*expandPx + ox, y: p.y + (dy/len)*expandPx + oy };
+  });
+  const [tl, tr, br, bl] = exp;
+  return new Float32Array([
+    tl.x, tl.y,  tr.x, tr.y,  bl.x, bl.y,
+    tr.x, tr.y,  br.x, br.y,  bl.x, bl.y,
+  ]);
+}
+
+function drawSolidQuad(gl, prog, verts, r, g, b, a) {
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, verts, gl.DYNAMIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 8, 0);
+  const W = gl.drawingBufferWidth, H = gl.drawingBufferHeight;
+  gl.uniform2f(gl.getUniformLocation(prog, 'u_res'), W, H);
+  gl.uniform4f(gl.getUniformLocation(prog, 'u_color'), r, g, b, a);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
 
 // ─── Rendering ───────────────────────────────────────────────────────────────
@@ -311,8 +377,9 @@ function initGL() {
   const gl = glCanvas.getContext('webgl', { alpha: false, preserveDrawingBuffer: true });
   if (!gl) { showError('WebGL not supported'); return false; }
   state.gl = gl;
-  state.bgProg = linkProgram(gl, BG_VERT, BG_FRAG);
+  state.bgProg    = linkProgram(gl, BG_VERT,    BG_FRAG);
   state.paintProg = linkProgram(gl, PAINT_VERT, PAINT_FRAG);
+  state.solidProg = linkProgram(gl, SOLID_VERT, SOLID_FRAG);
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
   return true;
@@ -405,6 +472,22 @@ function render() {
     const Hinv = invert3x3(H);
     if (!Hinv) { showError('Degenerate homography — please adjust corners.'); return; }
     clearError();
+
+    // ── Shadow passes (4 layers → soft falloff) ──
+    const shadow = [
+      { expand: 3,  ox: 4,  oy: 6,  a: 0.18 },
+      { expand: 8,  ox: 7,  oy: 11, a: 0.13 },
+      { expand: 14, ox: 10, oy: 16, a: 0.08 },
+      { expand: 22, ox: 13, oy: 22, a: 0.04 },
+    ];
+    for (const s of shadow) {
+      drawSolidQuad(state.gl, state.solidProg,
+        expandQuad(dstPx, s.expand, s.ox, s.oy), 0, 0, 0, s.a);
+    }
+
+    // ── Frame pass ──
+    drawSolidQuad(state.gl, state.solidProg,
+      expandQuad(dstPx, 7, 0, 0), 0.10, 0.07, 0.04, 1.0);
 
     const pp = state.paintProg;
     gl.useProgram(pp);
