@@ -145,9 +145,7 @@ const PAINT_FRAG = `
     vec3 h = u_Hinv * vec3(sp, 1.0);
     vec2 uv = h.xy / h.z;
     if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) discard;
-    // Without UNPACK_FLIP_Y, UV(0,0)=top-left; homography maps TL→(0,0) which is correct.
-    // Flip V so top of painting (uv.y=0 from homography) maps to top of texture.
-    gl_FragColor = texture2D(u_tex, vec2(uv.x, 1.0 - uv.y));
+    gl_FragColor = texture2D(u_tex, uv);
   }
 `;
 
@@ -284,25 +282,22 @@ function defaultCorners() {
     bgW = cw; bgH = cw / roomAR; bgX = 0; bgY = (ch - bgH) / 2;
   }
 
-  // Place painting hung on a wall: horizontally centered, upper third of frame.
-  // Apply a subtle perspective taper so it looks like it's sitting on a flat wall
-  // (top edge slightly wider, bottom edge slightly narrower = looking slightly upward).
-  const pw = bgW * 0.40;
+  // Place painting centered on back wall, upper portion of frame.
+  // Slight taper (top wider than bottom) mimics a wall viewed from slightly below eye level.
+  const pw = bgW * 0.38;
   const ph = pw / paintAR;
-
-  // Vertical position: center of painting sits ~38% down from top of room image
-  const cx = bgX + bgW * 0.5;
-  const cy = bgY + bgH * 0.38;
-  const halfH = ph / 2;
-  const halfWTop = pw / 2 * 1.02;  // top edge slightly wider
-  const halfWBot = pw / 2 * 0.98;  // bottom edge slightly narrower
-  const t = cy - halfH, bot = cy + halfH;
+  const cx = bgX + bgW * 0.50;
+  const cy = bgY + bgH * 0.36;
+  const t   = cy - ph * 0.5;
+  const bot = cy + ph * 0.5;
+  const wTop = pw * 1.015;
+  const wBot = pw * 0.985;
 
   return [
-    { fx: (cx - halfWTop) / cw, fy: t / ch },   // TL
-    { fx: (cx + halfWTop) / cw, fy: t / ch },   // TR
-    { fx: (cx + halfWBot) / cw, fy: bot / ch }, // BR
-    { fx: (cx - halfWBot) / cw, fy: bot / ch }, // BL
+    { fx: (cx - wTop / 2) / cw, fy: t / ch },
+    { fx: (cx + wTop / 2) / cw, fy: t / ch },
+    { fx: (cx + wBot / 2) / cw, fy: bot / ch },
+    { fx: (cx - wBot / 2) / cw, fy: bot / ch },
   ];
 }
 
