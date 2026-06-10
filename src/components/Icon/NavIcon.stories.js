@@ -1,7 +1,7 @@
 import { NavIcon, iconNames } from './NavIcon'
 
 export default {
-  title: 'Components/Icon/Nav Icons/Variants',
+  title: '🟢   😂 Icon/Nav Icons/Variants',
   component: NavIcon,
   args: { size: 24 },
   argTypes: {

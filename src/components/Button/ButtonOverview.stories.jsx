@@ -4,7 +4,7 @@ import { Link2Button } from './Link2Button'
 import { StandardButton } from './StandardButton'
 
 export default {
-  title: 'Components/Button/Overview',
+  title: '🟢   🆗 Button/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

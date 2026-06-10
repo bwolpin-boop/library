@@ -1,7 +1,7 @@
 import { StandardButton } from './StandardButton'
 
 export default {
-  title: 'Components/Button/Standard',
+  title: '🟢   🆗 Button/Standard',
   component: StandardButton,
   args: { label: 'View All Diagnoses', disabled: false },
   argTypes: { disabled: { control: 'boolean' } },

@@ -1,7 +1,7 @@
 import { Button } from './Button'
 
 export default {
-  title: 'Components/Button/Primary',
+  title: '🟢   🆗 Button/Primary',
   component: Button,
   args: { label: 'Button', type: 'primary', disabled: false, iconLeft: false, iconRight: false },
   argTypes: { disabled: { control: 'boolean' }, iconLeft: { control: 'boolean' }, iconRight: { control: 'boolean' } },

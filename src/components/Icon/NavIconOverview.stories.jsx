@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { NavIcon, iconNames } from './NavIcon'
 
 export default {
-  title: 'Components/Icon/Nav Icons/Overview',
+  title: '🟢   😂 Icon/Nav Icons/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

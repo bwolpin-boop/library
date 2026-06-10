@@ -1,7 +1,7 @@
 import { SourceTypeIcon, sourceTypeIconNames } from './SourceTypeIcon'
 
 export default {
-  title: 'Components/Icon/Source Type Icons/Variants',
+  title: '🟢   😂 Icon/Source Type Icons/Variants',
   component: SourceTypeIcon,
   args: { size: 24 },
   argTypes: {

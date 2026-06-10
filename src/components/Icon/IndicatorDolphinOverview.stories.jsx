@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { IndicatorDolphin } from './IndicatorDolphin'
 
 export default {
-  title: 'Components/Icon/Indicator Dolphin/Overview',
+  title: '🟢   😂 Icon/Indicator Dolphin/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

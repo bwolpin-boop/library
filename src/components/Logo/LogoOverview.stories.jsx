@@ -1,7 +1,7 @@
 import { Logo } from './Logo'
 
 export default {
-  title: 'Components/Logo/Overview',
+  title: '🟢   💜 Logo/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

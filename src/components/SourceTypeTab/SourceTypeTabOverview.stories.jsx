@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { SourceTypeTab, sourceTypes } from './SourceTypeTab'
 
 export default {
-  title: 'Components/SourceTypeTab/Overview',
+  title: '🟢   📮 Source Type Tabs/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { SourceTypeIcon, sourceTypeIconNames } from './SourceTypeIcon'
 
 export default {
-  title: 'Components/Icon/Source Type Icons/Overview',
+  title: '🟢   😂 Icon/Source Type Icons/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

@@ -1,7 +1,7 @@
 import { IndicatorDolphin } from './IndicatorDolphin'
 
 export default {
-  title: 'Components/Icon/Indicator Dolphin/Variants',
+  title: '🟢   😂 Icon/Indicator Dolphin/Variants',
   component: IndicatorDolphin,
   args: { size: 'small' },
   argTypes: {

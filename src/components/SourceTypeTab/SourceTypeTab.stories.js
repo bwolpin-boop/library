@@ -1,7 +1,7 @@
 import { SourceTypeTab, sourceTypes } from './SourceTypeTab'
 
 export default {
-  title: 'Components/SourceTypeTab/Variants',
+  title: '🟢   📮 Source Type Tabs',
   component: SourceTypeTab,
   args: { type: 'Progress Notes', size: 'big', state: 'default', showArrows: true },
   argTypes: {
