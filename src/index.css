@@ -1,0 +1,23 @@
+@import "tailwindcss" prefix(dc) important;
+
+@theme {
+  /* Colors */
+  --color-primary: #222222;
+  --color-secondary: #838383;
+  --color-muted: #A3A3A3;
+  --color-surface: #F8F8F8;
+  --color-surface-hover: #F7F7F8;
+  --color-surface-pressed: #F1F1F1;
+  --color-disabled: #E7E7E7;
+  --color-divider: #E5E5E5;
+  --color-divider-subtle: #D9D9D9;
+  --color-divider-disabled: #C3C3C3;
+  --color-purple: #A852FF;
+  --color-purple-hover: #9E46F7;
+  --color-purple-pressed: #983FF2;
+  --color-purple-tint: #F5EBFF;
+
+  --font-montserrat: "Montserrat", sans-serif;
+
+  --radius-box: 0.625rem;
+}
