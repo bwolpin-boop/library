@@ -1,0 +1,17 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<g id="Source icons">
+<rect x="-209.004" y="-16.5" width="250" height="521" rx="4.5" fill="white"/>
+<rect x="-209.004" y="-16.5" width="250" height="521" rx="4.5" stroke="#A028FF" stroke-dasharray="10 5"/>
+<g id="Source Type=Therapy Docs, size=big">
+<path d="M0 2.25C0 1.00736 1.00736 0 2.25 0H21.75C22.9926 0 24 1.00736 24 2.25V21.75C24 22.9926 22.9926 24 21.75 24H2.25C1.00736 24 0 22.9926 0 21.75V2.25Z" fill="#00D66D" fill-opacity="0.1"/>
+<g id="Nav Icons">
+<g id="Group 1000007463">
+<path id="Vector 1071" d="M6 16.8362V4.91379C6 4.68526 6.18526 4.5 6.41379 4.5H14.8142C14.9324 4.5 15.0449 4.55054 15.1235 4.63888L17.8955 7.75741C17.9628 7.83316 18 7.93098 18 8.03232V16.8362C18 17.0647 17.8147 17.25 17.5862 17.25H6.41379C6.18526 17.25 6 17.0647 6 16.8362Z" stroke="#00D66D" stroke-width="0.9" stroke-linecap="round"/>
+<path id="Vector 1074" d="M10.5 9H13.5" stroke="#00D66D" stroke-width="0.9" stroke-linecap="round"/>
+<path id="Vector 1075" d="M10.5 12H13.5" stroke="#00D66D" stroke-width="0.9" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</g>
+</svg>

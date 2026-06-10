@@ -1,0 +1,17 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<g id="Source icons">
+<rect x="-16.5" y="-106.5" width="250" height="521" rx="4.5" fill="white"/>
+<rect x="-16.5" y="-106.5" width="250" height="521" rx="4.5" stroke="#A028FF" stroke-dasharray="10 5"/>
+<g id="Source Type=Interventions, size=big">
+<path d="M0 2.25C0 1.00736 1.00736 0 2.25 0H21.75C22.9926 0 24 1.00736 24 2.25V21.75C24 22.9926 22.9926 24 21.75 24H2.25C1.00736 24 0 22.9926 0 21.75V2.25Z" fill="#A028FF" fill-opacity="0.1"/>
+<g id="Nav Icons">
+<g id="Group 1000007838">
+<path id="Vector 1097" d="M8.71614 19C8.71614 17.8371 8.23015 16.7271 7.37562 15.9383L3.9729 12.7973" stroke="#A028FF" stroke-width="0.9" stroke-linecap="round"/>
+<path id="Vector 1098" d="M15.2836 19C15.2836 17.8371 15.7696 16.7271 16.6241 15.9383L20.0269 12.7973" stroke="#A028FF" stroke-width="0.9" stroke-linecap="round"/>
+<path id="Vector 1082" d="M16.2866 7.94806L16.3575 8.01149C17.6342 9.15385 17.6358 11.152 16.3608 12.2963L11.9086 16.2927L7.45635 12.2963C6.18141 11.152 6.18299 9.15385 7.45974 8.01149L7.53064 7.94806C8.9086 6.71515 11.0817 7.12998 11.9086 8.78378C12.7355 7.12998 14.9086 6.71515 16.2866 7.94806Z" stroke="#A028FF" stroke-width="0.9"/>
+</g>
+</g>
+</g>
+</g>
+</svg>

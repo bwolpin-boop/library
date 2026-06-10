@@ -1,0 +1,14 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<g id="Source icons">
+<rect x="-16.5" y="-76.5" width="250" height="521" rx="4.5" fill="white"/>
+<rect x="-16.5" y="-76.5" width="250" height="521" rx="4.5" stroke="#A028FF" stroke-dasharray="10 5"/>
+<g id="Source Type=Mars, size=big">
+<path d="M0 2.25C0 1.00736 1.00736 0 2.25 0H21.75C22.9926 0 24 1.00736 24 2.25V21.75C24 22.9926 22.9926 24 21.75 24H2.25C1.00736 24 0 22.9926 0 21.75V2.25Z" fill="#FF4B4B" fill-opacity="0.1"/>
+<g id="Nav Icons">
+<path id="Rectangle 13331" d="M6.11816 4.9502H11.1299C11.7761 4.9502 12.2998 5.47394 12.2998 6.12012V17.1299C12.2998 17.7761 11.7761 18.2998 11.1299 18.2998H6.11816C5.47306 18.2998 4.9502 17.7769 4.9502 17.1318V6.11816C4.9502 5.47306 5.47306 4.9502 6.11816 4.9502Z" stroke="#FF4B4B" stroke-width="0.9"/>
+<rect id="Rectangle 13330" x="13.1415" y="8.74288" width="4.02454" height="10.3161" rx="1.16806" transform="rotate(-15 13.1415 8.74288)" stroke="#FF4B4B" stroke-width="0.9"/>
+</g>
+</g>
+</g>
+</svg>

@@ -1,0 +1,14 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<g id="Source icons">
+<rect x="-81.0044" y="-106.5" width="250" height="521" rx="4.5" fill="white"/>
+<rect x="-81.0044" y="-106.5" width="250" height="521" rx="4.5" stroke="#A028FF" stroke-dasharray="10 5"/>
+<g id="Source Type=Vitals, size=big">
+<path d="M0 2.25C0 1.00736 1.00736 0 2.25 0H21.75C22.9926 0 24 1.00736 24 2.25V21.75C24 22.9926 22.9926 24 21.75 24H2.25C1.00736 24 0 22.9926 0 21.75V2.25Z" fill="#00D66D" fill-opacity="0.1"/>
+<g id="Heart Rate">
+<path id="Vector" d="M10.0575 15.5419H10.065L12.3 17.8893L17.52 12.4218C18.1425 11.7618 18.495 10.8918 18.495 9.98435V9.75935C18.495 7.93685 17.01 6.45935 15.1875 6.45935C14.145 6.45935 13.1625 6.94685 12.54 7.78685L12.3 8.10185L12.06 7.78685C11.4375 6.94685 10.455 6.45935 9.41248 6.45935C7.58998 6.45935 6.10498 7.93685 6.10498 9.75935V9.98435C6.10498 10.1568 6.11998 10.3293 6.14998 10.4943" stroke="#00D66D" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M10.815 12.5794H9.63L8.94 15.2569L7.5075 10.4944L6.78 13.6669H5.4375" stroke="#00D66D" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</svg>

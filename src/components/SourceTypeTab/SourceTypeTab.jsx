@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
+import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
 
 export const sourceTypes = [
   'Progress Notes', 'Immunization', 'Documents', 'PCC Docs', 'Therapy Docs',
@@ -9,55 +10,6 @@ export const sourceTypes = [
   'Incidents', 'Immunizations', 'Allergies', 'Previous Target',
 ]
 
-function SourceIcon() {
-  return (
-    <div style={{
-      backgroundColor: 'rgba(37, 202, 220, 0.1)',
-      borderRadius: '2.25px',
-      padding: '3px',
-      display: 'flex',
-      alignItems: 'center',
-      flexShrink: 0,
-      width: '24px',
-      height: '24px',
-      position: 'relative',
-    }}>
-      <div style={{ position: 'relative', width: '18px', height: '18px', flexShrink: 0 }}>
-        {/* Back page */}
-        <div style={{
-          position: 'absolute',
-          left: '2.73px',
-          top: '1.44px',
-          width: '15.275px',
-          height: '15.275px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <div style={{
-            width: '11.998px',
-            height: '11.998px',
-            backgroundColor: '#E9FAFB',
-            border: '0.9px solid #25CADC',
-            borderRadius: '2.25px',
-            transform: 'rotate(19.19deg)',
-          }} />
-        </div>
-        {/* Front page */}
-        <div style={{
-          position: 'absolute',
-          left: '0.61px',
-          top: '3.82px',
-          width: '11.998px',
-          height: '11.998px',
-          backgroundColor: '#E9FAFB',
-          border: '0.9px solid #25CADC',
-          borderRadius: '2.25px',
-        }} />
-      </div>
-    </div>
-  )
-}
 
 function Arrows({ size }) {
   const arrowSize = size === 'small' ? 12 : 16
@@ -125,7 +77,7 @@ export function SourceTypeTab({
       onMouseDown={() => isInteractive && setCurrentState('while pressing')}
       onMouseUp={() => isInteractive && setCurrentState('pressed')}
     >
-      <SourceIcon />
+      <SourceTypeIcon type={type} size={size === 'big' ? 24 : 16} />
       <span style={{
         fontFamily: fonts.montserrat,
         fontSize,
