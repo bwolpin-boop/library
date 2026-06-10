@@ -1,36 +1,37 @@
 import { useState } from 'react'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, radii } from '../../tokens.js'
 
 const styles = {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    fontFamily: '"Montserrat", sans-serif',
+    fontFamily: fonts.montserrat,
     cursor: 'pointer',
     border: 'none',
     background: 'transparent',
-    borderRadius: '10px',
+    borderRadius: radii.box,
     transition: 'background-color 0.15s',
     whiteSpace: 'nowrap',
   },
   default: {
     gap: '4px',
     padding: '4px 8px 4px 3px',
-    fontSize: '14px',
-    fontWeight: 500,
+    fontSize: fontSizes.sm,
+    fontWeight: fontWeights.medium,
     lineHeight: 'normal',
-    color: '#222222',
+    color: colors.primary,
   },
   small: {
     gap: '8px',
     padding: '4px 7px 4px 4px',
-    fontSize: '12px',
-    fontWeight: 400,
-    lineHeight: '18px',
-    color: '#222222',
+    fontSize: fontSizes.xs,
+    fontWeight: fontWeights.regular,
+    lineHeight: lineHeights.sm,
+    color: colors.primary,
   },
-  hover:    { backgroundColor: '#F7F7F8' },
-  pressed:  { backgroundColor: '#F1F1F1' },
-  disabled: { color: '#A3A3A3', cursor: 'not-allowed' },
+  hover:    { backgroundColor: colors.surfaceHover },
+  pressed:  { backgroundColor: colors.surfacePressed },
+  disabled: { color: colors.muted, cursor: 'not-allowed' },
 }
 
 export function Link2Button({
@@ -71,8 +72,8 @@ export function Link2Button({
         flexShrink: 0,
       }}>
         <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
-          <rect x="0.6" y="0.6" width="12.8" height="9.8" rx="1.4" stroke={disabled ? '#A3A3A3' : '#222222'} strokeWidth="1.2" />
-          <path d="M1 1L7 6.5L13 1" stroke={disabled ? '#A3A3A3' : '#222222'} strokeWidth="1.2" />
+          <rect x="0.6" y="0.6" width="12.8" height="9.8" rx="1.4" stroke={disabled ? colors.muted : colors.primary} strokeWidth="1.2" />
+          <path d="M1 1L7 6.5L13 1" stroke={disabled ? colors.muted : colors.primary} strokeWidth="1.2" />
         </svg>
       </span>
       {label}

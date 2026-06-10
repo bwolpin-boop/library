@@ -1,14 +1,15 @@
 import { useState } from 'react'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, radii } from '../../tokens.js'
 
 const styles = {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    fontFamily: '"Montserrat", sans-serif',
+    fontFamily: fonts.montserrat,
     cursor: 'pointer',
-    backgroundColor: '#ffffff',
-    border: '1px solid #C3C3C3',
-    borderRadius: '8px',
+    backgroundColor: colors.white,
+    border: `1px solid ${colors.dividerDisabled}`,
+    borderRadius: radii.boxSm,
     gap: '4px',
     transition: 'background-color 0.15s',
     whiteSpace: 'nowrap',
@@ -16,21 +17,21 @@ const styles = {
   default: {
     height: '32px',
     padding: '8px 12px 8px 8px',
-    fontSize: '12px',
-    fontWeight: 600,
-    lineHeight: '22px',
-    color: '#222222',
+    fontSize: fontSizes.xs,
+    fontWeight: fontWeights.semibold,
+    lineHeight: lineHeights.md,
+    color: colors.primary,
   },
   small: {
     padding: '4px 8px 4px 4px',
-    fontSize: '12px',
-    fontWeight: 400,
-    lineHeight: '18px',
-    color: '#222222',
+    fontSize: fontSizes.xs,
+    fontWeight: fontWeights.regular,
+    lineHeight: lineHeights.sm,
+    color: colors.primary,
   },
-  hover:    { backgroundColor: '#F7F7F8' },
-  pressed:  { backgroundColor: '#F1F1F1' },
-  disabled: { backgroundColor: '#E7E7E7', color: '#A3A3A3', border: '1px solid #C3C3C3', cursor: 'not-allowed' },
+  hover:    { backgroundColor: colors.surfaceHover },
+  pressed:  { backgroundColor: colors.surfacePressed },
+  disabled: { backgroundColor: colors.disabled, color: colors.muted, border: `1px solid ${colors.dividerDisabled}`, cursor: 'not-allowed' },
 }
 
 function TagIcon({ disabled }) {
@@ -39,8 +40,8 @@ function TagIcon({ disabled }) {
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'rgba(168, 82, 255, 0.1)',
-      borderRadius: '6px',
+      backgroundColor: colors.purpleOverlay,
+      borderRadius: radii.boxSm,
       width: '20px',
       height: '20px',
       flexShrink: 0,
@@ -48,7 +49,7 @@ function TagIcon({ disabled }) {
       <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
         <path
           d="M1 5.5L4.5 9L9 1"
-          stroke={disabled ? '#A3A3A3' : '#A852FF'}
+          stroke={disabled ? colors.muted : colors.purple}
           strokeWidth="1.2"
           strokeLinecap="round"
           strokeLinejoin="round"

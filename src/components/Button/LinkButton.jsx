@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { colors, fonts, fontSizes, fontWeights, lineHeights } from '../../tokens.js'
 
 const styles = {
   base: {
@@ -6,8 +7,8 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     gap: '4px',
-    fontFamily: '"Montserrat", sans-serif',
-    fontWeight: 400,
+    fontFamily: fonts.montserrat,
+    fontWeight: fontWeights.regular,
     cursor: 'pointer',
     border: 'none',
     background: 'transparent',
@@ -15,18 +16,18 @@ const styles = {
     textDecoration: 'none',
   },
   default: {
-    fontSize: '16px',
+    fontSize: fontSizes.base,
     lineHeight: '1.428',
-    color: '#222222',
+    color: colors.primary,
   },
   small: {
-    fontSize: '12px',
-    lineHeight: '18px',
-    color: '#222222',
+    fontSize: fontSizes.xs,
+    lineHeight: lineHeights.sm,
+    color: colors.primary,
   },
   hover:    { textDecoration: 'underline', textUnderlineOffset: '4px' },
-  pressed:  { color: '#A852FF', textDecoration: 'underline', textUnderlineOffset: '4px' },
-  disabled: { color: '#A3A3A3', cursor: 'not-allowed' },
+  pressed:  { color: colors.purple, textDecoration: 'underline', textUnderlineOffset: '4px' },
+  disabled: { color: colors.muted, cursor: 'not-allowed' },
 }
 
 function PlaceholderIcon({ size }) {
