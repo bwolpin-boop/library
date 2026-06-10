@@ -28,6 +28,7 @@ export const colors = {
   mdsBlue: '#5567B2',
 
   green100: '#F2FCF1',
+  green300: '#E7F9E5',
   green: '#11BE68',
 
   yellow100: '#FFFCF1',
@@ -74,4 +75,27 @@ export const radii = {
   boxSm: '4px',
   box: '10px',
   rounded: '100px',
+}
+
+export const textStyles = {
+  body8Regular:            { fontFamily: fonts.montserrat, fontSize: fontSizes.xxxs, fontWeight: fontWeights.regular,  lineHeight: 'normal' },
+  body8Medium:             { fontFamily: fonts.montserrat, fontSize: fontSizes.xxxs, fontWeight: fontWeights.medium,   lineHeight: 'normal' },
+  body8SB:                 { fontFamily: fonts.montserrat, fontSize: fontSizes.xxxs, fontWeight: fontWeights.semibold, lineHeight: 'normal' },
+  body10Medium:            { fontFamily: fonts.montserrat, fontSize: fontSizes.xxs,  fontWeight: fontWeights.medium,   lineHeight: lineHeights.tight },
+  body12Regular:           { fontFamily: fonts.montserrat, fontSize: fontSizes.xs,   fontWeight: fontWeights.regular,  lineHeight: lineHeights.sm },
+  body12Italic:            { fontFamily: fonts.montserrat, fontSize: fontSizes.xs,   fontWeight: fontWeights.regular,  fontStyle: 'italic', lineHeight: lineHeights.base },
+  body12SBItalic:          { fontFamily: fonts.montserrat, fontSize: fontSizes.xs,   fontWeight: fontWeights.semibold, fontStyle: 'italic', lineHeight: lineHeights.base },
+  heading12SB:             { fontFamily: fonts.montserrat, fontSize: fontSizes.xs,   fontWeight: fontWeights.semibold, lineHeight: lineHeights.md },
+  body14Regular:           { fontFamily: fonts.montserrat, fontSize: fontSizes.sm,   fontWeight: fontWeights.regular,  lineHeight: lineHeights.base },
+  body14RegularUnderline:  { fontFamily: fonts.montserrat, fontSize: fontSizes.sm,   fontWeight: fontWeights.regular,  lineHeight: lineHeights.base, textDecoration: 'underline' },
+  body14Medium:            { fontFamily: fonts.montserrat, fontSize: fontSizes.sm,   fontWeight: fontWeights.medium,   lineHeight: 'normal' },
+  body14SB:                { fontFamily: fonts.montserrat, fontSize: fontSizes.sm,   fontWeight: fontWeights.semibold, lineHeight: 'normal' },
+  body14Bold:              { fontFamily: fonts.montserrat, fontSize: fontSizes.sm,   fontWeight: fontWeights.bold,     lineHeight: 'normal' },
+  body16Medium:            { fontFamily: fonts.montserrat, fontSize: fontSizes.base, fontWeight: fontWeights.medium,   lineHeight: 'normal' },
+  body16SB:                { fontFamily: fonts.montserrat, fontSize: fontSizes.base, fontWeight: fontWeights.semibold, lineHeight: 'normal' },
+  heading16SBUnderline:    { fontFamily: fonts.montserrat, fontSize: fontSizes.base, fontWeight: fontWeights.semibold, lineHeight: 'normal', textDecoration: 'underline' },
+  heading20SB:             { fontFamily: fonts.montserrat, fontSize: fontSizes.lg,   fontWeight: fontWeights.semibold, lineHeight: 'normal' },
+  body24BoldCaps:          { fontFamily: fonts.montserrat, fontSize: fontSizes.xl2,  fontWeight: fontWeights.bold,     lineHeight: 'normal' },
+  heading24SB:             { fontFamily: fonts.montserrat, fontSize: fontSizes.xl2,  fontWeight: fontWeights.semibold, lineHeight: 'normal' },
+  heading40Medium:         { fontFamily: fonts.montserrat, fontSize: fontSizes.xl3,  fontWeight: fontWeights.medium,   lineHeight: 'normal' },
 }
