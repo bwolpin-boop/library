@@ -28,6 +28,7 @@ When creating or updating any Storybook story title, **always prefix it with the
 | Empty States | `🟢   🪹 empty states` | `🟢   🪹 ` |
 | Labels | `🟢   ✒️ Labels` | `🟢   ✒️ ` |
 | Dashboard | `🟢   ☰ dashboard` | `🟢   ☰ ` |
+| Text Fields | `🟠   🍃  fields` | `🟠   🍃 ` |
 | Sources | `🟠   📁 sources` | `🟠   📁 ` |
 | Illustrations | `🟢   🎁 Illustrations` | `🟢   🎁 ` |
 

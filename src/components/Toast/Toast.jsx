@@ -1,5 +1,6 @@
 import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
+import { IconButton } from '../Icon/IconButton.jsx'
 
 const variantIcon = {
   success: 'verify',
@@ -103,21 +104,7 @@ export function Toast({
           </span>
         </div>
       </div>
-      <button
-        onClick={onClose}
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          padding: 0,
-          flexShrink: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <NavIcon name="close" size={24} />
-      </button>
+      <IconButton name="close" size={24} onClick={onClose} />
     </div>
   )
 }
