@@ -10,10 +10,11 @@ const styles = {
     background: 'transparent',
     borderRadius: '10px',
     transition: 'background-color 0.15s',
+    whiteSpace: 'nowrap',
   },
   default: {
     gap: '4px',
-    padding: '4px 0',
+    padding: '4px 8px 4px 3px',
     fontSize: '14px',
     fontWeight: 500,
     lineHeight: 'normal',
@@ -21,7 +22,7 @@ const styles = {
   },
   small: {
     gap: '8px',
-    padding: '4px',
+    padding: '4px 7px 4px 4px',
     fontSize: '12px',
     fontWeight: 400,
     lineHeight: '18px',
@@ -33,7 +34,7 @@ const styles = {
 }
 
 export function Link2Button({
-  label = 'Give us feedback',
+  label = 'Link 2',
   size = 'default',
   disabled = false,
   onClick,

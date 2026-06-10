@@ -11,6 +11,7 @@ const styles = {
     borderRadius: '8px',
     gap: '4px',
     transition: 'background-color 0.15s',
+    whiteSpace: 'nowrap',
   },
   default: {
     height: '32px',

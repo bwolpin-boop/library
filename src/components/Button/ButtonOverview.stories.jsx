@@ -146,10 +146,10 @@ export const Overview = {
           {
             label: 'Link 2',
             cells: [
-              <Link2Button size="default" label="Give us feedback" />,
-              <Link2Button size="small" label="Give us feedback" />,
+              <Link2Button size="default" label="Link 2" />,
+              <Link2Button size="small" label="Link 2" />,
               '—',
-              <Link2Button size="default" label="Give us feedback" disabled />,
+              <Link2Button size="default" label="Link 2" disabled />,
             ],
           },
         ]}
