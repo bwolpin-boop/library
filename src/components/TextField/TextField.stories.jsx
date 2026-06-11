@@ -4,10 +4,9 @@ import { TextField } from './TextField'
 export default {
   title: '🟠   🍃 Text Fields/Variants',
   component: TextField,
-  args: { size: 'big', type: 'comment', value: '', promptEngineer: false },
+  args: { type: 'comment', value: '', promptEngineer: false },
   argTypes: {
     type: { control: 'select', options: ['comment', 'feedback', 'ai'] },
-    size: { control: 'select', options: ['big', 'small'] },
     promptEngineer: { control: 'boolean' },
     value: { control: 'text' },
   },
@@ -19,6 +18,9 @@ export default {
     ),
   ],
 }
+
+const LITTLE_TEXT = 'Patient needs to drink more water to stay hydrated.'
+const LOT_OF_TEXT = 'Patient needs to drink more water to stay hydrated. The doctor has recommended at least 2 liters per day. Staff should encourage fluids at every meal and during medication rounds. Please document fluid intake carefully in the chart and flag if intake falls below 1 liter.'
 
 function Controlled(args) {
   const [value, setValue] = useState(args.value || '')
@@ -35,9 +37,12 @@ function Controlled(args) {
   )
 }
 
-export const Comment       = { render: (args) => <Controlled {...args} />, args: { type: 'comment', size: 'big' } }
-export const CommentTyping = { render: (args) => <Controlled {...args} />, args: { type: 'comment', size: 'big', value: 'Patient needs to drink more water to stay hydrated.' } }
-export const Feedback      = { render: (args) => <Controlled {...args} />, args: { type: 'feedback', size: 'small' } }
-export const FeedbackTyping = { render: (args) => <Controlled {...args} />, args: { type: 'feedback', size: 'small', value: 'Patient needs to drink more water to stay hydrated.' } }
-export const Ai            = { render: (args) => <Controlled {...args} />, args: { type: 'ai', size: 'big' } }
-export const AiTyping      = { render: (args) => <Controlled {...args} />, args: { type: 'ai', size: 'big', value: 'Patient needs to drink more water to stay hydrated.' } }
+export const CommentNoText     = { render: (args) => <Controlled {...args} />, args: { type: 'comment' } }
+export const CommentLittleText = { render: (args) => <Controlled {...args} />, args: { type: 'comment', value: LITTLE_TEXT } }
+export const CommentALotOfText = { render: (args) => <Controlled {...args} />, args: { type: 'comment', value: LOT_OF_TEXT } }
+export const FeedbackNoText     = { render: (args) => <Controlled {...args} />, args: { type: 'feedback' } }
+export const FeedbackLittleText = { render: (args) => <Controlled {...args} />, args: { type: 'feedback', value: LITTLE_TEXT } }
+export const FeedbackALotOfText = { render: (args) => <Controlled {...args} />, args: { type: 'feedback', value: LOT_OF_TEXT } }
+export const AiNoText     = { render: (args) => <Controlled {...args} />, args: { type: 'ai' } }
+export const AiLittleText = { render: (args) => <Controlled {...args} />, args: { type: 'ai', value: LITTLE_TEXT } }
+export const AiALotOfText = { render: (args) => <Controlled {...args} />, args: { type: 'ai', value: LOT_OF_TEXT } }

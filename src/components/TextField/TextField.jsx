@@ -1,7 +1,37 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { colors, textStyles, radii } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { IconButton } from '../Icon/IconButton.jsx'
+
+function MicCloseButton({ onClick }) {
+  const [hover, setHover] = useState(false)
+  const [pressed, setPressed] = useState(false)
+  const bg = pressed ? colors.dividerSubtle : hover ? colors.surfacePressed : colors.surface
+  return (
+    <button onClick={onClick} onMouseEnter={() => setHover(true)} onMouseLeave={() => { setHover(false); setPressed(false) }} onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)}
+      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', flexShrink: 0, display: 'flex' }}>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 3C0 1.34315 1.34315 0 3 0H21C22.6569 0 24 1.34315 24 3V21C24 22.6569 22.6569 24 21 24H3C1.34315 24 0 22.6569 0 21V3Z" fill={bg}/>
+        <path d="M9 16L16 9M9 9L16 16" stroke={colors.primary} strokeWidth="1.2" strokeLinecap="round"/>
+      </svg>
+    </button>
+  )
+}
+
+function MicCheckButton({ onClick }) {
+  const [hover, setHover] = useState(false)
+  const [pressed, setPressed] = useState(false)
+  const bg = pressed ? colors.purplePressed : hover ? colors.purpleHover : colors.purple
+  return (
+    <button onClick={onClick} onMouseEnter={() => setHover(true)} onMouseLeave={() => { setHover(false); setPressed(false) }} onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)}
+      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', flexShrink: 0, display: 'flex' }}>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 3C0 1.34315 1.34315 0 3 0H21C22.6569 0 24 1.34315 24 3V21C24 22.6569 22.6569 24 21 24H3C1.34315 24 0 22.6569 0 21V3Z" fill={bg}/>
+        <path d="M7.5 12.5L10.7692 16L17 9" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+  )
+}
 
 function PlaceholderStyle() {
   return (
@@ -11,51 +41,144 @@ function PlaceholderStyle() {
   )
 }
 
-const BAR_HEIGHTS = [
-  0.08,0.10,0.12,0.08,0.15,0.10,0.08,0.20,0.14,0.10,
-  0.28,0.40,0.55,0.45,0.62,0.80,0.70,0.90,0.75,0.85,
-  1.00,0.88,0.95,0.72,0.84,0.65,0.78,0.60,0.70,0.55,
-  0.80,0.65,0.90,0.72,0.60,0.48,0.40,0.30,0.22,0.18,
-  0.28,0.20,0.15,0.22,0.12,0.10,0.14,0.08,0.10,0.08,
-]
+const BAR_COUNT = 90
+const BAR_WIDTH = 2.4
+const BAR_GAP   = 5
+const SLOT      = BAR_WIDTH + BAR_GAP  // 7.5px — one bar + its gap
+const TICK_MS   = 200                  // how long it takes to scroll one slot
 
-function MicRecordingOverlay({ onCancel, onConfirm }) {
+function MicRecordingOverlay({ onCancel, onConfirm, onChange }) {
+  const [bars, setBars]   = useState([])
+  const innerRef          = useRef(null)
+  const rafRef            = useRef(null)
+  const audioRef          = useRef(null)
+  const recognitionRef    = useRef(null)
+  const barsRef           = useRef([])
+  const offsetRef         = useRef(0)
+  const silenceTimerRef   = useRef(null)
+
+  function resetSilenceTimer() {
+    clearTimeout(silenceTimerRef.current)
+    silenceTimerRef.current = setTimeout(onCancel, 12000)
+  }
+
+  useEffect(() => {
+    let ctx, stream
+    const pxPerFrame = SLOT / (TICK_MS / (1000 / 60))
+    resetSilenceTimer()
+
+    // Speech recognition — types out words as you speak
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (SR) {
+      const recognition = new SR()
+      recognition.continuous = true
+      recognition.interimResults = true
+      recognition.onresult = (e) => {
+        let transcript = ''
+        for (let i = 0; i < e.results.length; i++) {
+          transcript += e.results[i][0].transcript
+        }
+        onChange?.({ target: { value: transcript } })
+      }
+      recognition.start()
+      recognitionRef.current = recognition
+    }
+
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(s => {
+        stream = s
+        ctx = new AudioContext()
+        const analyser = ctx.createAnalyser()
+        analyser.fftSize = 1024
+        ctx.createMediaStreamSource(stream).connect(analyser)
+        const data = new Uint8Array(analyser.fftSize)
+
+        function tick() {
+          offsetRef.current += pxPerFrame
+
+          if (offsetRef.current >= SLOT) {
+            offsetRef.current -= SLOT
+            analyser.getByteTimeDomainData(data)
+            let sum = 0
+            for (let j = 0; j < data.length; j++) {
+              const v = (data[j] - 128) / 128
+              sum += v * v
+            }
+            const rms  = Math.min(1, Math.sqrt(sum / data.length) * 14)
+            const h    = Math.max(0.04, rms)
+            if (h > 0.1) resetSilenceTimer()
+            const prev = barsRef.current
+            const next = prev.length < BAR_COUNT ? [...prev, h] : [...prev.slice(1), h]
+            barsRef.current = next
+            setBars([...next])
+          }
+
+          if (innerRef.current) {
+            innerRef.current.style.transform = `translateX(-${offsetRef.current}px)`
+          }
+
+          rafRef.current = requestAnimationFrame(tick)
+        }
+
+        audioRef.current = { ctx, stream }
+        tick()
+      })
+      .catch(() => {})
+
+    return () => {
+      clearTimeout(silenceTimerRef.current)
+      recognitionRef.current?.stop()
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      if (audioRef.current) {
+        audioRef.current.stream.getTracks().forEach(t => t.stop())
+        audioRef.current.ctx.close()
+      }
+    }
+  }, [])
+
   return (
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: '4px',
       backgroundColor: colors.white,
       borderRadius: radii.boxSm,
       height: '24px',
       width: '100%',
       flexShrink: 0,
     }}>
-      <style>{`
-        @keyframes dc-mic-bar {
-          0%, 100% { transform: scaleY(1); }
-          50% { transform: scaleY(0.25); }
-        }
-      `}</style>
-
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '2px', overflow: 'hidden', height: '100%' }}>
-        {BAR_HEIGHTS.map((h, i) => (
-          <div
-            key={i}
-            style={{
-              flex: '0 0 2px',
-              height: `${Math.max(2, Math.round(h * 14))}px`,
-              backgroundColor: colors.muted,
-              borderRadius: '1px',
-              transformOrigin: 'center',
-              animation: `dc-mic-bar ${0.7 + (i % 6) * 0.12}s ease-in-out ${(i % 9) * 0.07}s infinite`,
-            }}
-          />
-        ))}
+      {/* Overflow container clips the sliding inner row */}
+      <div style={{ flex: 1, overflow: 'hidden', height: '100%' }}>
+        <div
+          ref={innerRef}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: `${BAR_GAP}px`,
+            height: '100%',
+          }}
+        >
+          {bars.map((h, i) => {
+            const isBar = h > 0.06
+            return (
+              <div
+                key={i}
+                style={{
+                  flex: `0 0 ${BAR_WIDTH}px`,
+                  height: isBar ? `${Math.max(BAR_WIDTH, Math.round(h * 20))}px` : `${BAR_WIDTH}px`,
+                  backgroundColor: colors.secondary,
+                  borderRadius: isBar ? '1.5px' : '50%',
+                }}
+              />
+            )
+          })}
+        </div>
       </div>
 
-      <IconButton name="close"     size={16} onClick={onCancel} />
-      <IconButton name="checkmark" size={16} onClick={onConfirm} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '12px', flexShrink: 0 }}>
+        <MicCloseButton  onClick={onCancel} />
+        <MicCheckButton  onClick={onConfirm} />
+      </div>
     </div>
   )
 }
@@ -71,121 +194,118 @@ export function TextField({
   promptEngineer = false,
   onPromptEngineerChange,
 }) {
-  const [sendHover, setSendHover] = useState(false)
-  const [sendPressed, setSendPressed] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
+  const textareaRef = useRef(null)
 
   const hasValue = value.length > 0
   const isAi = type === 'ai'
   const isSmall = size === 'small'
 
-  const sendIconName = !hasValue ? 'send-small'
-    : sendPressed ? 'send-small-pressed'
-    : sendHover   ? 'send-small-hover'
-    : 'send-small-active'
+  const sendIconName = hasValue ? 'send-active' : 'send-disabled'
 
-  const sendHandlers = {
-    onMouseEnter: () => setSendHover(true),
-    onMouseLeave: () => { setSendHover(false); setSendPressed(false) },
-    onMouseDown:  () => setSendPressed(true),
-    onMouseUp:    () => setSendPressed(false),
+  function handleSend() {
+    onSend?.()
+    if (promptEngineer) onPromptEngineerChange?.(false)
   }
 
   const paddingTop    = isSmall ? '12px' : '16px'
   const paddingH      = isSmall ? '16px' : '24px'
-  const paddingBottom = isSmall ? '16px' : '24px'
-  const boxHeight     = isSmall ? '107px' : '154px'
+  const paddingBottom = '16px'
+  const minTextareaH  = isSmall ? 47 : 43
+  const maxTextareaH  = isSmall ? 94 : 90
   const defaultPlaceholder = type === 'feedback' ? 'Type your feedback here' : 'Add a Comment'
+
+  // Auto-resize the textarea between min and max on every value change
+  useEffect(() => {
+    const el = textareaRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    const capped = Math.max(minTextareaH, Math.min(el.scrollHeight, maxTextareaH))
+    el.style.height = `${capped}px`
+    el.style.overflowY = el.scrollHeight > maxTextareaH ? 'auto' : 'hidden'
+  }, [value, minTextareaH, maxTextareaH])
 
   return (
     <div className="dc-tf" style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>
       <PlaceholderStyle />
       <div style={{
-        position: 'relative',
         backgroundColor: colors.white,
         border: `1px solid ${colors.dividerSubtle}`,
         borderRadius: radii.box,
         boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.05)',
         display: 'flex',
         flexDirection: 'column',
-        padding: `${paddingTop} ${paddingH} ${paddingBottom}`,
-        height: boxHeight,
         overflow: 'hidden',
       }}>
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: '32px',
-          background: `linear-gradient(to bottom, ${colors.white}, transparent)`,
-          pointerEvents: 'none', zIndex: 1,
-        }} />
 
         <textarea
+          ref={textareaRef}
           value={value}
           onChange={onChange}
-          placeholder={placeholder || defaultPlaceholder}
+          placeholder={isRecording ? 'Listening...' : (placeholder || defaultPlaceholder)}
+          onClick={isRecording ? () => setIsRecording(false) : undefined}
           style={{
-            flex: 1, resize: 'none', border: 'none', outline: 'none',
+            resize: 'none', border: 'none', outline: 'none',
+            minHeight: minTextareaH,
             ...textStyles.body12Regular,
             color: colors.primary,
             backgroundColor: 'transparent',
-            width: '100%', overflowY: 'auto',
+            overflowY: 'hidden',
+            cursor: isRecording ? 'text' : undefined,
+            fontStyle: isRecording ? 'italic' : 'normal',
+            boxSizing: 'border-box',
+            width: '100%',
+            paddingTop: paddingTop,
+            paddingLeft: paddingH,
+            paddingRight: paddingH,
+            paddingBottom: 0,
           }}
         />
 
-        <div style={{ flexShrink: 0, marginTop: '8px' }}>
+        <div style={{ flexShrink: 0, paddingLeft: paddingH, paddingRight: paddingH, paddingBottom: paddingBottom, marginTop: '8px' }}>
           {isRecording ? (
             <MicRecordingOverlay
               onCancel={() => setIsRecording(false)}
               onConfirm={() => { setIsRecording(false); onRecordingConfirm?.() }}
+              onChange={onChange}
             />
           ) : (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {type === 'comment' ? (
-            <button
-              onClick={() => onPromptEngineerChange?.(!promptEngineer)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '12px',
-                background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-              }}
-            >
-              <NavIcon name="checkbox-small" size={16} />
-              <span style={{ ...textStyles.body12Regular, color: colors.secondary }}>
-                Also send to the prompt engineer
-              </span>
-            </button>
-          ) : (
-            <div />
-          )}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              {type === 'comment' ? (
+                <button
+                  onClick={() => onPromptEngineerChange?.(!promptEngineer)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '12px',
+                    background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+                  }}
+                >
+                  <NavIcon name={promptEngineer ? 'checkbox-filled-small' : 'checkbox-small'} size={16} />
+                  <span style={{ ...textStyles.body12Regular, color: colors.secondary }}>
+                    Also send to the prompt engineer
+                  </span>
+                </button>
+              ) : (
+                <div />
+              )}
 
-          {isAi ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <IconButton name="plus-small" size={16} />
-              {hasValue ? (
+              {isAi ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <IconButton name="plus-small" size={16} />
+                  {hasValue ? (
+                    <IconButton name={sendIconName} size={16} onClick={handleSend} />
+                  ) : (
+                    <IconButton name="mic-small" size={16} onClick={() => setIsRecording(true)} />
+                  )}
+                </div>
+              ) : (
                 <IconButton
                   name={sendIconName}
                   size={16}
-                  onClick={onSend}
-                  onMouseEnter={sendHandlers.onMouseEnter}
-                  onMouseLeave={sendHandlers.onMouseLeave}
-                  onMouseDown={sendHandlers.onMouseDown}
-                  onMouseUp={sendHandlers.onMouseUp}
+                  onClick={hasValue ? handleSend : undefined}
+                  disabled={!hasValue}
                 />
-              ) : (
-                <IconButton name="mic-small" size={16} onClick={() => setIsRecording(true)} />
               )}
             </div>
-          ) : (
-            <IconButton
-              name={sendIconName}
-              size={16}
-              onClick={hasValue ? onSend : undefined}
-              disabled={!hasValue}
-              onMouseEnter={hasValue ? sendHandlers.onMouseEnter : undefined}
-              onMouseLeave={hasValue ? sendHandlers.onMouseLeave : undefined}
-              onMouseDown={hasValue ? sendHandlers.onMouseDown : undefined}
-              onMouseUp={hasValue ? sendHandlers.onMouseUp : undefined}
-            />
-          )}
-          </div>
           )}
         </div>
       </div>

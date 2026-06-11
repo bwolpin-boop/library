@@ -1,30 +1,27 @@
 import { useState } from 'react'
-import { TextField } from './TextField'
+import { SearchField } from './SearchField'
 
 export default {
-  title: '🟠   🍃 Text Fields/Overview',
+  title: '🟠   🍃 Search Fields/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 
 const font = '"Montserrat", sans-serif'
 
 const variants = [
-  { label: 'type=comment', type: 'comment' },
-  { label: 'type=feedback', type: 'feedback' },
-  { label: 'type=ai',       type: 'ai' },
+  { label: 'size=dashboard', size: 'dashboard' },
+  { label: 'size=middle',    size: 'middle' },
+  { label: 'size=small',     size: 'small' },
 ]
 
-function LiveField({ type }) {
+function LiveField({ size }) {
   const [value, setValue] = useState('')
-  const [pe, setPe] = useState(false)
   return (
-    <TextField
-      type={type}
+    <SearchField
+      size={size}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      promptEngineer={pe}
-      onPromptEngineerChange={setPe}
-      onSend={() => setValue('')}
+      onClear={() => setValue('')}
     />
   )
 }
@@ -32,13 +29,13 @@ function LiveField({ type }) {
 export const Overview = {
   render: () => (
     <div style={{ padding: '32px', fontFamily: font }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: '640px' }}>
-        {variants.map(({ label, type }) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+        {variants.map(({ label, size }) => (
           <div key={label}>
             <div style={{ fontFamily: font, fontSize: '11px', fontWeight: 600, color: '#A3A3A3', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
               {label}
             </div>
-            <LiveField type={type} />
+            <LiveField size={size} />
           </div>
         ))}
       </div>
