@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths } from '../../tokens.js'
 
 const styles = {
   base: {
@@ -8,22 +8,22 @@ const styles = {
     fontFamily: fonts.montserrat,
     cursor: 'pointer',
     backgroundColor: colors.white,
-    border: `1px solid ${colors.dividerDisabled}`,
+    border: `${strokeWidths.thin}px solid ${colors.dividerDisabled}`,
     borderRadius: radii.boxSm,
-    gap: '4px',
+    gap: spacing.gap4,
     transition: 'background-color 0.15s',
     whiteSpace: 'nowrap',
   },
   default: {
     height: '32px',
-    padding: '8px 12px 8px 8px',
+    padding: `${spacing.gap8} ${spacing.gap12} ${spacing.gap8} ${spacing.gap8}`,
     fontSize: fontSizes.xs,
     fontWeight: fontWeights.semibold,
     lineHeight: lineHeights.md,
     color: colors.primary,
   },
   small: {
-    padding: '4px 8px 4px 4px',
+    padding: `${spacing.gap4} ${spacing.gap8} ${spacing.gap4} ${spacing.gap4}`,
     fontSize: fontSizes.xs,
     fontWeight: fontWeights.regular,
     lineHeight: lineHeights.sm,
@@ -50,7 +50,7 @@ function TagIcon({ disabled }) {
         <path
           d="M1 5.5L4.5 9L9 1"
           stroke={disabled ? colors.muted : colors.purple}
-          strokeWidth="1.2"
+          strokeWidth={strokeWidths.icon}
           strokeLinecap="round"
           strokeLinejoin="round"
         />

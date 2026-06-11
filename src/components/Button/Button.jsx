@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, radii, spacing, strokeWidths } from '../../tokens.js'
 
 const styles = {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '4px',
+    gap: spacing.gap4,
     fontFamily: fonts.montserrat,
     cursor: 'pointer',
     border: 'none',
@@ -19,20 +19,20 @@ const styles = {
     disabled:{ backgroundColor: colors.disabled, color: colors.muted, cursor: 'not-allowed', borderRadius: radii.rounded },
   },
   secondary: {
-    default: { backgroundColor: colors.white, color: colors.purple, borderRadius: radii.rounded, border: `1px solid ${colors.dividerSubtle}` },
+    default: { backgroundColor: colors.white, color: colors.purple, borderRadius: radii.rounded, border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}` },
     hover:   { backgroundColor: colors.purpleTint },
-    disabled:{ backgroundColor: colors.disabled, color: colors.muted, border: `1px solid ${colors.dividerSubtle}`, cursor: 'not-allowed', borderRadius: radii.rounded },
+    disabled:{ backgroundColor: colors.disabled, color: colors.muted, border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}`, cursor: 'not-allowed', borderRadius: radii.rounded },
   },
   tertiary: {
-    default: { backgroundColor: colors.white, color: colors.primary, borderRadius: radii.box, border: `1px solid ${colors.dividerSubtle}` },
-    hover:   { border: `1px solid ${colors.dividerDisabled}` },
-    pressed: { backgroundColor: colors.surfaceHover, border: `1px solid ${colors.primary}` },
-    disabled:{ backgroundColor: colors.disabled, color: colors.secondary, border: `1px solid ${colors.dividerDisabled}`, cursor: 'not-allowed', borderRadius: radii.box },
+    default: { backgroundColor: colors.white, color: colors.primary, borderRadius: radii.box, border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}` },
+    hover:   { border: `${strokeWidths.thin}px solid ${colors.dividerDisabled}` },
+    pressed: { backgroundColor: colors.surfaceHover, border: `${strokeWidths.thin}px solid ${colors.primary}` },
+    disabled:{ backgroundColor: colors.disabled, color: colors.secondary, border: `${strokeWidths.thin}px solid ${colors.dividerDisabled}`, cursor: 'not-allowed', borderRadius: radii.box },
   },
-  sizeDefault:         { height: '52px', padding: '0 24px', fontSize: fontSizes.base, fontWeight: fontWeights.medium },
-  sizeSmall:           { height: '32px', padding: '0 12px', fontSize: fontSizes.xs, fontWeight: fontWeights.semibold },
-  sizeTertiaryDefault: { height: '48px', padding: '0 24px', fontSize: fontSizes.base, fontWeight: fontWeights.medium, color: colors.primary },
-  sizeTertiarySmall:   { padding: '8px 12px', fontSize: fontSizes.xs, fontWeight: fontWeights.semibold, color: colors.primary },
+  sizeDefault:         { height: '52px', padding: `0 ${spacing.gap24}`, fontSize: fontSizes.base, fontWeight: fontWeights.medium },
+  sizeSmall:           { height: '32px', padding: `0 ${spacing.gap12}`, fontSize: fontSizes.xs, fontWeight: fontWeights.semibold },
+  sizeTertiaryDefault: { height: '48px', padding: `0 ${spacing.gap24}`, fontSize: fontSizes.base, fontWeight: fontWeights.medium, color: colors.primary },
+  sizeTertiarySmall:   { padding: `${spacing.gap8} ${spacing.gap12}`, fontSize: fontSizes.xs, fontWeight: fontWeights.semibold, color: colors.primary },
 }
 
 function PlaceholderIcon() {

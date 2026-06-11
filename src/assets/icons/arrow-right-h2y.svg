@@ -1,0 +1,15 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon=arrow right H2Y" clip-path="url(#clip0_6_814)">
+<mask id="mask0_6_814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+<rect id="Bounding box" width="20" height="20" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_6_814)">
+<path id="Vector 779" d="M10.75 5L15.25 9.5L10.75 14M15.25 9.5L4 9.5" stroke="#838383" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_6_814">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

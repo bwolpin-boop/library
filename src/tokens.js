@@ -6,6 +6,7 @@ export const colors = {
   background: '#FCFCFC',
   surface: '#F7F7F8',
   surfaceHover: '#F7F7F8',
+  surfaceActive: '#EBEBEB',
   surfacePressed: '#F1F1F1',
   disabled: '#E7E7E7',
   divider: '#E7E7E7',
@@ -75,6 +76,24 @@ export const radii = {
   boxSm: '4px',
   box: '10px',
   rounded: '100px',
+}
+
+export const spacing = {
+  gap0:  '0px',
+  gap4:  '4px',
+  gap8:  '8px',
+  gap12: '12px',
+  gap16: '16px',
+  gap24: '24px',
+  gap32: '32px',
+  gap40: '40px',
+  gap60: '60px',
+}
+
+export const strokeWidths = {
+  thin:  1,
+  icon:  1.2,
+  thick: 2,
 }
 
 export const textStyles = {

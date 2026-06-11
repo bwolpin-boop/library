@@ -4,8 +4,14 @@ When creating or updating any Storybook story title, **always prefix it with the
 
 ## Rules
 - Story titles do NOT include a `Components/` root prefix — the emoji is the root
-- Format: `'<emoji> <ComponentName>/<SubFolder>'`
-- Example: `title: '🟢   🆗 Button/Primary'`
+- The emoji prefix IS the section root — do NOT add the Figma page name (e.g. "Tabs & Tags") as an extra folder level
+- For a **standalone component** (not grouped in a section with sub-components): `'<emoji> <ComponentName>'` for variants, `'<emoji> <ComponentName>/Overview'` for overview
+- For a **section with sub-components** (e.g. Ribbon containing H2YLetters, H2YSequence, Ribbon): use `'<emoji> <Section>/<ComponentName>'` for each component. Never use "Variants" as a folder name — the component's own name IS the folder.
+- Examples:
+  - `title: '🟢   📮 Category Tag'` ✅ (standalone)
+  - `title: '🟢   🎀 Ribbon/Ribbon'` ✅ (Ribbon component inside Ribbon section)
+  - `title: '🟢   🎀 Ribbon/H2YLetters'` ✅ (sub-component inside Ribbon section)
+  - `title: '🟢   🎀 Ribbon/Variants'` ❌ (never use "Variants" as a folder name)
 - The spacing between the green circle and the second emoji is 3 spaces (matching Figma exactly)
 
 ## Figma Page → Storybook Prefix Mapping
@@ -29,6 +35,7 @@ When creating or updating any Storybook story title, **always prefix it with the
 | Labels | `🟢   ✒️ Labels` | `🟢   ✒️ ` |
 | Dashboard | `🟢   ☰ dashboard` | `🟢   ☰ ` |
 | Text Fields | `🟠   🍃  fields` | `🟠   🍃 ` |
+| Status | `🟢   📮 Tabs & Tags` | `🟢   📮 ` |
 | Sources | `🟠   📁 sources` | `🟠   📁 ` |
 | Illustrations | `🟢   🎁 Illustrations` | `🟢   🎁 ` |
 

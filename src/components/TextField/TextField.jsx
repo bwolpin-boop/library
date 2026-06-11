@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { colors, textStyles, radii } from '../../tokens.js'
+import { colors, textStyles, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { IconButton } from '../Icon/IconButton.jsx'
 
@@ -42,8 +42,8 @@ function PlaceholderStyle() {
 }
 
 const BAR_COUNT = 90
-const BAR_WIDTH = 2.4
-const BAR_GAP   = 5
+const BAR_WIDTH = 2
+const BAR_GAP   = 4
 const SLOT      = BAR_WIDTH + BAR_GAP  // 7.5px — one bar + its gap
 const TICK_MS   = 200                  // how long it takes to scroll one slot
 
@@ -175,7 +175,7 @@ function MicRecordingOverlay({ onCancel, onConfirm, onChange }) {
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '12px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, marginLeft: spacing.gap12, flexShrink: 0 }}>
         <MicCloseButton  onClick={onCancel} />
         <MicCheckButton  onClick={onConfirm} />
       </div>
@@ -208,9 +208,9 @@ export function TextField({
     if (promptEngineer) onPromptEngineerChange?.(false)
   }
 
-  const paddingTop    = isSmall ? '12px' : '16px'
-  const paddingH      = isSmall ? '16px' : '24px'
-  const paddingBottom = '16px'
+  const paddingTop    = isSmall ? spacing.gap12 : spacing.gap16
+  const paddingH      = isSmall ? spacing.gap16 : spacing.gap24
+  const paddingBottom = spacing.gap16
   const minTextareaH  = isSmall ? 47 : 43
   const maxTextareaH  = isSmall ? 94 : 90
   const defaultPlaceholder = type === 'feedback' ? 'Type your feedback here' : 'Add a Comment'
@@ -226,11 +226,11 @@ export function TextField({
   }, [value, minTextareaH, maxTextareaH])
 
   return (
-    <div className="dc-tf" style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>
+    <div className="dc-tf" style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4, width: '100%' }}>
       <PlaceholderStyle />
       <div style={{
         backgroundColor: colors.white,
-        border: `1px solid ${colors.dividerSubtle}`,
+        border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}`,
         borderRadius: radii.box,
         boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.05)',
         display: 'flex',
@@ -262,7 +262,7 @@ export function TextField({
           }}
         />
 
-        <div style={{ flexShrink: 0, paddingLeft: paddingH, paddingRight: paddingH, paddingBottom: paddingBottom, marginTop: '8px' }}>
+        <div style={{ flexShrink: 0, paddingLeft: paddingH, paddingRight: paddingH, paddingBottom: paddingBottom, marginTop: spacing.gap8 }}>
           {isRecording ? (
             <MicRecordingOverlay
               onCancel={() => setIsRecording(false)}
@@ -275,7 +275,7 @@ export function TextField({
                 <button
                   onClick={() => onPromptEngineerChange?.(!promptEngineer)}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: '12px',
+                    display: 'flex', alignItems: 'center', gap: spacing.gap12,
                     background: 'none', border: 'none', cursor: 'pointer', padding: 0,
                   }}
                 >
@@ -289,7 +289,7 @@ export function TextField({
               )}
 
               {isAi ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap16 }}>
                   <IconButton name="plus-small" size={16} />
                   {hasValue ? (
                     <IconButton name={sendIconName} size={16} onClick={handleSend} />
@@ -317,7 +317,7 @@ export function TextField({
           textAlign: 'center',
           margin: 0,
         }}>
-          Claude is Ai and can make mistakes. Please double check responses.
+          Claude is Ai and can make mistakes.<br />Please double check responses.
         </p>
       )}
     </div>

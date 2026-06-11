@@ -1,4 +1,4 @@
-import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { IconButton } from '../Icon/IconButton.jsx'
 
@@ -36,11 +36,11 @@ function LoadingSpinner() {
         position: 'absolute',
         inset: 0,
         borderRadius: '50%',
-        border: `3px solid ${colors.purple100}`,
+        border: `${strokeWidths.thick}px solid ${colors.purple100}`,
         borderTopColor: colors.purple,
         animation: 'toast-spin 1s linear infinite',
       }} />
-      <NavIcon name="dc-icon-hover" size={28} />
+      <NavIcon name="dolphincare-logo" size={28} />
     </div>
   )
 }
@@ -58,18 +58,18 @@ export function Toast({
   return (
     <div style={{
       backgroundColor: colors.white,
-      border: `1px solid ${colors.dividerSubtle}`,
+      border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}`,
       borderRadius: radii.box,
-      padding: '24px',
+      padding: spacing.gap24,
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '16px',
+      gap: spacing.gap16,
       width: '377px',
     }}>
       <div style={{
         display: 'flex',
         alignItems: isLoading ? 'flex-start' : 'center',
-        gap: '16px',
+        gap: spacing.gap16,
         flex: 1,
       }}>
         {hasIcon && (
@@ -80,7 +80,7 @@ export function Toast({
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '6px',
+          gap: spacing.gap4,
           flex: 1,
         }}>
           <span style={{

@@ -1,5 +1,8 @@
 # Figma Variables Skill
 
+**CRITICAL RULE — applies to every single `use_figma` write call:**
+Every color, radius, font size, font weight, and spacing value set in Figma MUST be bound to a variable. Never pass raw hex values or pixel numbers directly. Use `setBoundVariableForPaint` for fills/strokes and `setBoundVariable` for number properties. If a value has no variable in the system, stop and ask the user before proceeding.
+
 **ALWAYS use these variable IDs when updating anything in Figma. Never hardcode raw values.**
 
 File key: `PxJWC0CTQkrrQtb39uP08N`
@@ -34,6 +37,51 @@ const variable = await figma.variables.getVariableByIdAsync('VariableID:...')
 node.setBoundVariable('width', variable)
 node.setBoundVariable('itemSpacing', variable)
 ```
+
+---
+
+## Font Family Variables (Numbers collection — STRING type)
+
+| Token | Variable Name | ID |
+|---|---|---|
+| `fonts.montserrat` | `👨‍👩‍👦 Family/montserrat` | `VariableID:6:782` |
+| `fonts.inter` | `👨‍👩‍👦 Family/inter` | `VariableID:27:2854` |
+
+---
+
+## Spacing / Gap Variables (Numbers collection)
+
+| Value | Variable Name | ID |
+|---|---|---|
+| 0px | `🚀 Spacing/Gap_0` | `VariableID:45:9698` |
+| 4px | `🚀 Spacing/Gap_4` | `VariableID:19:34633` |
+| 8px | `🚀 Spacing/Gap_8` | `VariableID:6:805` |
+| 12px | `🚀 Spacing/Gap_12` | `VariableID:19:34632` |
+| 16px | `🚀 Spacing/Gap_16` | `VariableID:6:807` |
+| 24px | `🚀 Spacing/Gap_24` | `VariableID:6:808` |
+| 32px | `🚀 Spacing/Gap_32` | `VariableID:64:1430` |
+| 40px | `🚀 Spacing/Gap_40` | `VariableID:19:34638` |
+| 60px | `🚀 Spacing/Gap_60` | `VariableID:438:3703` |
+
+---
+
+## Line Height Variables (Numbers collection)
+
+| Token | Variable Name | ID |
+|---|---|---|
+| `lineHeights.sm` (18px) | `⛰ Line height/Line height_16` | `VariableID:27:2891` |
+| `lineHeights.base` (21px) | `⛰ Line height/Line height_20` | `VariableID:225:7333` |
+| 24px | `⛰ Line height/Line height_24` | `VariableID:6:809` |
+
+---
+
+## Stroke Width Variables (Numbers collection)
+
+| Value | Variable Name | ID |
+|---|---|---|
+| 1px | `⭕ Stroke/Line thin` | `VariableID:438:2904` |
+| 1.2px | `⭕ Stroke/Icons` | `VariableID:225:7280` |
+| 2px | `⭕ Stroke/Line thick` | `VariableID:225:7391` |
 
 ---
 
@@ -126,3 +174,38 @@ node.setBoundVariable('itemSpacing', variable)
 | `colors.green` | `💖 Primes/BrandGreen 900` | `VariableID:19:42914` |
 | `colors.yellow` | `💖 Primes/Yellow 900` | `VariableID:6:786` |
 | `colors.blue` | `💖 Primes/Brand Blue` | `VariableID:17:405` |
+
+### Icon Colors
+| Semantic use | Variable Name | ID |
+|---|---|---|
+| Default icon | `😂 icons/Icons_default` | `VariableID:6:796` |
+| Secondary icon | `😂 icons/Icons_secondary` | `VariableID:225:7323` |
+| Disabled icon | `😂 icons/Icons_Disabled` | `VariableID:19:42915` |
+| White icon | `😂 icons/Icons_White` | `VariableID:17:431` |
+| Purple icon | `😂 icons/Icons_Purple` | `VariableID:17:429` |
+| Blue icon | `😂 icons/Icons_blue` | `VariableID:17:430` |
+| Red icon | `😂 icons/Icons_red` | `VariableID:19:42912` |
+| Yellow icon | `😂 icons/Icons_yellow` | `VariableID:19:42916` |
+| Green icon | `😂 icons/Icons_Green` | `VariableID:19:42913` |
+
+### Background Colors
+| Semantic use | Variable Name | ID |
+|---|---|---|
+| `colors.white` (primary bg) | `🟦 Background/primary` | `VariableID:6:802` |
+| `colors.surface` (secondary bg) | `🟦 Background/secondary` | `VariableID:6:803` |
+| `colors.surfacePressed` (secondary bg 2) | `🟦 Background/secondary 2` | `VariableID:2399:63671` |
+| `colors.background` (tertiary bg) | `🟦 Background/tertiary` | `VariableID:2289:16789` |
+| `colors.purple100` (brand 100) | `🟦 Background/Brand 100` | `VariableID:2399:52109` |
+| `colors.purpleTint` (brand 200) | `🟦 Background/Brand 200` | `VariableID:2613:136670` |
+| Error 100 bg | `🟦 Background/Error 100` | `VariableID:2289:16473` |
+| Error 200 bg | `🟦 Background/Error 200` | `VariableID:2289:16474` |
+| Green verified 100 | `🟦 Background/verified 100` | `VariableID:1873:9457` |
+| Yellow pending 100 | `🟦 Background/pending 100` | `VariableID:2243:1892` |
+
+### Field Colors
+| Semantic use | Variable Name | ID |
+|---|---|---|
+| Field fill default (`colors.white`) | `🍃 Fields/Fill Default` | `VariableID:6:798` |
+| Field fill disabled | `🍃 Fields/Fill Disabled` | `VariableID:19:34624` |
+| Field outline default | `🍃 Fields/Outline Default` | `VariableID:6:799` |
+| Field outline selected | `🍃 Fields/Outline Selected` | `VariableID:17:398` |

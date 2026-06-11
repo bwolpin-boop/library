@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, spacing } from '../../tokens.js'
 
 const styles = {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '4px',
+    gap: spacing.gap4,
     fontFamily: fonts.montserrat,
     fontWeight: fontWeights.regular,
     cursor: 'pointer',
@@ -25,8 +25,8 @@ const styles = {
     lineHeight: lineHeights.sm,
     color: colors.primary,
   },
-  hover:    { textDecoration: 'underline', textUnderlineOffset: '4px' },
-  pressed:  { color: colors.purple, textDecoration: 'underline', textUnderlineOffset: '4px' },
+  hover:    { textDecoration: 'underline', textUnderlineOffset: spacing.gap4 },
+  pressed:  { color: colors.purple, textDecoration: 'underline', textUnderlineOffset: spacing.gap4 },
   disabled: { color: colors.muted, cursor: 'not-allowed' },
 }
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths } from '../../tokens.js'
 
 const styles = {
   base: {
@@ -14,16 +14,16 @@ const styles = {
     whiteSpace: 'nowrap',
   },
   default: {
-    gap: '4px',
-    padding: '4px 8px 4px 3px',
+    gap: spacing.gap4,
+    padding: `${spacing.gap4} ${spacing.gap8} ${spacing.gap4} 3px`,
     fontSize: fontSizes.sm,
     fontWeight: fontWeights.medium,
     lineHeight: 'normal',
     color: colors.primary,
   },
   small: {
-    gap: '8px',
-    padding: '4px 7px 4px 4px',
+    gap: spacing.gap8,
+    padding: `${spacing.gap4} 7px ${spacing.gap4} ${spacing.gap4}`,
     fontSize: fontSizes.xs,
     fontWeight: fontWeights.regular,
     lineHeight: lineHeights.sm,
@@ -72,8 +72,8 @@ export function Link2Button({
         flexShrink: 0,
       }}>
         <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
-          <rect x="0.6" y="0.6" width="12.8" height="9.8" rx="1.4" stroke={disabled ? colors.muted : colors.primary} strokeWidth="1.2" />
-          <path d="M1 1L7 6.5L13 1" stroke={disabled ? colors.muted : colors.primary} strokeWidth="1.2" />
+          <rect x="0.6" y="0.6" width="12.8" height="9.8" rx="1.4" stroke={disabled ? colors.muted : colors.primary} strokeWidth={strokeWidths.icon} />
+          <path d="M1 1L7 6.5L13 1" stroke={disabled ? colors.muted : colors.primary} strokeWidth={strokeWidths.icon} />
         </svg>
       </span>
       {label}
