@@ -12,3 +12,4 @@ export { Indicator } from './components/Icon/Indicator'
 
 export { VerifyAndDeny } from './components/VerifyDeny/VerifyAndDeny'
 export { GroupOfVerifyDenyAndPending } from './components/VerifyDeny/GroupOfVerifyDenyAndPending'
+export { MdsAndDcAnswer } from './components/Icon/MdsAndDcAnswer'

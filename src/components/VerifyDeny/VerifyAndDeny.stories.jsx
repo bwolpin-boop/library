@@ -13,17 +13,17 @@ export default {
 }
 
 // Big — verify
-export const VerifyDefault = { args: { type: 'verify', forceState: 'default' } }
+export const VerifyDefault = { args: { type: 'verify' } }
 export const VerifyHover   = { args: { type: 'verify', forceState: 'hover'   } }
 export const VerifyClicked = { args: { type: 'verify', forceState: 'clicked' } }
 
 // Big — deny
-export const DenyDefault   = { args: { type: 'deny',    forceState: 'default' } }
+export const DenyDefault   = { args: { type: 'deny'    } }
 export const DenyHover     = { args: { type: 'deny',    forceState: 'hover'   } }
 export const DenyClicked   = { args: { type: 'deny',    forceState: 'clicked' } }
 
 // Big — pending
-export const PendingDefault = { args: { type: 'pending', forceState: 'default' } }
+export const PendingDefault = { args: { type: 'pending' } }
 export const PendingHover   = { args: { type: 'pending', forceState: 'hover'   } }
 export const PendingClicked = { args: { type: 'pending', forceState: 'clicked' } }
 

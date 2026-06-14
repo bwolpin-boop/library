@@ -6,7 +6,7 @@ import { Button } from '../Button/Button.jsx'
 import { StandardButton } from '../Button/StandardButton.jsx'
 import { H2YLetters } from './H2YLetters.jsx'
 import { SectionsRow, DEFAULT_SECTIONS } from './SectionsRow.jsx'
-import { CmiCategoryToggle, DEFAULT_CATEGORIES } from './CmiCategoryToggle.jsx'
+import { RibbonStates } from './RibbonStates.jsx'
 
 // Shared text style helpers
 const sb14  = { fontFamily: fonts.montserrat, fontSize: fontSizes.sm,   fontWeight: fontWeights.semibold, lineHeight: 'normal' }
@@ -72,7 +72,7 @@ export function Ribbon({
   title = 'Dolphincare Findings',
   ardDate = '04/23/24',
   sections = DEFAULT_SECTIONS,
-  categories = DEFAULT_CATEGORIES,
+  cmiType = 'all',   // 'all' | 'nursing' | 'NTA' | 'Cognitive' — active tab when type='CMI'
   onClose,
 }) {
   const isCmi = type === 'CMI'
@@ -156,9 +156,7 @@ export function Ribbon({
       {/* Middle: sections row */}
       <div style={{ display: 'flex', alignItems: 'center', height: '50px' }}>
         {isCmi ? (
-          <div style={{ border: `1px solid ${colors.dividerSubtle}`, borderRadius: radii.boxSm, overflow: 'hidden' }}>
-            <CmiCategoryToggle categories={categories} />
-          </div>
+          <RibbonStates type={cmiType} />
         ) : (
           <SectionsRow sections={sections} />
         )}

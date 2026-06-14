@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { colors, fonts, fontWeights, fontSizes, radii } from '../../tokens.js'
 
 const GREEN_TINT = 'rgba(17,190,104,0.16)'
@@ -89,11 +90,18 @@ export function Indicator({
   tooltipText = 'Dolphincare Suggestions',
 }) {
   const completed = state === 'completed'
+  const [hovered, setHovered] = useState(false)
+
+  const showTooltip = tooltip || hovered
 
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+    <div
+      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <Badge count={count} completed={completed} />
-      {tooltip && <Tooltip text={tooltipText} />}
+      {showTooltip && <Tooltip text={tooltipText} />}
     </div>
   )
 }

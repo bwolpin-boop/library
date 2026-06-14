@@ -53,15 +53,32 @@ export function CmiCategoryToggle({
   const containerRef = useRef(null)
   const [pill, setPill] = useState({ left: 0, width: 0 })
 
+  // Fixed width budget for the squares zone — the category with the most squares.
+  const maxSectionCount = Math.max(...categories.map(c => (c.sections ?? []).length))
+  const squaresZoneWidth = maxSectionCount > 0
+    ? maxSectionCount * 16 + (maxSectionCount - 1) * 6
+    : 0
+
+  // How much of the budget is unused by the currently active tab's squares.
+  // This goes into paddingRight so there's no extra flex item (and no extra gap).
+  const activeSections = categories[activeIndex]?.sections ?? []
+  const activeSquaresWidth = activeSections.length > 0
+    ? activeSections.length * 16 + (activeSections.length - 1) * 6
+    : 0
+  const trailingPad = Math.max(0, squaresZoneWidth - activeSquaresWidth)
+
   useEffect(() => { setSelectedSection(null) }, [activeIndex])
 
   useLayoutEffect(() => {
-    const el        = tabRefs.current[activeIndex]
+    const tabEl    = tabRefs.current[activeIndex]
     const container = containerRef.current
-    if (!el || !container) return
+    if (!tabEl || !container) return
     const cRect = container.getBoundingClientRect()
-    const tRect = el.getBoundingClientRect()
-    setPill({ left: tRect.left - cRect.left, width: tRect.width })
+    const tRect = tabEl.getBoundingClientRect()
+    setPill({
+      left:  tRect.left - cRect.left,
+      width: tabEl.offsetWidth,   // layout width — unaffected by child transforms
+    })
   }, [activeIndex])
 
   function handleSelect(i) {
@@ -77,7 +94,10 @@ export function CmiCategoryToggle({
         display: 'inline-flex',
         alignItems: 'center',
         gap: spacing.gap4,
-        padding: spacing.gap4,
+        paddingTop: spacing.gap4,
+        paddingBottom: spacing.gap4,
+        paddingLeft: spacing.gap4,
+        paddingRight: `${4 + trailingPad}px`,
         backgroundColor: colors.surfacePressed,
         borderRadius: `${radii.boxSm} 0 0 ${radii.boxSm}`,
       }}
@@ -122,49 +142,51 @@ export function CmiCategoryToggle({
               border: 'none',
               borderRadius: radii.boxSm,
               cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
-            <span style={{
-              fontFamily: fonts.inter,
-              fontWeight: fontWeights.regular,
-              fontSize: '12px',
-              lineHeight: 'normal',
-              color: colors.primary,
-              whiteSpace: 'nowrap',
-              flexShrink: 0,
-            }}>
-              {cat.label}
-            </span>
+              <span style={{
+                fontFamily: fonts.inter,
+                fontWeight: fontWeights.regular,
+                fontSize: '12px',
+                lineHeight: 'normal',
+                color: colors.primary,
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}>
+                {cat.label}
+              </span>
 
-            {isActive && sections.length > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '15px', overflow: 'visible', flexShrink: 0 }}>
-                {sections.map((sec, j) => {
-                  const type = sec.type ?? 'letter'
-                  const baseState = sec.state ?? 'disabled'
-                  const isClickable = type !== 'verify' && type !== 'deny' && baseState !== 'disabled'
-                  const resolvedState = isClickable && selectedSection === j ? 'selected' : baseState
-                  return (
-                    <div
-                      key={j}
-                      style={{ opacity: 0, animation: `cmi-fade-in 0.28s ease-in-out ${j * 0.055}s forwards` }}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <Section
-                        letter={sec.letter}
-                        type={type}
-                        state={resolvedState}
-                        size="small"
-                        badge={sec.badge}
-                        onClick={isClickable ? () => setSelectedSection(j) : undefined}
-                      />
-                    </div>
-                  )
-                })}
-              </div>
-            )}
+              {isActive && sections.length > 0 && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '15px', overflow: 'visible', flexShrink: 0 }}>
+                  {sections.map((sec, j) => {
+                    const type = sec.type ?? 'letter'
+                    const baseState = sec.state ?? 'disabled'
+                    const isClickable = type !== 'verify' && type !== 'deny' && baseState !== 'disabled'
+                    const resolvedState = isClickable && selectedSection === j ? 'selected' : baseState
+                    return (
+                      <div
+                        key={j}
+                        style={{ opacity: 0, animation: `cmi-fade-in 0.28s ease-in-out ${j * 0.055}s forwards` }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <Section
+                          letter={sec.letter}
+                          type={type}
+                          state={resolvedState}
+                          size="small"
+                          badge={sec.badge}
+                          onClick={isClickable ? () => setSelectedSection(j) : undefined}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
           </button>
         )
       })}
+
     </div>
   )
 }

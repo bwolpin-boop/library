@@ -23,12 +23,10 @@ export function VerifyAndDeny({
   onClick,
 }) {
   const [hovered, setHovered] = useState(false)
-  const [pressed, setPressed] = useState(false)
 
   const isInteractive = type !== 'empty'
 
-  const effectiveState = forceState
-    ?? (pressed ? 'clicked' : hovered ? 'hover' : 'default')
+  const effectiveState = forceState ?? (hovered ? 'hover' : 'default')
 
   const name = size === 'small'
     ? smallIconName[type] ?? smallIconName.empty
@@ -40,9 +38,7 @@ export function VerifyAndDeny({
     <div
       onClick={isInteractive ? onClick : undefined}
       onMouseEnter={isInteractive ? () => setHovered(true)  : undefined}
-      onMouseLeave={isInteractive ? () => { setHovered(false); setPressed(false) } : undefined}
-      onMouseDown ={isInteractive ? () => setPressed(true)  : undefined}
-      onMouseUp   ={isInteractive ? () => setPressed(false) : undefined}
+      onMouseLeave={isInteractive ? () => setHovered(false) : undefined}
       style={{ display: 'inline-flex', cursor: isInteractive ? 'pointer' : 'default', flexShrink: 0 }}
     >
       <NavIcon name={name} size={px} />

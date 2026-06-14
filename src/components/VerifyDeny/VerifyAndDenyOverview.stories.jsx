@@ -19,7 +19,7 @@ export const Overview = {
         {['verify', 'deny', 'pending'].map(type => (
           <div key={type} style={ROW}>
             {label(type)}
-            <VerifyAndDeny type={type} forceState="default" />
+            <VerifyAndDeny type={type} />
             <VerifyAndDeny type={type} forceState="hover"   />
             <VerifyAndDeny type={type} forceState="clicked" />
           </div>
