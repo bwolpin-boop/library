@@ -37,11 +37,11 @@ function SingleDot({ color, size }) {
 }
 
 function CombiDot({ colors: [c1, c2], size }) {
-  const overlap = Math.round(size * 0.4)
+  const gap = size <= 8 ? 1 : 2
   return (
-    <div style={{ position: 'relative', width: size * 2 - overlap, height: size, flexShrink: 0 }}>
-      <div style={{ position: 'absolute', left: 0, top: 0, width: size, height: size, borderRadius: '50%', backgroundColor: c1 }} />
-      <div style={{ position: 'absolute', left: size - overlap, top: 0, width: size, height: size, borderRadius: '50%', backgroundColor: c2 }} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: `${gap}px`, flexShrink: 0 }}>
+      <div style={{ width: size, height: size, borderRadius: '50%', backgroundColor: c1, flexShrink: 0 }} />
+      <div style={{ width: size, height: size, borderRadius: '50%', backgroundColor: c2, flexShrink: 0 }} />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import infoPurple       from '../../assets/icons/info-purple.svg'
 import closeIcon        from '../../assets/icons/close.svg'
 import dolphincareLogoIcon from '../../assets/icons/dolphincare-logo.svg'
 import arrowRightIcon   from '../../assets/icons/arrow-right.svg'
+import arrowLeftIcon    from '../../assets/icons/arrow-left.svg'
 import arrowRightH2YIcon from '../../assets/icons/arrow-right-h2y.svg'
 import littleQuestionmarkIcon from '../../assets/icons/little-questionmark.svg'
 import commentIcon      from '../../assets/icons/comment.svg'
@@ -16,6 +17,20 @@ import sendActiveIcon   from '../../assets/icons/send-active.svg'
 import sendDisabledIcon from '../../assets/icons/send-disabled.svg'
 import plusSmallIcon    from '../../assets/icons/plus-small.svg'
 import micSmallIcon     from '../../assets/icons/mic-small.svg'
+import medicaidIconSvg  from '../../assets/icons/medicaid-icon.svg'
+import vdVerifyDefault   from '../../assets/icons/vd-verify-default.svg'
+import vdVerifyHover     from '../../assets/icons/vd-verify-hover.svg'
+import vdVerifyClicked   from '../../assets/icons/vd-verify-clicked.svg'
+import vdDenyDefault     from '../../assets/icons/vd-deny-default.svg'
+import vdDenyHover       from '../../assets/icons/vd-deny-hover.svg'
+import vdDenyClicked     from '../../assets/icons/vd-deny-clicked.svg'
+import vdPendingDefault  from '../../assets/icons/vd-pending-default.svg'
+import vdPendingHover    from '../../assets/icons/vd-pending-hover.svg'
+import vdPendingClicked  from '../../assets/icons/vd-pending-clicked.svg'
+import vdVerifySmall     from '../../assets/icons/vd-verify-small.svg'
+import vdDenySmall       from '../../assets/icons/vd-deny-small.svg'
+import vdPendingSmall    from '../../assets/icons/vd-pending-small.svg'
+import vdEmptySmall      from '../../assets/icons/vd-empty-small.svg'
 
 const icons = {
   // General
@@ -26,6 +41,7 @@ const icons = {
   close:                   closeIcon,
   'dolphincare-logo':      dolphincareLogoIcon,
   'arrow-right':           arrowRightIcon,
+  'arrow-left':            arrowLeftIcon,
   'arrow-right-h2y':       arrowRightH2YIcon,
   'little-questionmark':   littleQuestionmarkIcon,
   comment:                 commentIcon,
@@ -40,6 +56,22 @@ const icons = {
   // Other small
   'plus-small':            plusSmallIcon,
   'mic-small':             micSmallIcon,
+  'medicaid-icon':         medicaidIconSvg,
+  // Verify & Deny — big (24px)
+  'vd-verify-default':     vdVerifyDefault,
+  'vd-verify-hover':       vdVerifyHover,
+  'vd-verify-clicked':     vdVerifyClicked,
+  'vd-deny-default':       vdDenyDefault,
+  'vd-deny-hover':         vdDenyHover,
+  'vd-deny-clicked':       vdDenyClicked,
+  'vd-pending-default':    vdPendingDefault,
+  'vd-pending-hover':      vdPendingHover,
+  'vd-pending-clicked':    vdPendingClicked,
+  // Verify & Deny — small (12px)
+  'vd-verify-small':       vdVerifySmall,
+  'vd-deny-small':         vdDenySmall,
+  'vd-pending-small':      vdPendingSmall,
+  'vd-empty-small':        vdEmptySmall,
 }
 
 export const iconNames = Object.keys(icons)
@@ -53,6 +85,7 @@ export const iconNativeSizes = {
   close:                   24,
   'dolphincare-logo':      24,
   'arrow-right':           24,
+  'arrow-left':            24,
   'arrow-right-h2y':       20,
   'little-questionmark':   24,
   comment:                 24,
@@ -67,6 +100,22 @@ export const iconNativeSizes = {
   // Other small
   'plus-small':            16,
   'mic-small':             16,
+  'medicaid-icon':         12,
+  // Verify & Deny — big (24px)
+  'vd-verify-default':     24,
+  'vd-verify-hover':       24,
+  'vd-verify-clicked':     24,
+  'vd-deny-default':       24,
+  'vd-deny-hover':         24,
+  'vd-deny-clicked':       24,
+  'vd-pending-default':    24,
+  'vd-pending-hover':      24,
+  'vd-pending-clicked':    24,
+  // Verify & Deny — small (12px)
+  'vd-verify-small':       12,
+  'vd-deny-small':         12,
+  'vd-pending-small':      12,
+  'vd-empty-small':        12,
 }
 
 export function NavIcon({ name, size = 24, className }) {

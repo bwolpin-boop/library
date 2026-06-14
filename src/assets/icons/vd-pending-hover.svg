@@ -1,0 +1,25 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="verify and deny">
+<g id="Type=pending, state=hover, size=big">
+<g clip-path="url(#clip0_6_814)">
+<mask id="path-2-inside-1_6_814" fill="white">
+<path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z"/>
+</mask>
+<path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="#FFF8DF"/>
+<g id="Group 185508">
+<g id="Group 185281">
+<g id="Group 187414">
+<path id="Vector 562" d="M12 8V13H15" stroke="#FFD549" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+<path d="M0 12M24 12M24 12M0 12M12 0M24 12M12 24M0 12M12 24V22.8C6.03533 22.8 1.2 17.9647 1.2 12H0H-1.2C-1.2 19.2902 4.70984 25.2 12 25.2V24ZM24 12H22.8C22.8 17.9647 17.9647 22.8 12 22.8V24V25.2C19.2902 25.2 25.2 19.2902 25.2 12H24ZM12 0V1.2C17.9647 1.2 22.8 6.03533 22.8 12H24H25.2C25.2 4.70984 19.2902 -1.2 12 -1.2V0ZM12 0V-1.2C4.70984 -1.2 -1.2 4.70984 -1.2 12H0H1.2C1.2 6.03533 6.03533 1.2 12 1.2V0Z" fill="#FFD549" mask="url(#path-2-inside-1_6_814)"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_6_814">
+<path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -1,12 +1,19 @@
 import { useState } from 'react'
 import { colors, fonts, fontWeights } from '../../tokens.js'
 
+if (typeof document !== 'undefined' && !document.getElementById('ribbon-underline-kf')) {
+  const s = document.createElement('style')
+  s.id = 'ribbon-underline-kf'
+  s.textContent = '@keyframes drawUnderline { from { clip-path: inset(0 50% 0 50%); } to { clip-path: inset(0 0 0 0); } }'
+  document.head.appendChild(s)
+}
+
 const DENY_BG = '#FCEBEB'
 
 // Growth scale matching the updated Figma "hover/selected" dimensions
 const GROW = {
-  letter: { default: 26 / 24,       small: 20 / 16 },      // 1.0833, 1.25
-  all:    { default: 37.143 / 34,   small: 28 / 22.667 },  // 1.0924, 1.235
+  letter: { default: 26 / 24,       small: 16.56 / 16   },  // 1.0833, 1.035
+  all:    { default: 37.143 / 34,   small: 23 / 22.667  },  // 1.0924, 1.0147
 }
 
 // Base dimensions (always the default/small size — transform handles growth)
@@ -83,6 +90,7 @@ export function Section({
   state = 'disabled', // 'default' | 'selected' | 'disabled'
   size = 'default',   // 'default' | 'small'
   badge,
+  forceHover = false,
   onClick,
 }) {
   const [hovered, setHovered] = useState(false)
@@ -100,18 +108,19 @@ export function Section({
   const [fontSize, tracking] = FONT[type][sizeKey]
   const growScale             = GROW[isAll ? 'all' : 'letter'][sizeKey]
 
+  const effectiveHovered = forceHover || hovered
+
   // Scale: hover OR selected = grown; press = 10% shrink from grown state
   let scale = 1
   if (isInteractive) {
-    const grown = isSelected || hovered
+    const grown = isSelected || effectiveHovered
     scale = grown
       ? (pressed ? growScale * 0.9 : growScale)
       : (pressed ? 0.9 : 1)
   }
 
-  // Shadow: only when selected AND NOT hovered (hover temporarily lifts shadow)
-  const showShadow = isInteractive && isSelected && !hovered
-  const shadowStr  = sizeKey === 'small' ? '0.7px 0.7px' : '0.929px 0.929px'
+  // No drop shadow on any state (including selected/pressed)
+  const showShadow = false
 
   // Colors
   const bg        = isVerify ? colors.green300 : isDeny ? DENY_BG : isDisabled ? colors.disabled : colors.purple
@@ -139,7 +148,7 @@ export function Section({
         justifyContent: 'center',
         flexShrink: 0,
         transform: `scale(${scale})`,
-        filter: showShadow ? `drop-shadow(${shadowStr} 0px black)` : undefined,
+        filter: undefined,
         transition: 'transform 0.12s ease, filter 0.12s ease',
         cursor: isInteractive ? 'pointer' : 'default',
         userSelect: 'none',
@@ -165,6 +174,20 @@ export function Section({
       )}
       {isVerify && <VerifyBadge sizeKey={sizeKey} />}
       {isDeny   && <DenyBadge  sizeKey={sizeKey} />}
+
+      {isSelected && (
+        <div style={{
+          position: 'absolute',
+          top: `${h + (sizeKey === 'small' ? 1.1 : 2.42)}px`,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: `${sizeKey === 'small' ? 8 : 12}px`,
+          height: '2px',
+          backgroundColor: colors.purple,
+          borderRadius: '1px',
+          animation: 'drawUnderline 0.25s ease-out forwards',
+        }} />
+      )}
     </div>
   )
 }

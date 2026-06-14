@@ -28,3 +28,19 @@ export const SendActive          = { args: { name: 'send-active',           size
 export const SendDisabled        = { args: { name: 'send-disabled',         size: 16 } }
 export const PlusSmall           = { args: { name: 'plus-small',            size: 16 } }
 export const MicSmall            = { args: { name: 'mic-small',             size: 16 } }
+export const MedicaidIcon        = { args: { name: 'medicaid-icon' } }
+// Verify & Deny — big
+export const VdVerifyDefault     = { args: { name: 'vd-verify-default' } }
+export const VdVerifyHover       = { args: { name: 'vd-verify-hover' } }
+export const VdVerifyClicked     = { args: { name: 'vd-verify-clicked' } }
+export const VdDenyDefault       = { args: { name: 'vd-deny-default' } }
+export const VdDenyHover         = { args: { name: 'vd-deny-hover' } }
+export const VdDenyClicked       = { args: { name: 'vd-deny-clicked' } }
+export const VdPendingDefault    = { args: { name: 'vd-pending-default' } }
+export const VdPendingHover      = { args: { name: 'vd-pending-hover' } }
+export const VdPendingClicked    = { args: { name: 'vd-pending-clicked' } }
+// Verify & Deny — small
+export const VdVerifySmall       = { args: { name: 'vd-verify-small',   size: 12 } }
+export const VdDenySmall         = { args: { name: 'vd-deny-small',     size: 12 } }
+export const VdPendingSmall      = { args: { name: 'vd-pending-small',  size: 12 } }
+export const VdEmptySmall        = { args: { name: 'vd-empty-small',    size: 12 } }

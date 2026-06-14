@@ -1,25 +1,43 @@
-import { CmiCategoryToggle } from './CmiCategoryToggle'
+import { CmiCategoryToggle, DEFAULT_CATEGORIES } from './CmiCategoryToggle'
 
 export default {
   title: '🟢   🎀 Ribbon/CmiCategoryToggle',
   component: CmiCategoryToggle,
-  parameters: { controls: { disable: true } },
+  parameters: { layout: 'centered' },
+  decorators: [(Story) => <div style={{ padding: '48px', background: '#f5f5f5' }}><Story /></div>],
 }
 
 export const Default = {
-  render: () => <CmiCategoryToggle />,
+  args: { categories: DEFAULT_CATEGORIES, defaultIndex: 0 },
 }
 
-export const CustomCategories = {
-  render: () => (
-    <CmiCategoryToggle
-      categories={[
-        { label: 'All' },
-        { label: 'Nursing (H)' },
-        { label: 'OT/PT (H)' },
-        { label: 'SLP (H)' },
-        { label: 'NTA (2)' },
-      ]}
-    />
-  ),
+export const SecondTabActive = {
+  args: { categories: DEFAULT_CATEGORIES, defaultIndex: 1 },
+}
+
+export const FewerSections = {
+  args: {
+    defaultIndex: 0,
+    categories: [
+      {
+        label: 'All',
+        sections: [
+          { letter: 'E', state: 'default', badge: 1 },
+          { letter: 'H', state: 'default', badge: 1 },
+          { letter: 'D', type: 'verify' },
+        ],
+      },
+      {
+        label: 'Nursing (H)',
+        sections: [
+          { letter: 'E', state: 'default', badge: 1 },
+          { letter: 'H', state: 'default', badge: 1 },
+          { letter: 'D', type: 'verify' },
+          { letter: 'I', type: 'deny' },
+          { letter: 'A', state: 'default' },
+        ],
+      },
+      { label: 'NTA (2)' },
+    ],
+  },
 }
