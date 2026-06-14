@@ -8,10 +8,8 @@ export default {
 const font = '"Montserrat", sans-serif'
 
 const variants = [
-  { label: 'no counts',    props: {} },
-  { label: 'with counts',  props: { upCount: 12, downCount: 3 } },
-  { label: 'up pressed',   props: { upCount: 12, downCount: 3, upPressed: true } },
-  { label: 'down pressed', props: { upCount: 12, downCount: 3, downPressed: true } },
+  { label: 'no counts',   props: {} },
+  { label: 'with counts', props: { upCount: 12, downCount: 3 } },
 ]
 
 export const Overview = {

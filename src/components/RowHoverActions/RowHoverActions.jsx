@@ -9,8 +9,6 @@ export function RowHoverActions({
   commentsCount,
   upCount,
   downCount,
-  upPressed = false,
-  downPressed = false,
   onUpClick,
   onDownClick,
   onCommentsClick,
@@ -24,8 +22,6 @@ export function RowHoverActions({
         <ThumbsComponent
           upCount={upCount}
           downCount={downCount}
-          upPressed={upPressed}
-          downPressed={downPressed}
           onUpClick={onUpClick}
           onDownClick={onDownClick}
         />

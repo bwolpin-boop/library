@@ -37,6 +37,7 @@ import thumbsUpIcon      from '../../assets/icons/thumbs-up.svg'
 import thumbsUpPressedIcon from '../../assets/icons/thumbs-up-pressed.svg'
 import thumbsDownIcon    from '../../assets/icons/thumbs-down.svg'
 import thumbsDownPressedIcon from '../../assets/icons/thumbs-down-pressed.svg'
+import sortArrowsIcon      from '../../assets/icons/sort-arrows.svg'
 
 const icons = {
   // General
@@ -85,6 +86,7 @@ const icons = {
   'thumbs-up-pressed':     thumbsUpPressedIcon,
   'thumbs-down':           thumbsDownIcon,
   'thumbs-down-pressed':   thumbsDownPressedIcon,
+  'sort-arrows':           sortArrowsIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -136,6 +138,7 @@ export const iconNativeSizes = {
   'thumbs-up-pressed':     24,
   'thumbs-down':           24,
   'thumbs-down-pressed':   24,
+  'sort-arrows':           12,
 }
 
 export function NavIcon({ name, size = 24, className }) {

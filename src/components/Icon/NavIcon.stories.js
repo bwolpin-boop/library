@@ -51,3 +51,4 @@ export const ThumbsUp            = { args: { name: 'thumbs-up' } }
 export const ThumbsUpPressed     = { args: { name: 'thumbs-up-pressed' } }
 export const ThumbsDown          = { args: { name: 'thumbs-down' } }
 export const ThumbsDownPressed   = { args: { name: 'thumbs-down-pressed' } }
+export const SortArrows          = { args: { name: 'sort-arrows', size: 12 } }

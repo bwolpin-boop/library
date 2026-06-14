@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { colors } from '../../tokens.js'
 import { Up } from './Up.jsx'
 import { Down } from './Down.jsx'
@@ -10,19 +11,24 @@ function Divider() {
   )
 }
 
-export function ThumbsComponent({
-  upCount,
-  downCount,
-  upPressed = false,
-  downPressed = false,
-  onUpClick,
-  onDownClick,
-}) {
+export function ThumbsComponent({ upCount, downCount, onUpClick, onDownClick }) {
+  const [selected, setSelected] = useState(null) // null | 'up' | 'down'
+
+  const handleUp = () => {
+    setSelected(s => s === 'up' ? null : 'up')
+    onUpClick?.()
+  }
+
+  const handleDown = () => {
+    setSelected(s => s === 'down' ? null : 'down')
+    onDownClick?.()
+  }
+
   return (
     <div style={{ display: 'inline-flex', alignItems: 'center', flexShrink: 0 }}>
-      <Up count={upCount} pressed={upPressed} onClick={onUpClick} />
+      <Up   count={upCount}   selected={selected === 'up'}   onClick={handleUp} />
       <Divider />
-      <Down count={downCount} pressed={downPressed} onClick={onDownClick} />
+      <Down count={downCount} selected={selected === 'down'} onClick={handleDown} />
     </div>
   )
 }
