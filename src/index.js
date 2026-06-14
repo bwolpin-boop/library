@@ -15,3 +15,4 @@ export { GroupOfVerifyDenyAndPending } from './components/VerifyDeny/GroupOfVeri
 export { MdsAndDcAnswer } from './components/Icon/MdsAndDcAnswer'
 export { Calculator, DEFAULT_BREAKDOWN_ROWS } from './components/Calculator/Calculator'
 export { CalculatorBar } from './components/Calculator/CalculatorBar'
+export { SourceHeader } from './components/SourceHeader/SourceHeader'

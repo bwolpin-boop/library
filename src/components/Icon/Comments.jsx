@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { colors, textStyles, radii, spacing } from '../../tokens.js'
-import reactionCommentIcon from '../../assets/icons/reaction-comment.svg'
+import { NavIcon } from './NavIcon.jsx'
 
 export function Comments({ count, onClick, disabled, className }) {
   const [selected, setSelected] = useState(false)
@@ -40,13 +40,7 @@ export function Comments({ count, onClick, disabled, className }) {
       }}
       className={className}
     >
-      <img
-        src={reactionCommentIcon}
-        alt="comments"
-        width={24}
-        height={24}
-        style={{ display: 'block', flexShrink: 0 }}
-      />
+      <NavIcon name="reaction-comment" />
       {count !== undefined && (
         <span style={{ ...textStyles.body14Medium, color: colors.secondary, whiteSpace: 'nowrap' }}>
           {count}

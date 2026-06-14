@@ -2,13 +2,15 @@ import { useState } from 'react'
 import { colors, textStyles, radii, spacing } from '../../tokens.js'
 import { NavIcon } from './NavIcon.jsx'
 
-export function Up({ count, onClick, className }) {
-  const [selected, setSelected] = useState(false)
-  const [hover, setHover]       = useState(false)
-  const [pressing, setPressing] = useState(false)
+export function Up({ count, selected: selectedProp, onClick, className }) {
+  const isControlled               = selectedProp !== undefined
+  const [internal, setInternal]    = useState(false)
+  const selected                   = isControlled ? selectedProp : internal
+  const [hover, setHover]          = useState(false)
+  const [pressing, setPressing]    = useState(false)
 
   const handleClick = () => {
-    setSelected(s => !s)
+    if (!isControlled) setInternal(s => !s)
     onClick?.()
   }
 
