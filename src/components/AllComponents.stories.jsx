@@ -29,6 +29,7 @@ import { Overview as _VerifyDenyGroup }  from './VerifyDeny/GroupOverview.storie
 import { Overview as _MdsAndDcAnswer }   from './Icon/MdsAndDcAnswerOverview.stories.jsx'
 import { Overview as _TotalArrow }       from './Calculator/TotalArrowOverview.stories.jsx'
 import { Overview as _Calculator }       from './Calculator/CalculatorOverview.stories.jsx'
+import { Overview as _CalculatorBar }    from './Calculator/CalculatorBarOverview.stories.jsx'
 
 export default {
   title: '🗂️ All Components',
@@ -61,3 +62,4 @@ export const VerifyDenyGroup   = { ..._VerifyDenyGroup, name: '😂 VerifyDenyGr
 export const MdsAndDcAnswer    = { ..._MdsAndDcAnswer,  name: '😂 MdsAndDcAnswer' }
 export const TotalArrow        = { ..._TotalArrow,      name: '💊 TotalArrow' }
 export const Calculator        = { ..._Calculator,      name: '💊 Calculator' }
+export const CalculatorBar     = { ..._CalculatorBar,   name: '💊 CalculatorBar' }
