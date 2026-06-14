@@ -1,7 +1,7 @@
 import { SourceHeader } from './SourceHeader'
 
 export default {
-  title: '🟢   💊 IPA components/Source Header/Overview',
+  title: '🟠   📁 sources/Source Header/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

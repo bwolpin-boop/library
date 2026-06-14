@@ -1,7 +1,7 @@
 import { SourcesHeaders } from './SourcesHeaders'
 
 export default {
-  title: '🟢   🏓 Table/Sources Headers',
+  title: '🟠   📁 sources/Sources Headers',
   component: SourcesHeaders,
   args: { variant: 'medication', hasDescription: true },
   argTypes: {

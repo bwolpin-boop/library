@@ -1,7 +1,7 @@
 import { SourceAlsoAnswers } from './SourceAlsoAnswers'
 
 export default {
-  title: '🟢   💊 IPA components/Source Also Answers/Overview',
+  title: '🟠   📁 sources/Source Also Answers/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

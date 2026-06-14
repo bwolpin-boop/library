@@ -1,7 +1,7 @@
 import { DiagnosisTableRow } from './DiagnosisTableRow'
 
 export default {
-  title: '🟢   🏓 Table/Diagnosis Table Row/Overview',
+  title: '🟠   📁 sources/Diagnosis Table Row/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

@@ -1,7 +1,7 @@
 import { TotalArrow } from './TotalArrow'
 
 export default {
-  title: '🟢   💊 Calculator/TotalArrow/Overview',
+  title: '🟢   🔢 Calculator/TotalArrow/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

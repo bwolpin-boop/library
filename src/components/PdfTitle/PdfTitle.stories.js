@@ -1,7 +1,7 @@
 import { PdfTitle } from './PdfTitle'
 
 export default {
-  title: '🟢   💊 IPA components/PDF Title',
+  title: '🟠   📁 sources/PDF Title',
   component: PdfTitle,
   args: {
     title: 'Diagnosis hospital_records file hypervention .pdf',

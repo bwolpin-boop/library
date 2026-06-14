@@ -1,7 +1,7 @@
 import { Calculator } from './Calculator'
 
 export default {
-  title: '🟢   💊 Calculator/Calculator/Overview',
+  title: '🟢   🔢 Calculator/Calculator/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

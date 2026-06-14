@@ -12,7 +12,7 @@ function RightChevron({ size = 16 }) {
 
 export function SourceTypeTabs({
   tabs = ['Progress Notes', 'Assessments', 'Mars', 'Therapy Docs'],
-  selectedTab = null,
+  selectedTab,
   onTabSelect,
   size = 'big',
   tabWithArrows = null,
@@ -20,6 +20,15 @@ export function SourceTypeTabs({
   const scrollRef = useRef(null)
   const [canScroll, setCanScroll] = useState(false)
   const [allHovered, setAllHovered] = useState(false)
+
+  // Internal selection state — syncs when the controlled prop changes
+  const [activeTab, setActiveTab] = useState(selectedTab ?? null)
+  useEffect(() => { setActiveTab(selectedTab ?? null) }, [selectedTab])
+
+  const handleTabSelect = (type) => {
+    setActiveTab(type)
+    onTabSelect?.(type)
+  }
 
   useEffect(() => {
     const el = scrollRef.current
@@ -45,7 +54,7 @@ export function SourceTypeTabs({
   const arrowRight = isBig ? 21 : 4
   const arrowTop = isBig ? 8 : 3
 
-  const isAllSelected = !selectedTab || selectedTab === 'All'
+  const isAllSelected = !activeTab || activeTab === 'All'
   const allBorderColor = isAllSelected ? colors.primary : colors.dividerSubtle
   const allBgColor = !isAllSelected && allHovered ? colors.surfaceHover : colors.white
   const allFontWeight = isBig ? fontWeights.medium : fontWeights.regular
@@ -65,6 +74,7 @@ export function SourceTypeTabs({
           msOverflowStyle: 'none',
         }}
       >
+        {/* All tab */}
         <div
           style={{
             display: 'inline-flex',
@@ -86,7 +96,7 @@ export function SourceTypeTabs({
           }}
           onMouseEnter={() => !isAllSelected && setAllHovered(true)}
           onMouseLeave={() => setAllHovered(false)}
-          onClick={() => onTabSelect?.('All')}
+          onClick={() => handleTabSelect('All')}
         >
           <span style={{
             fontFamily: fonts.montserrat,
@@ -99,12 +109,13 @@ export function SourceTypeTabs({
           </span>
         </div>
 
+        {/* Source type tabs — display:flex on wrapper removes inline strut height */}
         {tabs.map((type) => (
-          <div key={type} style={{ flexShrink: 0 }} onClick={() => onTabSelect?.(type)}>
+          <div key={type} style={{ flexShrink: 0, display: 'flex' }} onClick={() => handleTabSelect(type)}>
             <SourceTypeTab
               type={type}
               size={size}
-              state={selectedTab === type ? 'pressed' : 'default'}
+              state={activeTab === type ? 'pressed' : 'default'}
               showArrows={tabWithArrows === type}
             />
           </div>

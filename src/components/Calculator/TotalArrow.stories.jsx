@@ -1,7 +1,7 @@
 import { TotalArrow } from './TotalArrow'
 
 export default {
-  title: '🟢   💊 Calculator/TotalArrow',
+  title: '🟢   🔢 Calculator/TotalArrow',
   component: TotalArrow,
   decorators: [(Story) => <div style={{ padding: '48px' }}><Story /></div>],
 }

@@ -1,7 +1,7 @@
 import { CalculatorBar } from './CalculatorBar'
 
 export default {
-  title: '🟢   💊 Calculator/CalculatorBar',
+  title: '🟢   🔢 Calculator/CalculatorBar',
   component: CalculatorBar,
   args: {
     hippsCode:        'NRYUT',

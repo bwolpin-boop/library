@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { QkNumberTabs } from './QkNumberTabs'
 
 export default {
-  title: '🟢   💊 IPA components/QK Number Tabs/Overview',
+  title: '🟢   📮 Tabs & Tags/QK Number Tabs/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

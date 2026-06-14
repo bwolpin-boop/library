@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
 import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
 
@@ -46,6 +46,12 @@ export function SourceTypeTab({
   showArrows = true,
 }) {
   const [currentState, setCurrentState] = useState(state)
+
+  // When the tab is deselected (state flips back to 'default'), clear any
+  // stale hover/pressing internal state so it renders as default, not hover.
+  useEffect(() => {
+    if (state !== 'default') setCurrentState('default')
+  }, [state])
 
   const isInteractive = state === 'default'
   const activeState = isInteractive ? currentState : state

@@ -1,7 +1,7 @@
 import { CalculatorBar } from './CalculatorBar'
 
 export default {
-  title: '🟢   💊 Calculator/CalculatorBar/Overview',
+  title: '🟢   🔢 Calculator/CalculatorBar/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

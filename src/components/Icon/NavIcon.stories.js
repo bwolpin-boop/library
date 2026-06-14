@@ -54,3 +54,4 @@ export const ThumbsDownPressed   = { args: { name: 'thumbs-down-pressed' } }
 export const SortArrows          = { args: { name: 'sort-arrows', size: 12 } }
 export const PrimaryDiagnosis    = { args: { name: 'primary-diagnosis' } }
 export const NtaDiamond          = { args: { name: 'nta-diamond' } }
+export const Export              = { args: { name: 'export' } }

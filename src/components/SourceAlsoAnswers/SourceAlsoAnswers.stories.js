@@ -1,7 +1,7 @@
 import { SourceAlsoAnswers } from './SourceAlsoAnswers'
 
 export default {
-  title: '🟢   💊 IPA components/Source Also Answers',
+  title: '🟠   📁 sources/Source Also Answers',
   component: SourceAlsoAnswers,
   args: {
     type: 'Source popup',

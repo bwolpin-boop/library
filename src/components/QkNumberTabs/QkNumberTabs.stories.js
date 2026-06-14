@@ -1,7 +1,7 @@
 import { QkNumberTabs } from './QkNumberTabs'
 
 export default {
-  title: '🟢   💊 IPA components/QK Number Tabs',
+  title: '🟢   📮 Tabs & Tags/QK Number Tabs',
   component: QkNumberTabs,
   args: {
     label: 'M1200B',

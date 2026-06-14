@@ -1,7 +1,7 @@
 import { SourcesHeaders } from './SourcesHeaders'
 
 export default {
-  title: '🟢   🏓 Table/Sources Headers/Overview',
+  title: '🟠   📁 sources/Sources Headers/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

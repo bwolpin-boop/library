@@ -1,7 +1,7 @@
 import { PdfTitle } from './PdfTitle'
 
 export default {
-  title: '🟢   💊 IPA components/PDF Title/Overview',
+  title: '🟠   📁 sources/PDF Title/Overview',
   parameters: { controls: { disable: true }, actions: { disable: true } },
 }
 

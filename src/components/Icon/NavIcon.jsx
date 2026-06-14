@@ -37,6 +37,7 @@ import thumbsUpIcon      from '../../assets/icons/thumbs-up.svg'
 import thumbsUpPressedIcon from '../../assets/icons/thumbs-up-pressed.svg'
 import thumbsDownIcon    from '../../assets/icons/thumbs-down.svg'
 import thumbsDownPressedIcon from '../../assets/icons/thumbs-down-pressed.svg'
+import lockIcon            from '../../assets/icons/lock.svg'
 import arrowUpIcon         from '../../assets/icons/arrow-up.svg'
 import arrowDownIcon       from '../../assets/icons/arrow-down.svg'
 import sortArrowsIcon      from '../../assets/icons/sort-arrows.svg'
@@ -47,6 +48,7 @@ import moreIcon            from '../../assets/icons/more.svg'
 import lessIcon            from '../../assets/icons/less.svg'
 import primaryDiagnosisIcon from '../../assets/icons/primary-diagnosis.svg'
 import ntaDiamondIcon      from '../../assets/icons/nta-diamond.svg'
+import exportIcon          from '../../assets/icons/export.svg'
 
 const icons = {
   // General
@@ -56,6 +58,7 @@ const icons = {
   'info-purple':           infoPurple,
   close:                   closeIcon,
   'dolphincare-logo':      dolphincareLogoIcon,
+  lock:                    lockIcon,
   'arrow-right':           arrowRightIcon,
   'arrow-left':            arrowLeftIcon,
   'arrow-up':              arrowUpIcon,
@@ -107,6 +110,8 @@ const icons = {
   // Diagnosis labels
   'primary-diagnosis':     primaryDiagnosisIcon,
   'nta-diamond':           ntaDiamondIcon,
+  // Source type table
+  export:                  exportIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -119,6 +124,7 @@ export const iconNativeSizes = {
   'info-purple':           24,
   close:                   24,
   'dolphincare-logo':      24,
+  lock:                    24,
   'arrow-right':           24,
   'arrow-left':            24,
   'arrow-up':              24,
@@ -170,6 +176,8 @@ export const iconNativeSizes = {
   // Diagnosis labels
   'primary-diagnosis':     24,
   'nta-diamond':           24,
+  // Source type table
+  export:                  24,
 }
 
 export function NavIcon({ name, size = 24, className }) {

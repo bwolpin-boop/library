@@ -1,7 +1,7 @@
 import { DiagnosisTableRow } from './DiagnosisTableRow'
 
 export default {
-  title: '🟢   🏓 Table/Diagnosis Table Row',
+  title: '🟠   📁 sources/Diagnosis Table Row',
   component: DiagnosisTableRow,
   args: {
     diagnosis:       'Hypertension (High Blood Pressure)',

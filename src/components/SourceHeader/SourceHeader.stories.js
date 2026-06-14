@@ -1,7 +1,7 @@
 import { SourceHeader } from './SourceHeader'
 
 export default {
-  title: '🟢   💊 IPA components/Source Header',
+  title: '🟠   📁 sources/Source Header',
   component: SourceHeader,
   args: {
     sourceType:   'IV Fluids',
