@@ -135,17 +135,17 @@ function DiagnosisSection({ title, dateRange, fileName, rows }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4, width: '100%' }}>
-      {/* Section header */}
-      <button
+      {/* Section header — full row is clickable */}
+      <div
         onClick={() => setCollapsed(c => !c)}
-        style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+        style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, cursor: 'pointer', userSelect: 'none' }}
       >
         <NavIcon name={collapsed ? 'arrow-right' : 'arrow-down'} size={16} />
         <NavIcon name="primary-diagnosis" size={16} />
         <span style={{ fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.semibold, lineHeight: lineHeights.md, color: '#323338', whiteSpace: 'nowrap' }}>
           {title}
         </span>
-      </button>
+      </div>
 
       {/* Table card */}
       {!collapsed && (

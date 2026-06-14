@@ -37,7 +37,7 @@ function Cell({ width, flex, children }) {
 // type: 'Default' | 'verified' | 'pending' | 'denied'
 const vdTypeMap = { verified: 'verify', pending: 'pending', denied: 'deny', Default: 'empty' }
 
-function ViewToggleRow({ purpose, count, onClick }) {
+function ViewToggleRow({ purpose, count, onClick, style }) {
   const isMore = purpose === 'view more'
   const [hovered, setHovered] = useState(false)
 
@@ -56,6 +56,7 @@ function ViewToggleRow({ purpose, count, onClick }) {
         boxSizing: 'border-box',
         cursor: onClick ? 'pointer' : 'default',
         transition: 'background-color 0.1s',
+        ...style,
       }}
     >
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.gap8, padding: spacing.gap4, borderRadius: radii?.box ?? '10px' }}>
@@ -93,7 +94,7 @@ export function IvFluidsRow({
   const [hovered, setHovered] = useState(false)
 
   if (purpose === 'view more' || purpose === 'view less') {
-    return <ViewToggleRow purpose={purpose} count={count} onClick={onClick} />
+    return <ViewToggleRow purpose={purpose} count={count} onClick={onClick} style={style} />
   }
 
   const isSourcePopup = purpose === 'source popup'
@@ -121,13 +122,15 @@ export function IvFluidsRow({
       {/* Name cell */}
       <Cell flex="1 0 0">
         {isSourcePopup ? (
-          <span style={{ ...textStyle, width: '16px', flexShrink: 0, textAlign: 'center' }}>
+          <span style={{ ...textStyle, minWidth: '28px', flexShrink: 0, textAlign: 'right' }}>
             {lineNumber ?? ''}
           </span>
         ) : (
           <VerifyAndDeny type={vdTypeMap[type] ?? 'empty'} size="small" />
         )}
-        <span style={textStyle}>{name}</span>
+        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>
+          {name}
+        </span>
       </Cell>
 
       {/* Volume */}

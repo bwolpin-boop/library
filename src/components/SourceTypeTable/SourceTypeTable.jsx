@@ -26,20 +26,6 @@ const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosi
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
-function CollapseToggle({ collapsed, onClick }) {
-  return (
-    <div
-      onClick={onClick}
-      style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', flexShrink: 0 }}
-    >
-      <NavIcon
-        name={collapsed ? 'arrow-down' : 'arrow-up'}
-        size={16}
-      />
-    </div>
-  )
-}
-
 // Header row of a tabular table (column labels with sort arrows)
 function TableHeaderRow({ columns }) {
   return (
@@ -155,7 +141,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             dosage={row.dosage ?? row.frequency}
             date={row.date}
             pageRef={row.pageRef ?? row.page}
-            lineNumber={row.lineNumber}
+            lineNumber={row.lineNumber ?? (sourcePopup ? i + 1 : undefined)}
             onVerify={onVerify}
             onDeny={onDeny}
             onPending={onPending}
@@ -228,6 +214,8 @@ export function SourceTypeTable({
   sourceType    = 'IV Fluids',
   uploadedDate  = '15/12/2025',
   docName       = 'Diagnosis hospital_records file hypervention .pdf',
+  tabs          = ['M1200B', 'M1201A', 'M1202C'],
+  onTabClick,
   // Tabular
   columns,
   rows            = [],
@@ -280,10 +268,13 @@ export function SourceTypeTable({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4 }}>
 
-      {/* Title row */}
+      {/* Title row — entire row is clickable when arrow is shown */}
       {hasTitle && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8 }}>
-          {hasArrow && <CollapseToggle collapsed={collapsed} onClick={handleToggle} />}
+        <div
+          onClick={hasArrow ? handleToggle : undefined}
+          style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, cursor: hasArrow ? 'pointer' : 'default', userSelect: 'none' }}
+        >
+          {hasArrow && <NavIcon name={collapsed ? 'arrow-down' : 'arrow-up'} size={16} />}
           <span style={{ ...sb12, color: '#323338', whiteSpace: 'nowrap' }}>{displayTitle}</span>
         </div>
       )}
@@ -299,9 +290,11 @@ export function SourceTypeTable({
         }}>
           {/* Upload date row */}
           <SourceHeader
-            type="prescrub"
+            type="sources"
             sourceType={sourceType}
             uploadedDate={uploadedDate}
+            tabs={tabs}
+            onTabClick={onTabClick}
           />
 
           {/* PDF filename row */}
