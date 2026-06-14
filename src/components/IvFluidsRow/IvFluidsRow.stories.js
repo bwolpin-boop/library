@@ -1,3 +1,4 @@
+import React from 'react'
 import { IvFluidsRow } from './IvFluidsRow'
 
 export default {
@@ -17,7 +18,7 @@ export default {
     type:    { control: 'select', options: ['Default', 'verified', 'pending', 'denied'] },
     count:   { control: 'number' },
   },
-  decorators: [(Story) => <div style={{ width: 705 }}><Story /></div>],
+  decorators: [(Story) => React.createElement('div', { style: { width: 705 } }, React.createElement(Story))],
 }
 
 export const Default     = { args: { purpose: 'prescrub', type: 'Default' } }

@@ -1,3 +1,4 @@
+import React from 'react'
 import { RowHoverActions } from './RowHoverActions'
 
 export default {
@@ -19,7 +20,7 @@ export default {
     upCount:          { control: 'number' },
     downCount:        { control: 'number' },
   },
-  decorators: [(Story) => <div style={{ padding: '32px' }}><Story /></div>],
+  decorators: [(Story) => React.createElement('div', { style: { padding: '32px' } }, React.createElement(Story))],
 }
 
 export const Default         = { args: { commentsCount: 4 } }

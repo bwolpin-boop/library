@@ -1,3 +1,4 @@
+import React from 'react'
 import { PdfTitle } from './PdfTitle'
 
 export default {
@@ -9,7 +10,7 @@ export default {
   argTypes: {
     title: { control: 'text' },
   },
-  decorators: [(Story) => <div style={{ width: 692 }}><Story /></div>],
+  decorators: [(Story) => React.createElement('div', { style: { width: 692 } }, React.createElement(Story))],
 }
 
 export const Default   = {}

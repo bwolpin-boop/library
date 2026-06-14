@@ -1,3 +1,4 @@
+import React from 'react'
 import { DcSuggests } from './DcSuggests'
 
 export default {
@@ -8,7 +9,7 @@ export default {
     size:       { control: 'select', options: ['big', 'small'] },
     answerType: { control: 'select', options: ['yes-dc', 'not-dc', 'mds', 'no-answer', 'empty'] },
   },
-  decorators: [(Story) => <div style={{ padding: '40px' }}><Story /></div>],
+  decorators: [(Story) => React.createElement('div', { style: { padding: '40px' } }, React.createElement(Story))],
 }
 
 export const Big   = { args: { size: 'big' } }

@@ -49,6 +49,8 @@ import lessIcon            from '../../assets/icons/less.svg'
 import primaryDiagnosisIcon from '../../assets/icons/primary-diagnosis.svg'
 import ntaDiamondIcon      from '../../assets/icons/nta-diamond.svg'
 import exportIcon          from '../../assets/icons/export.svg'
+import facilityIcon         from '../../assets/icons/facility.svg'
+import indicatorYellowIcon  from '../../assets/icons/indicator-yellow.svg'
 
 const icons = {
   // General
@@ -112,6 +114,9 @@ const icons = {
   'nta-diamond':           ntaDiamondIcon,
   // Source type table
   export:                  exportIcon,
+  // Source title icons
+  facility:                facilityIcon,
+  'indicator-yellow':      indicatorYellowIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -178,6 +183,9 @@ export const iconNativeSizes = {
   'nta-diamond':           24,
   // Source type table
   export:                  24,
+  // Source title icons
+  facility:                24,
+  'indicator-yellow':      24,
 }
 
 export function NavIcon({ name, size = 24, className }) {

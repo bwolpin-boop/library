@@ -1,3 +1,4 @@
+import React from 'react'
 import { SourceAlsoAnswers } from './SourceAlsoAnswers'
 
 export default {
@@ -18,13 +19,7 @@ export default {
     hasVerifyAndDeny: { control: 'boolean' },
     qkScroll: { control: 'boolean' },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ padding: '32px' }}>
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [(Story) => React.createElement('div', { style: { padding: '32px' } }, React.createElement(Story))],
 }
 
 export const SourcePopup = {

@@ -206,7 +206,7 @@ function AiContent({ aiTitle, text, onSeeMore }) {
 
 export function SourceTypeTable({
   tableType     = 'iv-fluids',
-  sourcePopup   = false,
+  sourcePopup   = true,
   hasTitle      = true,
   hasArrow      = true,
   title,
@@ -268,9 +268,6 @@ export function SourceTypeTable({
       {hasTitle && (
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8 }}>
           {hasArrow && <CollapseToggle collapsed={collapsed} onClick={handleToggle} />}
-          {isTabular && (
-            <SourceTypeIcon type={sourceType} size={16} />
-          )}
           <span style={{ ...sb12, color: '#323338', whiteSpace: 'nowrap' }}>{displayTitle}</span>
         </div>
       )}

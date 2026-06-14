@@ -52,7 +52,6 @@ function ViewToggleRow({ purpose, count, onClick }) {
         justifyContent: 'center',
         height: '32px',
         padding: `0 ${spacing.gap24}`,
-        borderBottom: `1px solid ${colors.dividerSubtle}`,
         backgroundColor: hovered ? colors.surface : colors.white,
         boxSizing: 'border-box',
         cursor: onClick ? 'pointer' : 'default',

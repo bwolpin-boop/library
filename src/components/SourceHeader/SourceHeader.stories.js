@@ -1,3 +1,4 @@
+import React from 'react'
 import { SourceHeader } from './SourceHeader'
 
 export default {
@@ -15,7 +16,7 @@ export default {
     type:       { control: 'select', options: ['sources', 'ipa', 'prescrub'] },
     sourceType: { control: 'select', options: ['IV Fluids', 'Progress Notes', 'Documents', 'Medications', 'Vitals', 'Lab Results', 'Diagnosis', 'Assessments'] },
   },
-  decorators: [(Story) => <div style={{ width: 712 }}><Story /></div>],
+  decorators: [(Story) => React.createElement('div', { style: { width: 712 } }, React.createElement(Story))],
 }
 
 export const Sources  = { args: { type: 'sources' } }
