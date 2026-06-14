@@ -24,9 +24,7 @@ export const Overview = {
         <div style={ROW}>
           <Section type="letter" state="disabled"  letter="A" />
           <Section type="letter" state="default"   letter="E" badge={1} />
-          <Section type="letter" state="default"   letter="E" badge={1} forceHover />
           <Section type="letter" state="selected"  letter="J" />
-          <Section type="letter" state="selected"  letter="J" forceHover />
           <Section type="verify" state="disabled"  letter="D" />
           <Section type="deny"   state="disabled"  letter="I" />
         </div>
@@ -37,9 +35,7 @@ export const Overview = {
         <div style={ROW}>
           <Section type="all" state="disabled"  letter="All" />
           <Section type="all" state="default"   letter="All" badge={1} />
-          <Section type="all" state="default"   letter="All" badge={1} forceHover />
           <Section type="all" state="selected"  letter="All" />
-          <Section type="all" state="selected"  letter="All" forceHover />
         </div>
       </div>
 
@@ -48,9 +44,7 @@ export const Overview = {
         <div style={ROW}>
           <Section type="letter" state="disabled"  size="small" letter="A" />
           <Section type="letter" state="default"   size="small" letter="E" badge={1} />
-          <Section type="letter" state="default"   size="small" letter="E" badge={1} forceHover />
           <Section type="letter" state="selected"  size="small" letter="J" />
-          <Section type="letter" state="selected"  size="small" letter="J" forceHover />
           <Section type="verify" state="disabled"  size="small" letter="D" />
           <Section type="deny"   state="disabled"  size="small" letter="I" />
         </div>
@@ -61,9 +55,7 @@ export const Overview = {
         <div style={ROW}>
           <Section type="all" state="disabled"  size="small" letter="All" />
           <Section type="all" state="default"   size="small" letter="All" badge={1} />
-          <Section type="all" state="default"   size="small" letter="All" badge={1} forceHover />
           <Section type="all" state="selected"  size="small" letter="All" />
-          <Section type="all" state="selected"  size="small" letter="All" forceHover />
         </div>
       </div>
 

@@ -1,6 +1,7 @@
-import { colors, fonts, radii } from '../../tokens.js'
+import { colors, radii } from '../../tokens.js'
 import { CmiCategoryToggle, DEFAULT_CATEGORIES } from './CmiCategoryToggle.jsx'
 import { H2YLetters } from './H2YLetters.jsx'
+import { MedicaidLabel } from './MedicaidLabel.jsx'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 
 const TYPE_INDEX = { all: 0, nursing: 1, NTA: 2, Cognitive: 3 }
@@ -19,26 +20,6 @@ function H2YChange() {
   )
 }
 
-function MedicaidLabel() {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-        <path d="M2 2.5C2 1.67 2.67 1 3.5 1H8.5C9.33 1 10 1.67 10 2.5V9.5C10 10.33 9.33 11 8.5 11H3.5C2.67 11 2 10.33 2 9.5V2.5Z" stroke="#C0C0C0" strokeWidth="0.8" fill="none"/>
-        <rect x="4.15" y="4.15" width="2.55" height="2.55" transform="rotate(45 6 4.15)" fill="#C0C0C0"/>
-      </svg>
-      <span style={{
-        fontFamily: fonts.inter,
-        fontSize: '7.762px',
-        fontWeight: 400,
-        color: '#C0C0C0',
-        whiteSpace: 'nowrap',
-        lineHeight: 'normal',
-      }}>
-        Medicaid - TX
-      </span>
-    </div>
-  )
-}
 
 export function RibbonStates({
   type = 'all',  // 'all' | 'nursing' | 'NTA' | 'Cognitive'

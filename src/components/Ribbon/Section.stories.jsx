@@ -18,14 +18,12 @@ export const LetterDisabled  = { args: { type: 'letter', state: 'disabled' } }
 export const LetterDefault   = { args: { type: 'letter', state: 'default',  badge: 1 } }
 export const LetterHover         = { args: { type: 'letter', state: 'default',  badge: 1, forceHover: true } }
 export const LetterSelected      = { args: { type: 'letter', state: 'selected' } }
-export const LetterSelectedHover = { args: { type: 'letter', state: 'selected', forceHover: true } }
 
 // Default size — all
 export const AllDisabled     = { args: { type: 'all',    state: 'disabled', letter: 'All' } }
 export const AllDefault      = { args: { type: 'all',    state: 'default',  letter: 'All', badge: 1 } }
 export const AllHover            = { args: { type: 'all', state: 'default',  letter: 'All', badge: 1, forceHover: true } }
 export const AllSelected         = { args: { type: 'all', state: 'selected', letter: 'All' } }
-export const AllSelectedHover    = { args: { type: 'all', state: 'selected', letter: 'All', forceHover: true } }
 
 // Special types
 export const Verify          = { args: { type: 'verify', state: 'disabled', letter: 'D' } }

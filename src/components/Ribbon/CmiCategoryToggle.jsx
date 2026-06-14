@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from 'react'
+import { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import { colors, fonts, fontWeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { Section } from './Section.jsx'
 
@@ -48,9 +48,12 @@ export function CmiCategoryToggle({
   onChange,
 }) {
   const [activeIndex, setActiveIndex] = useState(defaultIndex)
+  const [selectedSection, setSelectedSection] = useState(null)
   const tabRefs      = useRef([])
   const containerRef = useRef(null)
   const [pill, setPill] = useState({ left: 0, width: 0 })
+
+  useEffect(() => { setSelectedSection(null) }, [activeIndex])
 
   useLayoutEffect(() => {
     const el        = tabRefs.current[activeIndex]
@@ -95,7 +98,7 @@ export function CmiCategoryToggle({
         backgroundColor: colors.white,
         border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}`,
         borderRadius: radii.boxSm,
-        transition: 'left 0.22s ease-in-out, width 0.22s ease-in-out',
+        transition: 'left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         pointerEvents: 'none',
         zIndex: 0,
       }} />
@@ -135,17 +138,28 @@ export function CmiCategoryToggle({
 
             {isActive && sections.length > 0 && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '15px', overflow: 'visible', flexShrink: 0 }}>
-                {sections.map((sec, j) => (
-                  <div key={j} style={{ opacity: 0, animation: `cmi-fade-in 0.18s ease-in-out ${j * 0.035}s forwards` }}>
-                    <Section
-                      letter={sec.letter}
-                      type={sec.type ?? 'letter'}
-                      state={sec.state ?? 'disabled'}
-                      size="small"
-                      badge={sec.badge}
-                    />
-                  </div>
-                ))}
+                {sections.map((sec, j) => {
+                  const type = sec.type ?? 'letter'
+                  const baseState = sec.state ?? 'disabled'
+                  const isClickable = type !== 'verify' && type !== 'deny' && baseState !== 'disabled'
+                  const resolvedState = isClickable && selectedSection === j ? 'selected' : baseState
+                  return (
+                    <div
+                      key={j}
+                      style={{ opacity: 0, animation: `cmi-fade-in 0.28s ease-in-out ${j * 0.055}s forwards` }}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <Section
+                        letter={sec.letter}
+                        type={type}
+                        state={resolvedState}
+                        size="small"
+                        badge={sec.badge}
+                        onClick={isClickable ? () => setSelectedSection(j) : undefined}
+                      />
+                    </div>
+                  )
+                })}
               </div>
             )}
           </button>

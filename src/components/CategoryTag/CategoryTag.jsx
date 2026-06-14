@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
 
 const typeConfig = {
@@ -21,21 +22,35 @@ function CloseIcon({ color }) {
   )
 }
 
-export function CategoryTag({ type = 'nursing', state = 'Default', hasClose = false, onClose }) {
+export function CategoryTag({ type = 'nursing', state: stateProp = 'Default', hasClose = false, onClose }) {
+  const [hovered, setHovered] = useState(false)
+  const [pressed, setPressed] = useState(false)
+
+  const isForced = stateProp === 'hover' || stateProp === 'pressed'
+  const state = isForced ? stateProp : pressed ? 'pressed' : hovered ? 'hover' : 'Default'
+
   const config = typeConfig[type] ?? typeConfig['nursing']
   const opacities = stateOpacity[type] ?? stateOpacity.default
   const opacity = opacities[state] ?? opacities.Default
 
   return (
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '4px',
-      padding: '2px 4px',
-      borderRadius: radii.boxSm,
-      backgroundColor: `rgba(${config.rgb},${opacity})`,
-    }}>
+    <div
+      onMouseEnter={() => { if (!isForced) setHovered(true) }}
+      onMouseLeave={() => { if (!isForced) { setHovered(false); setPressed(false) } }}
+      onMouseDown={() => { if (!isForced) setPressed(true) }}
+      onMouseUp={() => { if (!isForced) setPressed(false) }}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '4px',
+        padding: '2px 4px',
+        borderRadius: radii.boxSm,
+        backgroundColor: `rgba(${config.rgb},${opacity})`,
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'background-color 0.1s ease',
+      }}>
       <p style={{
         fontFamily: fonts.montserrat,
         fontSize: fontSizes.sm,
