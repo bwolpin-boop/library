@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { colors, fonts, fontSizes, fontWeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { IconButton } from '../Icon/IconButton.jsx'
@@ -79,6 +79,10 @@ export function Ribbon({
   const isNta = type === 'nta'
   const isRibbon = type === 'ribbon'
 
+  // Incremented each time the Calculate button is pressed; passed to RibbonStates
+  const [calcTrigger, setCalcTrigger] = useState(0)
+  const handleCalculate = useCallback(() => setCalcTrigger(n => n + 1), [])
+
   const containerStyle = {
     display: 'flex',
     width: banner ? undefined : '100%',
@@ -156,15 +160,18 @@ export function Ribbon({
       {/* Middle: sections row */}
       <div style={{ display: 'flex', alignItems: 'center', height: '50px' }}>
         {isCmi ? (
-          <RibbonStates type={cmiType} />
+          <RibbonStates type={cmiType} calcTrigger={calcTrigger} />
         ) : (
           <SectionsRow sections={sections} />
         )}
       </div>
 
-      {/* Right: feedback + close */}
+      {/* Right: feedback / calculate + close */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
-        <FeedbackButton label="Give feedback" />
+        <FeedbackButton
+          label={isCmi ? 'Calculate' : 'Give feedback'}
+          onClick={isCmi ? handleCalculate : undefined}
+        />
         <IconButton name="close" size={24} onClick={onClose} />
       </div>
     </div>

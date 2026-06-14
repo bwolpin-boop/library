@@ -78,11 +78,11 @@ function BreakdownPanel({ rows, borderColor }) {
   const rowBorder = `1px solid ${colors.dividerSubtle}`
   return (
     <div style={{
-      width: LABEL_W + HIPPS_W,
+      width: LABEL_W + HIPPS_W + strokeWidths.thin,
       backgroundColor: colors.white,
       borderTop:   `1px solid ${colors.dividerSubtle}`,
-      borderLeft:  `1px solid ${borderColor}`,
-      borderRight: `1px solid ${borderColor}`,
+      borderLeft:  `1px solid ${colors.dividerSubtle}`,
+      borderRight: `1px solid ${colors.dividerSubtle}`,
       borderRadius: `${radii.box} ${radii.box} 0 0`,
       // +strokeWidths.thin accounts for the main row's 1px left border
       marginLeft: ARROW_W + strokeWidths.thin,
@@ -109,7 +109,7 @@ function BreakdownPanel({ rows, borderColor }) {
             height: '100%', padding: '0 8px', gap: 6,
             width: HIPPS_W, flexShrink: 0,
           }}>
-            <span style={{ ...reg12, color: colors.primary, whiteSpace: 'nowrap' }}>{row.code}</span>
+            <span style={{ ...reg12, color: colors.primary, whiteSpace: 'nowrap', minWidth: 40 }}>{row.code}</span>
             <ArrowRight />
             {row.newCode ? (
               <span style={{
@@ -244,7 +244,7 @@ export function Calculator({
         {/* HIPPS code column — fixed width, matches breakdown code col */}
         <div style={cell({ width: HIPPS_W, flexShrink: 0, borderRight: `1px solid ${colors.dividerSubtle}` })}>
           {!showEmpty && !showDidnt && (
-            <span style={{ ...reg12, color: colors.primary, whiteSpace: 'nowrap' }}>{hippsCode}</span>
+            <span style={{ ...reg12, color: colors.primary, whiteSpace: 'nowrap', minWidth: 40 }}>{hippsCode}</span>
           )}
           {showArrow && <ArrowRight />}
           {showNewValue && <span style={{ ...sb12, color: newValueColor, whiteSpace: 'nowrap' }}>{newHippsCode}</span>}
