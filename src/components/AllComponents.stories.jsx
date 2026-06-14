@@ -12,6 +12,7 @@ import { Overview as _SearchField }      from './SearchField/SearchFieldOverview
 import { Overview as _Status }           from './Status/StatusOverview.stories.jsx'
 import { Overview as _CategoryTag }      from './CategoryTag/CategoryTagOverview.stories.jsx'
 import { Overview as _SourceTypeTab }    from './SourceTypeTab/SourceTypeTabOverview.stories.jsx'
+import { Overview as _SourceTypeTabs }   from './SourceTypeTab/SourceTypeTabsOverview.stories.jsx'
 import { Overview as _NavIcons }         from './Icon/NavIconOverview.stories.jsx'
 import { Overview as _SourceTypeIcons }  from './Icon/SourceTypeIconOverview.stories.jsx'
 import { Overview as _IndicatorDolphin } from './Icon/IndicatorDolphinOverview.stories.jsx'
@@ -41,6 +42,9 @@ import { Overview as _SourceHeader }       from './SourceHeader/SourceHeaderOver
 import { Overview as _PdfTitle }           from './PdfTitle/PdfTitleOverview.stories.jsx'
 import { Overview as _HeaderCells }        from './HeaderCells/HeaderCellsOverview.stories.jsx'
 import { Overview as _RowCells }           from './RowCells/RowCellsOverview.stories.jsx'
+import { Overview as _MoneyLabel }         from './MoneyLabel/MoneyLabelOverview.stories.jsx'
+import { Overview as _PrimaryDiagnosisLabel } from './PrimaryDiagnosisLabel/PrimaryDiagnosisLabelOverview.stories.jsx'
+import { Overview as _SourcesHeaders }     from './SourcesHeaders/SourcesHeadersOverview.stories.jsx'
 
 export default {
   title: '🗂️ All Components',
@@ -56,6 +60,7 @@ export const SearchField      = { ..._SearchField,      name: '🍃 SearchField'
 export const Status           = { ..._Status,           name: '📮 Status' }
 export const CategoryTag      = { ..._CategoryTag,      name: '📮 CategoryTag' }
 export const SourceTypeTab    = { ..._SourceTypeTab,    name: '📮 SourceTypeTab' }
+export const SourceTypeTabs   = { ..._SourceTypeTabs,   name: '📮 SourceTypeTabs' }
 export const NavIcons         = { ..._NavIcons,         name: '😂 NavIcons' }
 export const SourceTypeIcons  = { ..._SourceTypeIcons,  name: '😂 SourceTypeIcons' }
 export const IndicatorDolphin = { ..._IndicatorDolphin, name: '😂 IndicatorDolphin' }
@@ -77,11 +82,14 @@ export const CalculatorBar     = { ..._CalculatorBar,   name: '💊 CalculatorBa
 export const QkNumberTabs      = { ..._QkNumberTabs,      name: '💊 QK Number Tabs' }
 export const SourceAlsoAnswers = { ..._SourceAlsoAnswers, name: '💊 Source Also Answers' }
 export const SourceHeader      = { ..._SourceHeader,      name: '💊 Source Header' }
+export const MoneyLabel        = { ..._MoneyLabel,        name: '💊 Money Label' }
 export const PdfTitle          = { ..._PdfTitle,          name: '💊 PDF Title' }
-export const HeaderCells       = { ..._HeaderCells,       name: '💊 Header Cells' }
+export const HeaderCells           = { ..._HeaderCells,           name: '💊 Header Cells' }
+export const PrimaryDiagnosisLabel = { ..._PrimaryDiagnosisLabel, name: '💊 Primary Diagnosis Label' }
 export const ThumbsComponent   = { ..._ThumbsComponent,   name: '😂 Thumbs Component' }
 export const RowHoverActions   = { ..._RowHoverActions,   name: '😂 Row Hover Actions' }
 export const Comments          = { ..._Comments,          name: '😂 Comments' }
 export const Up                = { ..._Up,                name: '😂 Up' }
 export const Down              = { ..._Down,              name: '😂 Down' }
 export const RowCells          = { ..._RowCells,          name: '🏓 RowCells' }
+export const SourcesHeaders    = { ..._SourcesHeaders,    name: '🏓 SourcesHeaders' }

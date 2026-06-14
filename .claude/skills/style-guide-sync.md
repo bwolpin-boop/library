@@ -62,9 +62,20 @@ Before any sync, ask the user: **"Are we syncing Figma → code, or code → Fig
 ---
 
 ## Before building any component
+
+### Tokens
 1. Read `style-guide.md` — this is the local source of truth
 2. Every color, font, radius, and spacing value used must exist as a token in `src/tokens.js`
 3. If a value is missing, STOP and ask the user before proceeding
+
+### NavIcon audit (MANDATORY for every new component)
+Every icon used in a Figma design must be present in `NavIcon.jsx` **before** the component is written.
+
+1. After getting `get_design_context`, scan the Figma code output for any `data-name="Nav Icons"` nodes or icon images
+2. Cross-check every icon against the `icons` map in `src/components/Icon/NavIcon.jsx`
+3. For **every icon that is missing**: export it from Figma with `use_figma` → `node.exportAsync({ format: 'SVG_STRING' })`, save as an SVG file in `src/assets/icons/`, and register it in NavIcon (import, icons map, iconNativeSizes) — all before writing the component code
+4. Never substitute a different existing icon as an approximation — always export the real one from Figma
+5. The icon node to export is the Nav Icons container (24×24 or 16×16 wrapper), not the raw inner shape — this ensures correct sizing and positioning
 
 ---
 

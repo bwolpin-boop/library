@@ -43,6 +43,8 @@ import infoSmallIcon       from '../../assets/icons/info-small.svg'
 import warningSmallIcon    from '../../assets/icons/warning-small.svg'
 import moreIcon            from '../../assets/icons/more.svg'
 import lessIcon            from '../../assets/icons/less.svg'
+import primaryDiagnosisIcon from '../../assets/icons/primary-diagnosis.svg'
+import ntaDiamondIcon      from '../../assets/icons/nta-diamond.svg'
 
 const icons = {
   // General
@@ -98,6 +100,9 @@ const icons = {
   'warning-small':         warningSmallIcon,
   more:                    moreIcon,
   less:                    lessIcon,
+  // Diagnosis labels
+  'primary-diagnosis':     primaryDiagnosisIcon,
+  'nta-diamond':           ntaDiamondIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -156,6 +161,9 @@ export const iconNativeSizes = {
   'warning-small':         16,
   more:                    16,
   less:                    16,
+  // Diagnosis labels
+  'primary-diagnosis':     24,
+  'nta-diamond':           24,
 }
 
 export function NavIcon({ name, size = 24, className }) {
