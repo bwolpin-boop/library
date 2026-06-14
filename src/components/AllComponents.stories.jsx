@@ -45,6 +45,8 @@ import { Overview as _RowCells }           from './RowCells/RowCellsOverview.sto
 import { Overview as _MoneyLabel }         from './MoneyLabel/MoneyLabelOverview.stories.jsx'
 import { Overview as _PrimaryDiagnosisLabel } from './PrimaryDiagnosisLabel/PrimaryDiagnosisLabelOverview.stories.jsx'
 import { Overview as _SourcesHeaders }     from './SourcesHeaders/SourcesHeadersOverview.stories.jsx'
+import { Overview as _IvFluidsRow }        from './IvFluidsRow/IvFluidsRowOverview.stories.jsx'
+import { Overview as _DiagnosisTableRow } from './DiagnosisTableRow/DiagnosisTableRowOverview.stories.jsx'
 
 export default {
   title: '🗂️ All Components',
@@ -83,6 +85,7 @@ export const QkNumberTabs      = { ..._QkNumberTabs,      name: '💊 QK Number 
 export const SourceAlsoAnswers = { ..._SourceAlsoAnswers, name: '💊 Source Also Answers' }
 export const SourceHeader      = { ..._SourceHeader,      name: '💊 Source Header' }
 export const MoneyLabel        = { ..._MoneyLabel,        name: '💊 Money Label' }
+export const IvFluidsRow       = { ..._IvFluidsRow,       name: '💊 IV Fluids Row' }
 export const PdfTitle          = { ..._PdfTitle,          name: '💊 PDF Title' }
 export const HeaderCells           = { ..._HeaderCells,           name: '💊 Header Cells' }
 export const PrimaryDiagnosisLabel = { ..._PrimaryDiagnosisLabel, name: '💊 Primary Diagnosis Label' }
@@ -92,4 +95,5 @@ export const Comments          = { ..._Comments,          name: '😂 Comments' 
 export const Up                = { ..._Up,                name: '😂 Up' }
 export const Down              = { ..._Down,              name: '😂 Down' }
 export const RowCells          = { ..._RowCells,          name: '🏓 RowCells' }
-export const SourcesHeaders    = { ..._SourcesHeaders,    name: '🏓 SourcesHeaders' }
+export const SourcesHeaders      = { ..._SourcesHeaders,      name: '🏓 SourcesHeaders' }
+export const DiagnosisTableRow  = { ..._DiagnosisTableRow,  name: '🏓 DiagnosisTableRow' }

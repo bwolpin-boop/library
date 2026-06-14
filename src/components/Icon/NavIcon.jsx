@@ -37,6 +37,8 @@ import thumbsUpIcon      from '../../assets/icons/thumbs-up.svg'
 import thumbsUpPressedIcon from '../../assets/icons/thumbs-up-pressed.svg'
 import thumbsDownIcon    from '../../assets/icons/thumbs-down.svg'
 import thumbsDownPressedIcon from '../../assets/icons/thumbs-down-pressed.svg'
+import arrowUpIcon         from '../../assets/icons/arrow-up.svg'
+import arrowDownIcon       from '../../assets/icons/arrow-down.svg'
 import sortArrowsIcon      from '../../assets/icons/sort-arrows.svg'
 import profileIcon         from '../../assets/icons/profile.svg'
 import infoSmallIcon       from '../../assets/icons/info-small.svg'
@@ -56,6 +58,8 @@ const icons = {
   'dolphincare-logo':      dolphincareLogoIcon,
   'arrow-right':           arrowRightIcon,
   'arrow-left':            arrowLeftIcon,
+  'arrow-up':              arrowUpIcon,
+  'arrow-down':            arrowDownIcon,
   'arrow-right-h2y':       arrowRightH2YIcon,
   'little-questionmark':   littleQuestionmarkIcon,
   comment:                 commentIcon,
@@ -117,6 +121,8 @@ export const iconNativeSizes = {
   'dolphincare-logo':      24,
   'arrow-right':           24,
   'arrow-left':            24,
+  'arrow-up':              24,
+  'arrow-down':            24,
   'arrow-right-h2y':       20,
   'little-questionmark':   24,
   comment:                 24,

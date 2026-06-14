@@ -9,7 +9,6 @@ const sampleTabs = [
 export default {
   title: '🟢   📮 Source Type Tabs/SourceTypeTabs',
   component: SourceTypeTabs,
-  decorators: [(Story) => <div style={{ maxWidth: 600, padding: 24 }}><Story /></div>],
   args: {
     tabs: sampleTabs,
     selectedTab: null,
