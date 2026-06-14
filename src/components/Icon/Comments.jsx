@@ -7,8 +7,8 @@ export function Comments({ count, onClick, disabled, className }) {
   const [pressed, setPressed] = useState(false)
 
   const bg = disabled ? 'transparent'
-    : pressed ? 'rgba(34,34,34,0.06)'
-    : hover    ? 'rgba(34,34,34,0.04)'
+    : pressed ? colors.surfacePressed
+    : hover    ? colors.surfaceHover
     : 'transparent'
 
   return (

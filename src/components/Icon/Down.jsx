@@ -7,8 +7,8 @@ export function Down({ count, pressed = false, onClick, className }) {
   const [hover, setHover]       = useState(false)
   const [pressing, setPressing] = useState(false)
 
-  const bg = pressing ? 'rgba(34,34,34,0.06)'
-    : hover            ? 'rgba(34,34,34,0.04)'
+  const bg = pressing ? colors.surfacePressed
+    : hover            ? colors.surfaceHover
     : 'transparent'
 
   return (

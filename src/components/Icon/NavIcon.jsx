@@ -31,6 +31,12 @@ import vdVerifySmall     from '../../assets/icons/vd-verify-small.svg'
 import vdDenySmall       from '../../assets/icons/vd-deny-small.svg'
 import vdPendingSmall    from '../../assets/icons/vd-pending-small.svg'
 import vdEmptySmall      from '../../assets/icons/vd-empty-small.svg'
+import pocIcon           from '../../assets/icons/poc.svg'
+import reactionCommentIcon from '../../assets/icons/reaction-comment.svg'
+import thumbsUpIcon      from '../../assets/icons/thumbs-up.svg'
+import thumbsUpPressedIcon from '../../assets/icons/thumbs-up-pressed.svg'
+import thumbsDownIcon    from '../../assets/icons/thumbs-down.svg'
+import thumbsDownPressedIcon from '../../assets/icons/thumbs-down-pressed.svg'
 
 const icons = {
   // General
@@ -72,6 +78,13 @@ const icons = {
   'vd-deny-small':         vdDenySmall,
   'vd-pending-small':      vdPendingSmall,
   'vd-empty-small':        vdEmptySmall,
+  // Reactions & comments
+  poc:                     pocIcon,
+  'reaction-comment':      reactionCommentIcon,
+  'thumbs-up':             thumbsUpIcon,
+  'thumbs-up-pressed':     thumbsUpPressedIcon,
+  'thumbs-down':           thumbsDownIcon,
+  'thumbs-down-pressed':   thumbsDownPressedIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -116,6 +129,13 @@ export const iconNativeSizes = {
   'vd-deny-small':         12,
   'vd-pending-small':      12,
   'vd-empty-small':        12,
+  // Reactions & comments
+  poc:                     24,
+  'reaction-comment':      24,
+  'thumbs-up':             24,
+  'thumbs-up-pressed':     24,
+  'thumbs-down':           24,
+  'thumbs-down-pressed':   24,
 }
 
 export function NavIcon({ name, size = 24, className }) {

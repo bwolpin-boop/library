@@ -49,7 +49,7 @@ export function QkNumberTabs({
       }}
       onClick={onClick}
       onMouseEnter={() => isInteractive && setHovered(true)}
-      onMouseLeave={() => isInteractive && setHovered(false)}
+      onMouseLeave={() => setHovered(false)}
     >
       <span
         style={{

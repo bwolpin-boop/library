@@ -150,8 +150,8 @@ export function SourceAlsoAnswers({
               key={i}
               label={tab}
               size="small"
-              state={i === activeTabIndex ? 'clicked' : 'default'}
-              onClick={() => onTabClick?.(i)}
+              state={i === selectedIndex ? 'clicked' : 'default'}
+              onClick={() => handleTabClick(i)}
             />
           ))}
         </div>

@@ -1,11 +1,23 @@
-import { colors, textStyles, spacing } from '../../tokens.js'
+import { useState } from 'react'
+import { colors, textStyles, radii, spacing } from '../../tokens.js'
 import thumbsUpIcon        from '../../assets/icons/thumbs-up.svg'
 import thumbsUpPressedIcon from '../../assets/icons/thumbs-up-pressed.svg'
 
 export function Up({ count, pressed = false, onClick, className }) {
+  const [hover, setHover]       = useState(false)
+  const [pressing, setPressing] = useState(false)
+
+  const bg = pressing ? colors.surfacePressed
+    : hover            ? colors.surfaceHover
+    : 'transparent'
+
   return (
     <button
       onClick={onClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => { setHover(false); setPressing(false) }}
+      onMouseDown={() => setPressing(true)}
+      onMouseUp={() => setPressing(false)}
       style={{
         background: 'none',
         border: 'none',
@@ -14,7 +26,10 @@ export function Up({ count, pressed = false, onClick, className }) {
         display: 'flex',
         alignItems: 'center',
         gap: spacing.gap4,
+        borderRadius: radii.icon,
+        backgroundColor: bg,
         flexShrink: 0,
+        transition: 'background-color 0.1s',
       }}
       className={className}
     >
