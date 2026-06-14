@@ -214,13 +214,15 @@ export function Calculator({
   })
 
   return (
-    // Flex column: breakdown (when open) stacks above main row as a sibling,
-    // so both children share the same container width and columns align.
-    <div style={{ display: 'inline-flex', flexDirection: 'column', position: 'relative' }}>
+    <div style={{ display: 'inline-flex', position: 'relative' }}>
       {showTooltip && <InfoTooltip text={tooltipText} />}
 
       {expanded && (
-        <BreakdownPanel rows={resolvedRows} borderColor={borderColor} />
+        // Absolutely positioned so the breakdown floats above without
+        // affecting the parent bar's height or layout.
+        <div style={{ position: 'absolute', bottom: '100%', left: 0 }}>
+          <BreakdownPanel rows={resolvedRows} borderColor={borderColor} />
+        </div>
       )}
 
       {/* Main row */}
