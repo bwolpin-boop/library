@@ -28,7 +28,7 @@ const pccVariants = [
   { label: 'Indicator',           props: { type: 'indicator',             location: 'PCC', size: 'small' } },
   { label: 'Categories',          props: { type: 'categories',            location: 'PCC', size: 'small', categories: ['nursing', 'OT/PT', 'SLP', 'NTA'] } },
   { label: 'Strength (strong)',   props: { type: 'strength',              location: 'PCC', size: 'small', strengthType: 'strong' } },
-  { label: 'Strength (moderate)', props: { type: 'strength 2',            location: 'PCC', size: 'small', strengthType: 'moderate', navIconRight: 'error-2' } },
+  { label: 'Strength (moderate)', props: { type: 'strength 2',            location: 'PCC', size: 'small', strengthType: 'moderate', navIconRight: 'warning-small' } },
   { label: 'Medical Label',       props: { type: 'medical label',         location: 'PCC', size: 'small' } },
   { label: 'NTA',                 props: { type: 'NTA',                   location: 'PCC', size: 'small' } },
   { label: 'Primary Diag',        props: { type: 'Primary diag',          location: 'PCC', size: 'small' } },

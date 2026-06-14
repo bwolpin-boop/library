@@ -84,7 +84,7 @@ function DateBadge({ date = '12/04/26' }) {
       padding: '0 8px', borderRadius: '34px',
       backgroundColor: colors.disabled, flexShrink: 0,
     }}>
-      <NavIcon name="little-questionmark" size={24} />
+      <NavIcon name="info-small" size={16} />
       <span style={{ ...textStyles.body12Regular, color: colors.primary, whiteSpace: 'nowrap' }}>
         {date}
       </span>
@@ -163,7 +163,7 @@ export function RowCells({
     if (type === 'Icon') {
       return (
         <div style={{ ...base, padding: '10px 0' }}>
-          <NavIcon name={navIconLeft || 'dolphincare-logo'} size={24} />
+          <NavIcon name={navIconLeft || 'profile'} size={24} />
         </div>
       )
     }
@@ -241,7 +241,7 @@ export function RowCells({
     return (
       <div style={{ ...base, gap: spacing.gap0 }}>
         <Status status={ipaStatus} size="small" />
-        <NavIcon name="little-questionmark" size={16} />
+        <NavIcon name="info-small" size={16} />
       </div>
     )
   }
@@ -373,7 +373,7 @@ export function RowCells({
     return (
       <div style={{ ...base, gap: spacing.gap8 }}>
         <span style={textSm}>{ivText}</span>
-        <NavIcon name="plus-small" size={16} />
+        <NavIcon name="more" size={16} />
       </div>
     )
   }
@@ -382,7 +382,7 @@ export function RowCells({
     return (
       <div style={{ ...base, gap: spacing.gap8 }}>
         <span style={textSm}>{ivText}</span>
-        <NavIcon name="close" size={16} />
+        <NavIcon name="less" size={16} />
       </div>
     )
   }

@@ -38,6 +38,11 @@ import thumbsUpPressedIcon from '../../assets/icons/thumbs-up-pressed.svg'
 import thumbsDownIcon    from '../../assets/icons/thumbs-down.svg'
 import thumbsDownPressedIcon from '../../assets/icons/thumbs-down-pressed.svg'
 import sortArrowsIcon      from '../../assets/icons/sort-arrows.svg'
+import profileIcon         from '../../assets/icons/profile.svg'
+import infoSmallIcon       from '../../assets/icons/info-small.svg'
+import warningSmallIcon    from '../../assets/icons/warning-small.svg'
+import moreIcon            from '../../assets/icons/more.svg'
+import lessIcon            from '../../assets/icons/less.svg'
 
 const icons = {
   // General
@@ -87,6 +92,12 @@ const icons = {
   'thumbs-down':           thumbsDownIcon,
   'thumbs-down-pressed':   thumbsDownPressedIcon,
   'sort-arrows':           sortArrowsIcon,
+  // Row Cells icons
+  profile:                 profileIcon,
+  'info-small':            infoSmallIcon,
+  'warning-small':         warningSmallIcon,
+  more:                    moreIcon,
+  less:                    lessIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -139,6 +150,12 @@ export const iconNativeSizes = {
   'thumbs-down':           24,
   'thumbs-down-pressed':   24,
   'sort-arrows':           12,
+  // Row Cells icons
+  profile:                 24,
+  'info-small':            16,
+  'warning-small':         16,
+  more:                    16,
+  less:                    16,
 }
 
 export function NavIcon({ name, size = 24, className }) {

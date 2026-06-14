@@ -38,7 +38,8 @@ import { Overview as _SourceAlsoAnswers }  from './SourceAlsoAnswers/SourceAlsoA
 import { Overview as _ThumbsComponent }    from './Icon/ThumbsComponentOverview.stories.jsx'
 import { Overview as _RowHoverActions }    from './RowHoverActions/RowHoverActionsOverview.stories.jsx'
 import { Overview as _SourceHeader }       from './SourceHeader/SourceHeaderOverview.stories.jsx'
-import { Overview as _SourceCellHeader }   from './SourceCellHeader/SourceCellHeaderOverview.stories.jsx'
+import { Overview as _PdfTitle }           from './PdfTitle/PdfTitleOverview.stories.jsx'
+import { Overview as _HeaderCells }        from './HeaderCells/HeaderCellsOverview.stories.jsx'
 import { Overview as _RowCells }           from './RowCells/RowCellsOverview.stories.jsx'
 
 export default {
@@ -76,7 +77,8 @@ export const CalculatorBar     = { ..._CalculatorBar,   name: '💊 CalculatorBa
 export const QkNumberTabs      = { ..._QkNumberTabs,      name: '💊 QK Number Tabs' }
 export const SourceAlsoAnswers = { ..._SourceAlsoAnswers, name: '💊 Source Also Answers' }
 export const SourceHeader      = { ..._SourceHeader,      name: '💊 Source Header' }
-export const SourceCellHeader  = { ..._SourceCellHeader,  name: '💊 Source Cell Header' }
+export const PdfTitle          = { ..._PdfTitle,          name: '💊 PDF Title' }
+export const HeaderCells       = { ..._HeaderCells,       name: '💊 Header Cells' }
 export const ThumbsComponent   = { ..._ThumbsComponent,   name: '😂 Thumbs Component' }
 export const RowHoverActions   = { ..._RowHoverActions,   name: '😂 Row Hover Actions' }
 export const Comments          = { ..._Comments,          name: '😂 Comments' }
