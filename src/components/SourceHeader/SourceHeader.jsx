@@ -1,27 +1,8 @@
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, lineHeights } from '../../tokens.js'
 import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
 import { SourceAlsoAnswers } from '../SourceAlsoAnswers/SourceAlsoAnswers.jsx'
 
 const reg12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.regular, lineHeight: lineHeights.sm }
-
-function SmallSourceIcon({ type }) {
-  return (
-    <div style={{
-      width: 16,
-      height: 16,
-      borderRadius: radii.icon,
-      backgroundColor: colors.purpleOverlay,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 2,
-      flexShrink: 0,
-      boxSizing: 'border-box',
-    }}>
-      <SourceTypeIcon type={type} size={12} />
-    </div>
-  )
-}
 
 export function SourceHeader({
   type          = 'sources',  // 'sources' | 'ipa' | 'prescrub'
@@ -52,7 +33,7 @@ export function SourceHeader({
 
       {/* Left: icon + date + optional doc name */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        <SmallSourceIcon type={sourceType} />
+        <SourceTypeIcon type={sourceType} size={16} />
         <span style={{ ...reg12, color: colors.primary, whiteSpace: 'nowrap' }}>
           Uploaded date: {uploadedDate}
         </span>

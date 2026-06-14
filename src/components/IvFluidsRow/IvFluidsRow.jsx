@@ -87,6 +87,8 @@ export function IvFluidsRow({
   onCommentsClick,
   onUpClick,
   onDownClick,
+  style,
+  className,
 }) {
   const [hovered, setHovered] = useState(false)
 
@@ -99,6 +101,7 @@ export function IvFluidsRow({
 
   return (
     <div
+      className={className}
       style={{
         position: 'relative',
         display: 'flex',
@@ -110,6 +113,7 @@ export function IvFluidsRow({
         backgroundColor: bgColor,
         boxSizing: 'border-box',
         transition: 'background-color 0.1s',
+        ...style,
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

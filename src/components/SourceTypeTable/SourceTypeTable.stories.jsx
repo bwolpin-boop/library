@@ -20,7 +20,10 @@ export default {
   decorators: [(Story) => <div style={{ width: 692, padding: 24 }}><Story /></div>],
 }
 
-const ROWS = [
+const BASE_ROW = { name: 'Sodium Chloride', volume: '50 mL', dosage: '80 mL/3x a day', date: '15/04/2025', pageRef: 'pg. 12' }
+const ROWS = Array.from({ length: 35 }, (_, i) => ({ ...BASE_ROW, lineNumber: String(i + 1) }))
+
+const ROWS_SHORT = [
   { name: 'Sodium Chloride', volume: '50 mL', dosage: '80 mL/3x a day', date: '15/04/2025', pageRef: 'pg. 1, 2, 3' },
   { name: 'Sodium Chloride', volume: '50 mL', dosage: '80 mL/3x a day', date: '15/04/2025', pageRef: 'pg. 12' },
   { name: 'Sodium Chloride', volume: '50 mL', dosage: '80 mL/3x a day', date: '15/04/2025', pageRef: 'pg. 1, 2, 3' },
@@ -32,20 +35,17 @@ const AI_TEXT = 'The patient has a Stage 3 pressure wound of the left buttock co
 
 export const IvFluids = {
   name: 'IV Fluids',
-  args: { tableType: 'iv-fluids', title: 'IV Fluids', rows: ROWS, viewMoreCount: 234 },
+  args: { tableType: 'iv-fluids', title: 'IV Fluids', rows: ROWS },
 }
 
 export const IvFluidsSourcePopup = {
   name: 'IV Fluids — Source Popup',
-  args: {
-    tableType: 'iv-fluids', title: 'IV Fluids', sourcePopup: true,
-    rows: ROWS.map((r, i) => ({ ...r, lineNumber: String(23 + i) })),
-  },
+  args: { tableType: 'iv-fluids', title: 'IV Fluids', sourcePopup: true, rows: ROWS },
 }
 
 export const TubeFeeding = {
   name: 'Tube Feeding',
-  args: { tableType: 'tube-feeding', title: 'Tube Feeding', sourceType: 'IV Fluids', rows: ROWS, viewMoreCount: 12 },
+  args: { tableType: 'tube-feeding', title: 'Tube Feeding', sourceType: 'IV Fluids', rows: ROWS },
 }
 
 export const Surgery = {
@@ -53,7 +53,7 @@ export const Surgery = {
 }
 
 export const Diagnosis = {
-  args: { tableType: 'diagnosis', title: 'Diagnosis', sourceType: 'Diagnosis', rows: ROWS, viewMoreCount: 5 },
+  args: { tableType: 'diagnosis', title: 'Diagnosis', sourceType: 'Diagnosis', rows: ROWS },
 }
 
 export const HighlightedText = {

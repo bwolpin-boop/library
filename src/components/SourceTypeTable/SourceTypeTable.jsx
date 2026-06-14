@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
@@ -130,34 +130,49 @@ function AiGradientBar() {
 
 // ─── Content areas per table type ────────────────────────────────────────────
 
-function TabularContent({ tableType, columns, rows, viewMoreCount, sourcePopup, onViewMore, onVerify, onDeny, onPending, onUpClick, onDownClick, onCommentsClick }) {
-  const cols = columns ?? DEFAULT_COLUMNS[tableType] ?? DEFAULT_COLUMNS['iv-fluids']
-  const purpose = sourcePopup ? 'source popup' : 'prescrub'
+function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCount = 7, sourcePopup, onViewMore, onVerify, onDeny, onPending, onUpClick, onDownClick, onCommentsClick }) {
+  const [expanded, setExpanded] = useState(false)
+  const toggle = useCallback(() => setExpanded(e => !e), [])
+
+  const cols        = columns ?? DEFAULT_COLUMNS[tableType] ?? DEFAULT_COLUMNS['iv-fluids']
+  const purpose     = sourcePopup ? 'source popup' : 'prescrub'
+  const hasMore     = rows.length > initialRowCount
+  const visibleRows = hasMore && !expanded ? rows.slice(0, initialRowCount) : rows
+  const hiddenCount = viewMoreCount ?? (rows.length - initialRowCount)
 
   return (
     <>
       <TableHeaderRow columns={cols} />
-      {rows.map((row, i) => (
+      {visibleRows.map((row, i) => {
+        const isLastDataRow = !hasMore && i === visibleRows.length - 1
+        return (
+          <IvFluidsRow
+            key={i}
+            purpose={purpose}
+            type={row.type ?? 'Default'}
+            name={row.name}
+            volume={row.volume ?? row.amount}
+            dosage={row.dosage ?? row.frequency}
+            date={row.date}
+            pageRef={row.pageRef ?? row.page}
+            lineNumber={row.lineNumber}
+            onVerify={onVerify}
+            onDeny={onDeny}
+            onPending={onPending}
+            onUpClick={onUpClick}
+            onDownClick={onDownClick}
+            onCommentsClick={onCommentsClick}
+            style={isLastDataRow ? { borderBottom: 'none' } : undefined}
+          />
+        )
+      })}
+      {hasMore && (
         <IvFluidsRow
-          key={i}
-          purpose={purpose}
-          type={row.type ?? 'Default'}
-          name={row.name}
-          volume={row.volume ?? row.amount}
-          dosage={row.dosage ?? row.frequency}
-          date={row.date}
-          pageRef={row.pageRef ?? row.page}
-          lineNumber={row.lineNumber}
-          onVerify={onVerify}
-          onDeny={onDeny}
-          onPending={onPending}
-          onUpClick={onUpClick}
-          onDownClick={onDownClick}
-          onCommentsClick={onCommentsClick}
+          purpose={expanded ? 'view less' : 'view more'}
+          count={expanded ? undefined : hiddenCount}
+          onClick={() => { toggle(); onViewMore?.() }}
+          style={{ borderBottom: 'none' }}
         />
-      ))}
-      {viewMoreCount != null && (
-        <IvFluidsRow purpose="view more" count={viewMoreCount} onClick={onViewMore} />
       )}
     </>
   )
@@ -215,8 +230,9 @@ export function SourceTypeTable({
   docName       = 'Diagnosis hospital_records file hypervention .pdf',
   // Tabular
   columns,
-  rows          = [],
+  rows            = [],
   viewMoreCount,
+  initialRowCount = 7,
   // Text / quote
   text          = '',
   isQuote       = false,
@@ -304,6 +320,7 @@ export function SourceTypeTable({
                 columns={columns}
                 rows={rows}
                 viewMoreCount={viewMoreCount}
+                initialRowCount={initialRowCount}
                 sourcePopup={sourcePopup}
                 onViewMore={onViewMore}
                 onVerify={onVerify}
