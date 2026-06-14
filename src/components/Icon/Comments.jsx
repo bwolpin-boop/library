@@ -3,21 +3,28 @@ import { colors, textStyles, radii, spacing } from '../../tokens.js'
 import reactionCommentIcon from '../../assets/icons/reaction-comment.svg'
 
 export function Comments({ count, onClick, disabled, className }) {
-  const [hover, setHover]     = useState(false)
-  const [pressed, setPressed] = useState(false)
+  const [selected, setSelected] = useState(false)
+  const [hover, setHover]       = useState(false)
+  const [pressing, setPressing] = useState(false)
+
+  const handleClick = () => {
+    if (disabled) return
+    setSelected(s => !s)
+    onClick?.()
+  }
 
   const bg = disabled ? 'transparent'
-    : pressed ? colors.surfacePressed
-    : hover    ? colors.surfaceHover
+    : pressing || selected ? colors.surfacePressed
+    : hover                ? colors.surfaceHover
     : 'transparent'
 
   return (
     <button
-      onClick={disabled ? undefined : onClick}
+      onClick={handleClick}
       onMouseEnter={() => { if (!disabled) setHover(true) }}
-      onMouseLeave={() => { setHover(false); setPressed(false) }}
-      onMouseDown={() => { if (!disabled) setPressed(true) }}
-      onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => { setHover(false); setPressing(false) }}
+      onMouseDown={() => { if (!disabled) setPressing(true) }}
+      onMouseUp={() => setPressing(false)}
       style={{
         background: 'none',
         border: 'none',

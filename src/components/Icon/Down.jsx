@@ -1,19 +1,24 @@
 import { useState } from 'react'
 import { colors, textStyles, radii, spacing } from '../../tokens.js'
-import thumbsDownIcon        from '../../assets/icons/thumbs-down.svg'
-import thumbsDownPressedIcon from '../../assets/icons/thumbs-down-pressed.svg'
+import { NavIcon } from './NavIcon.jsx'
 
-export function Down({ count, pressed = false, onClick, className }) {
+export function Down({ count, onClick, className }) {
+  const [selected, setSelected] = useState(false)
   const [hover, setHover]       = useState(false)
   const [pressing, setPressing] = useState(false)
 
-  const bg = pressing ? colors.surfacePressed
-    : hover            ? colors.surfaceHover
+  const handleClick = () => {
+    setSelected(s => !s)
+    onClick?.()
+  }
+
+  const bg = pressing || selected ? colors.surfacePressed
+    : hover                        ? colors.surfaceHover
     : 'transparent'
 
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => { setHover(false); setPressing(false) }}
       onMouseDown={() => setPressing(true)}
@@ -33,13 +38,7 @@ export function Down({ count, pressed = false, onClick, className }) {
       }}
       className={className}
     >
-      <img
-        src={pressed ? thumbsDownPressedIcon : thumbsDownIcon}
-        alt="thumbs down"
-        width={24}
-        height={24}
-        style={{ display: 'block', flexShrink: 0 }}
-      />
+      <NavIcon name={selected ? 'thumbs-down-pressed' : 'thumbs-down'} />
       {count !== undefined && (
         <span style={{ ...textStyles.body14Medium, color: colors.secondary, whiteSpace: 'nowrap' }}>
           {count}

@@ -1,3 +1,10 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.5 3.59961C16.863 3.59961 20.4004 7.13695 20.4004 11.5C20.4004 15.863 16.863 19.4004 12.5 19.4004H4.59961V11.5C4.59961 7.13695 8.13695 3.59961 12.5 3.59961Z" stroke="white" stroke-width="1.2"/>
+
+<g id="Nav Icons">
+<rect x="-448.5" y="-146.5" width="669" height="747" rx="4.5" fill="white"/>
+<rect x="-448.5" y="-146.5" width="669" height="747" rx="4.5" stroke="#A852FF" stroke-dasharray="10 5"/>
+<g id="Icon=comments - speech bubble">
+<path id="Rectangle 13328" d="M12.5 3.59961C16.863 3.59961 20.4004 7.13695 20.4004 11.5C20.4004 15.863 16.863 19.4004 12.5 19.4004H4.59961V11.5C4.59961 7.13695 8.13695 3.59961 12.5 3.59961Z" stroke="#222222" stroke-width="1.2"/>
+</g>
+</g>
 </svg>

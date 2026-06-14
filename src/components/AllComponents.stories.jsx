@@ -33,8 +33,10 @@ import { Overview as _Down }             from './Icon/DownOverview.stories.jsx'
 import { Overview as _TotalArrow }       from './Calculator/TotalArrowOverview.stories.jsx'
 import { Overview as _Calculator }       from './Calculator/CalculatorOverview.stories.jsx'
 import { Overview as _CalculatorBar }    from './Calculator/CalculatorBarOverview.stories.jsx'
-import { Overview as _QkNumberTabs }     from './QkNumberTabs/QkNumberTabsOverview.stories.jsx'
-import { Overview as _SourceAlsoAnswers } from './SourceAlsoAnswers/SourceAlsoAnswersOverview.stories.jsx'
+import { Overview as _QkNumberTabs }       from './QkNumberTabs/QkNumberTabsOverview.stories.jsx'
+import { Overview as _SourceAlsoAnswers }  from './SourceAlsoAnswers/SourceAlsoAnswersOverview.stories.jsx'
+import { Overview as _ThumbsComponent }    from './Icon/ThumbsComponentOverview.stories.jsx'
+import { Overview as _RowHoverActions }    from './RowHoverActions/RowHoverActionsOverview.stories.jsx'
 
 export default {
   title: '🗂️ All Components',
@@ -70,6 +72,8 @@ export const Calculator        = { ..._Calculator,      name: '💊 Calculator' 
 export const CalculatorBar     = { ..._CalculatorBar,   name: '💊 CalculatorBar' }
 export const QkNumberTabs      = { ..._QkNumberTabs,      name: '💊 QK Number Tabs' }
 export const SourceAlsoAnswers = { ..._SourceAlsoAnswers, name: '💊 Source Also Answers' }
+export const ThumbsComponent   = { ..._ThumbsComponent,   name: '😂 Thumbs Component' }
+export const RowHoverActions   = { ..._RowHoverActions,   name: '😂 Row Hover Actions' }
 export const Comments          = { ..._Comments,          name: '😂 Comments' }
 export const Up                = { ..._Up,                name: '😂 Up' }
 export const Down              = { ..._Down,              name: '😂 Down' }
