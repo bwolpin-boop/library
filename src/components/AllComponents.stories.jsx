@@ -47,6 +47,7 @@ import { Overview as _PrimaryDiagnosisLabel } from './PrimaryDiagnosisLabel/Prim
 import { Overview as _SourcesHeaders }     from './SourcesHeaders/SourcesHeadersOverview.stories.jsx'
 import { Overview as _IvFluidsRow }        from './IvFluidsRow/IvFluidsRowOverview.stories.jsx'
 import { Overview as _DiagnosisTableRow } from './DiagnosisTableRow/DiagnosisTableRowOverview.stories.jsx'
+import { Overview as _TypeTag }           from './TypeTag/TypeTagOverview.stories.jsx'
 
 export default {
   title: '🗂️ All Components',
@@ -86,6 +87,7 @@ export const SourceAlsoAnswers = { ..._SourceAlsoAnswers, name: '💊 Source Als
 export const SourceHeader      = { ..._SourceHeader,      name: '💊 Source Header' }
 export const MoneyLabel        = { ..._MoneyLabel,        name: '💊 Money Label' }
 export const IvFluidsRow       = { ..._IvFluidsRow,       name: '💊 IV Fluids Row' }
+export const TypeTag           = { ..._TypeTag,           name: '💊 Type Tag' }
 export const PdfTitle          = { ..._PdfTitle,          name: '💊 PDF Title' }
 export const HeaderCells           = { ..._HeaderCells,           name: '💊 Header Cells' }
 export const PrimaryDiagnosisLabel = { ..._PrimaryDiagnosisLabel, name: '💊 Primary Diagnosis Label' }

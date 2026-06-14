@@ -30,6 +30,10 @@ export const Overview = {
       {sectionLabel('Source Popup')}
       <IvFluidsRow {...baseProps} purpose="source popup" lineNumber="23" />
       <IvFluidsRow {...baseProps} purpose="source popup" lineNumber="24" name="Dextrose 5%" volume="100 mL" />
+
+      {sectionLabel('View More / View Less')}
+      <IvFluidsRow purpose="view more" count={234} />
+      <IvFluidsRow purpose="view less" />
     </div>
   ),
 }

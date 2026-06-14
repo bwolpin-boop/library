@@ -13,14 +13,17 @@ export default {
     pageRef: 'pg. 12',
   },
   argTypes: {
-    purpose: { control: 'select', options: ['prescrub', 'source popup'] },
+    purpose: { control: 'select', options: ['prescrub', 'source popup', 'view more', 'view less'] },
     type:    { control: 'select', options: ['Default', 'verified', 'pending', 'denied'] },
+    count:   { control: 'number' },
   },
   decorators: [(Story) => <div style={{ width: 705 }}><Story /></div>],
 }
 
-export const Default  = { args: { purpose: 'prescrub', type: 'Default' } }
-export const Verified = { args: { purpose: 'prescrub', type: 'verified' } }
-export const Pending  = { args: { purpose: 'prescrub', type: 'pending' } }
-export const Denied   = { args: { purpose: 'prescrub', type: 'denied' } }
+export const Default     = { args: { purpose: 'prescrub', type: 'Default' } }
+export const Verified    = { args: { purpose: 'prescrub', type: 'verified' } }
+export const Pending     = { args: { purpose: 'prescrub', type: 'pending' } }
+export const Denied      = { args: { purpose: 'prescrub', type: 'denied' } }
 export const SourcePopup = { args: { purpose: 'source popup', lineNumber: '23' } }
+export const ViewMore    = { args: { purpose: 'view more', count: 234 } }
+export const ViewLess    = { args: { purpose: 'view less' } }

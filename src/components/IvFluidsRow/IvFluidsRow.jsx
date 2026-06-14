@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, spacing } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 import { VerifyAndDeny } from '../VerifyDeny/VerifyAndDeny.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
+import { NavIcon } from '../Icon/NavIcon.jsx'
 
 const textStyle = {
   fontFamily: fonts.montserrat,
@@ -36,8 +37,40 @@ function Cell({ width, flex, children }) {
 // type: 'Default' | 'verified' | 'pending' | 'denied'
 const vdTypeMap = { verified: 'verify', pending: 'pending', denied: 'deny', Default: 'empty' }
 
+function ViewToggleRow({ purpose, count, onClick }) {
+  const isMore = purpose === 'view more'
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '32px',
+        padding: `0 ${spacing.gap24}`,
+        borderBottom: `1px solid ${colors.dividerSubtle}`,
+        backgroundColor: hovered ? colors.surface : colors.white,
+        boxSizing: 'border-box',
+        cursor: onClick ? 'pointer' : 'default',
+        transition: 'background-color 0.1s',
+      }}
+    >
+      <div style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.gap8, padding: spacing.gap4, borderRadius: radii?.box ?? '10px' }}>
+        <NavIcon name={isMore ? 'arrow-down' : 'arrow-up'} size={24} />
+        <span style={{ ...textStyle }}>
+          {isMore ? `View more${count != null ? ` (${count})` : ''}` : 'View less'}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export function IvFluidsRow({
-  purpose = 'prescrub',     // 'prescrub' | 'source popup'
+  purpose = 'prescrub',     // 'prescrub' | 'source popup' | 'view more' | 'view less'
   type = 'Default',         // 'Default' | 'verified' | 'pending' | 'denied'
   // cell content
   name = 'Sodium Chloride',
@@ -46,7 +79,9 @@ export function IvFluidsRow({
   date = '15/04/2025',
   pageRef = 'pg. 12',
   lineNumber,               // shown instead of verify/deny when purpose='source popup'
-  // row hover action handlers
+  count,                    // number shown in 'view more' e.g. 234
+  // callbacks
+  onClick,
   onVerify,
   onDeny,
   onPending,
@@ -55,6 +90,10 @@ export function IvFluidsRow({
   onDownClick,
 }) {
   const [hovered, setHovered] = useState(false)
+
+  if (purpose === 'view more' || purpose === 'view less') {
+    return <ViewToggleRow purpose={purpose} count={count} onClick={onClick} />
+  }
 
   const isSourcePopup = purpose === 'source popup'
   const bgColor = hovered ? colors.surface : colors.white
