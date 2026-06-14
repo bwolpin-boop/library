@@ -27,9 +27,14 @@ import { Overview as _Indicator }        from './Icon/IndicatorOverview.stories.
 import { Overview as _VerifyAndDeny }    from './VerifyDeny/VerifyAndDenyOverview.stories.jsx'
 import { Overview as _VerifyDenyGroup }  from './VerifyDeny/GroupOverview.stories.jsx'
 import { Overview as _MdsAndDcAnswer }   from './Icon/MdsAndDcAnswerOverview.stories.jsx'
+import { Overview as _Comments }         from './Icon/CommentsOverview.stories.jsx'
+import { Overview as _Up }               from './Icon/UpOverview.stories.jsx'
+import { Overview as _Down }             from './Icon/DownOverview.stories.jsx'
 import { Overview as _TotalArrow }       from './Calculator/TotalArrowOverview.stories.jsx'
 import { Overview as _Calculator }       from './Calculator/CalculatorOverview.stories.jsx'
 import { Overview as _CalculatorBar }    from './Calculator/CalculatorBarOverview.stories.jsx'
+import { Overview as _QkNumberTabs }     from './QkNumberTabs/QkNumberTabsOverview.stories.jsx'
+import { Overview as _SourceAlsoAnswers } from './SourceAlsoAnswers/SourceAlsoAnswersOverview.stories.jsx'
 
 export default {
   title: '🗂️ All Components',
@@ -63,3 +68,8 @@ export const MdsAndDcAnswer    = { ..._MdsAndDcAnswer,  name: '😂 MdsAndDcAnsw
 export const TotalArrow        = { ..._TotalArrow,      name: '💊 TotalArrow' }
 export const Calculator        = { ..._Calculator,      name: '💊 Calculator' }
 export const CalculatorBar     = { ..._CalculatorBar,   name: '💊 CalculatorBar' }
+export const QkNumberTabs      = { ..._QkNumberTabs,      name: '💊 QK Number Tabs' }
+export const SourceAlsoAnswers = { ..._SourceAlsoAnswers, name: '💊 Source Also Answers' }
+export const Comments          = { ..._Comments,          name: '😂 Comments' }
+export const Up                = { ..._Up,                name: '😂 Up' }
+export const Down              = { ..._Down,              name: '😂 Down' }
