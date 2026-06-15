@@ -11,8 +11,8 @@ function Divider() {
   )
 }
 
-export function ThumbsComponent({ upCount, downCount, onUpClick, onDownClick }) {
-  const [selected, setSelected] = useState(null) // null | 'up' | 'down'
+export function ThumbsComponent({ upCount, downCount, onUpClick, onDownClick, upPressed = false, downPressed = false }) {
+  const [selected, setSelected] = useState(() => upPressed ? 'up' : downPressed ? 'down' : null)
 
   const handleUp = () => {
     setSelected(s => s === 'up' ? null : 'up')

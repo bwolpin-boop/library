@@ -99,9 +99,8 @@ export function IvFluidsRow({
   }
 
   const isSourcePopup = purpose === 'source popup'
-  const hasVote   = vote !== null
-  const showActions = hovered || hasVote
-  const bgColor   = showActions ? colors.surface : colors.white
+  const showActions   = hovered
+  const bgColor       = hovered ? colors.surface : colors.white
 
   function handleUpClick() {
     setVote(v => v === 'up' ? null : 'up')
@@ -119,7 +118,7 @@ export function IvFluidsRow({
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        gap: spacing.gap24,
+        gap: spacing.gap16,
         height: '32px',
         padding: `0 ${spacing.gap24}`,
         borderBottom: `1px solid ${colors.dividerSubtle}`,
@@ -151,22 +150,40 @@ export function IvFluidsRow({
       </Cell>
 
       {/* Dosage */}
-      <Cell width="120px">
+      <Cell width="100px">
         <span style={textStyle}>{dosage}</span>
       </Cell>
 
       {/* Date */}
-      <Cell width="80px">
+      <Cell width="72px">
         <span style={textStyle}>{date}</span>
       </Cell>
 
       {/* Page ref */}
-      <Cell width="128px">
+      <Cell width="80px">
         <span style={textStyle}>{pageRef}</span>
       </Cell>
 
-      {/* Actions overlay — visible on hover, and persists while a vote is active */}
-      {showActions && (
+      {/* Compact vote badge — shown when voted but not hovering */}
+      {vote !== null && !hovered && (
+        <div style={{
+          position:        'absolute',
+          right:           spacing.gap24,
+          top:             '50%',
+          transform:       'translateY(-50%)',
+          display:         'flex',
+          alignItems:      'center',
+          padding:         '2px',
+          backgroundColor: colors.surfacePressed,
+          borderRadius:    '2px',
+          flexShrink:      0,
+        }}>
+          <NavIcon name={vote === 'up' ? 'thumbs-up-pressed' : 'thumbs-down-pressed'} size={16} />
+        </div>
+      )}
+
+      {/* Full actions overlay — visible on hover */}
+      {hovered && (
         <div
           style={{
             position: 'absolute',
