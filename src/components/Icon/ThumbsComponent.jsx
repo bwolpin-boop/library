@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { colors } from '../../tokens.js'
 import { Up } from './Up.jsx'
 import { Down } from './Down.jsx'
@@ -13,6 +13,11 @@ function Divider() {
 
 export function ThumbsComponent({ upCount, downCount, onUpClick, onDownClick, upPressed = false, downPressed = false }) {
   const [selected, setSelected] = useState(() => upPressed ? 'up' : downPressed ? 'down' : null)
+
+  // Keep in sync when the external vote state changes or the overlay remounts
+  useEffect(() => {
+    setSelected(upPressed ? 'up' : downPressed ? 'down' : null)
+  }, [upPressed, downPressed])
 
   const handleUp = () => {
     setSelected(s => s === 'up' ? null : 'up')

@@ -141,6 +141,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             volume={row.volume ?? row.amount}
             dosage={row.dosage ?? row.frequency}
             date={row.date}
+            pages={row.pages}
             pageRef={row.pageRef ?? row.page}
             hasMorePages={row.hasMorePages ?? false}
             lineNumber={row.lineNumber ?? (sourcePopup ? i + 1 : undefined)}

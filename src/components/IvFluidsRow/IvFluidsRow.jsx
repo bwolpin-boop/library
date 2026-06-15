@@ -194,7 +194,7 @@ export function IvFluidsRow({
         >
           {name}
         </span>
-        {vote !== null && !hovered && (
+        {vote !== null && (
           <div style={{
             display:         'flex',
             alignItems:      'center',
@@ -203,7 +203,7 @@ export function IvFluidsRow({
             borderRadius:    '2px',
             flexShrink:      0,
           }}>
-            <NavIcon name={vote === 'up' ? 'thumbs-up-pressed' : 'thumbs-down-pressed'} size={16} />
+            <NavIcon name={vote === 'up' ? 'thumbs-up-pressed' : 'thumbs-down-pressed'} size={12} />
           </div>
         )}
       </Cell>
@@ -244,20 +244,21 @@ export function IvFluidsRow({
         )}
       </Cell>
 
-      {/* Full actions overlay — visible on hover */}
-      {hovered && (
+      {/* Actions overlay — mounted whenever voted OR hovered so ThumbsComponent never loses state */}
+      {(hovered || vote !== null) && (
         <div
           style={{
-            position: 'absolute',
-            right: spacing.gap24,
-            top: 0,
-            bottom: 0,
-            width: '359px',
-            display: 'flex',
+            position:   'absolute',
+            right:      spacing.gap24,
+            top:        0,
+            bottom:     0,
+            width:      '359px',
+            display:    'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            background: `linear-gradient(to right, ${gradientStart} 2.5%, ${gradientEnd} 25%)`,
-            gap: spacing.gap24,
+            background: hovered ? `linear-gradient(to right, ${gradientStart} 2.5%, ${gradientEnd} 25%)` : 'none',
+            gap:        spacing.gap24,
+            visibility: hovered ? 'visible' : 'hidden',
           }}
         >
           <RowHoverActions
