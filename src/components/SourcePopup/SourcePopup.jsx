@@ -218,22 +218,28 @@ export function SourcePopup({
     <div
       className={className}
       style={{
-        display:         'flex',
-        flexDirection:   'column',
-        gap:             spacing.gap16,
         width:           '922px',
         height:          '730px',
-        padding:         spacing.gap24,
         backgroundColor: colors.white,
         border:          `1px solid ${colors.divider}`,
         borderRadius:    radii.box,
         overflow:        'hidden',
+        display:         'flex',
+        flexDirection:   'column',
         boxSizing:       'border-box',
         ...style,
       }}
     >
-      {/* Sticky header with source type tabs */}
-      <div style={{ flexShrink: 0, backgroundColor: colors.white }}>
+      {/* ── Sticky header: title + close + DC suggests + tabs ────────────────
+           This section never scrolls. The close button and the source filter
+           tabs + action icons are always visible regardless of scroll position. */}
+      <div style={{
+        flexShrink:      0,
+        padding:         spacing.gap24,
+        paddingBottom:   spacing.gap16,
+        borderBottom:    `1px solid ${colors.dividerSubtle}`,
+        backgroundColor: colors.white,
+      }}>
         <SourcePopupTopSection
           qCode={qCode}
           questionTitle={questionTitle}
@@ -241,6 +247,7 @@ export function SourcePopup({
           hasLittleMan={hasLittleMan}
           sourceTabs={tabList}
           answerType={answerType}
+          stickyTabs={false}
           onClose={onClose}
           onTabClick={setTabIndex}
           onVerifyAll={onVerifyAll}
@@ -248,14 +255,14 @@ export function SourcePopup({
         />
       </div>
 
-      {/* Scrollable list of SourceTypeTable components */}
+      {/* ── Scrollable source tables ────────────────────────────────────────── */}
       <div style={{
-        flex:          '1 0 0',
-        overflowY:     'auto',
-        display:       'flex',
-        flexDirection: 'column',
-        gap:           spacing.gap24,
-        minHeight:     0,
+        flex:            1,
+        overflowY:       'auto',
+        display:         'flex',
+        flexDirection:   'column',
+        gap:             spacing.gap24,
+        padding:         spacing.gap24,
       }}>
         {visibleTables.map((table, i) => (
           <SourceTypeTable

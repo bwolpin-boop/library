@@ -153,6 +153,7 @@ export function IvFluidsRow({
   pageRef = 'pg. 12',       // legacy string display; use `pages` array for smart rendering
   pages,                    // array of page numbers, e.g. [12] | [12,24] | [5,13,52] | [5,13,52,47,...]
   hasMorePages = false,     // legacy fallback when `pages` is not provided
+  showDosage = true,        // set false for tube-feeding (no Rate/Frequency column)
   lineNumber,               // shown instead of verify/deny when purpose='source popup'
   count,                    // number shown in 'view more' e.g. 234
   upVotes   = 0,            // existing votes from others — thumbs up

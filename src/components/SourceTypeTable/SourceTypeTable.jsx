@@ -19,7 +19,7 @@ const { vol: W_VOL, dosage: W_DOSAGE, date: W_DATE, page: W_PAGE } = TABLE_COL_W
 
 const DEFAULT_COLUMNS = {
   'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose',      width: W_VOL }, { label: 'Rate',      width: W_DOSAGE }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
-  'tube-feeding': [{ label: 'Item' },       { label: 'Amount',    width: W_VOL }, { label: 'Frequency', width: W_DOSAGE }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
+  'tube-feeding': [{ label: 'Formula name' }, { label: 'Dose', width: W_VOL }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
   surgery:        [{ label: 'Procedure' },  { label: 'Type',      width: W_VOL }, { label: 'Details',   width: W_DOSAGE }, { label: 'Date',     width: W_DATE }, { label: 'Page', width: W_PAGE }],
   diagnosis:      [{ label: 'Diagnosis' },  { label: 'Code',      width: W_VOL }, { label: 'Type',      width: W_DOSAGE }, { label: 'Date',     width: W_DATE }, { label: 'Page', width: W_PAGE }],
 }
