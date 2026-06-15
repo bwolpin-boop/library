@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react'
 import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { DcSuggests } from './DcSuggests.jsx'
@@ -60,25 +61,39 @@ export function SourceTabsBar({
   onComments,
   sticky      = false,
 }) {
+  // Sentinel-based detection: border only appears when the bar is actually stuck
+  const sentinelRef = useRef(null)
+  const [isStuck, setIsStuck] = useState(false)
+
+  useEffect(() => {
+    if (!sticky || !sentinelRef.current) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsStuck(!entry.isIntersecting),
+      { threshold: 0 }
+    )
+    observer.observe(sentinelRef.current)
+    return () => observer.disconnect()
+  }, [sticky])
+
   return (
-    <div style={{
-      display:         'flex',
-      alignItems:      'center',
-      width:           '100%',
-      backgroundColor: colors.white,
-      ...(sticky ? {
-        position:      'sticky',
-        top:           0,
-        zIndex:        10,
-        paddingTop:    spacing.gap12,
-        paddingBottom: spacing.gap12,
-        paddingLeft:   spacing.gap24,
-        paddingRight:  spacing.gap24,
-        borderBottom:  `1px solid ${colors.dividerSubtle}`,
-        marginLeft:    `-${spacing.gap24}`,
-        marginRight:   `-${spacing.gap24}`,
-      } : {}),
-    }}>
+    <>
+      {sticky && <div ref={sentinelRef} style={{ height: 1, flexShrink: 0 }} />}
+      <div style={{
+        display:         'flex',
+        alignItems:      'center',
+        width:           '100%',
+        backgroundColor: colors.white,
+        ...(sticky ? {
+          position:      'sticky',
+          top:           0,
+          zIndex:        10,
+          paddingTop:    spacing.gap12,
+          paddingBottom: spacing.gap12,
+          paddingLeft:   spacing.gap24,
+          paddingRight:  spacing.gap24,
+          borderBottom:  isStuck ? `1px solid ${colors.dividerSubtle}` : 'none',
+        } : {}),
+      }}>
       <div style={{ flex: '1 0 0', minWidth: '1px' }}>
         <SourceTypeTabs
           tabs={sourceTabs}
@@ -93,6 +108,7 @@ export function SourceTabsBar({
         <IconBtn name="reaction-comment" size={24} onClick={onComments} />
       </div>
     </div>
+    </>
   )
 }
 

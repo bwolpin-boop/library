@@ -216,15 +216,26 @@ export function PccSidePanel({
       {/* ── Source tables section ── */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap8, flexShrink: 0 }}>
 
-        {/* Source type tabs (only shown when multiple source types) */}
-        {uniqueTypes.length > 1 && (
-          <SourceTypeTabs
-            tabs={uniqueTypes}
-            selectedTab={selectedTab}
-            onTabSelect={setSelectedTab}
-            size="small"
-          />
-        )}
+        {/* "N Sources" heading */}
+        <span style={{
+          fontFamily:  fonts.montserrat,
+          fontSize:    fontSizes.xs,
+          fontWeight:  fontWeights.semibold,
+          lineHeight:  lineHeights.md,
+          color:       '#323338',
+          whiteSpace:  'nowrap',
+          flexShrink:  0,
+        }}>
+          {tables.length} Source{tables.length !== 1 ? 's' : ''}
+        </span>
+
+        {/* Source type tabs */}
+        <SourceTypeTabs
+          tabs={['All', ...uniqueTypes]}
+          selectedTab={selectedTab ?? 'All'}
+          onTabSelect={t => setSelectedTab(t === 'All' ? null : t)}
+          size="small"
+        />
 
         {/* Tables */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap12 }}>
