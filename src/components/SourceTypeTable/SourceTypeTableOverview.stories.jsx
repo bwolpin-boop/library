@@ -55,12 +55,16 @@ const DIAG_ROWS = [
 ]
 
 const LOREM = 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis.'
-const QUOTE = 'The patient presented with elevated blood pressure readings consistently above 140/90 mmHg over a period of three weeks.'
 const AI    = 'The patient has a Stage 3 pressure wound of the left buttock coccyx, full thickness. The wound has a duration of 39 days, measures 0.36 x 0.62 x 0.1 cm with a surface area of 0.22 cm².'
+const DOC_STRINGS = [
+  'The patient presented with elevated blood pressure readings consistently above 140/90 mmHg over a period of three weeks.',
+  'Patient reports occasional headaches and dizziness in the morning, particularly upon standing from a seated position.',
+  'Current medication regimen includes Lisinopril 10 mg daily; patient has been non-compliant with low-sodium dietary recommendations.',
+]
 
 // ─── Shared toggle component ─────────────────────────────────────────────────
 
-function ToggleTable({ label, tableType, sourceType, rows, text, aiTitle, isQuote }) {
+function ToggleTable({ label, tableType, sourceType, rows, text, texts, aiTitle, isQuote }) {
   const [mode, setMode] = useState('source popup')
 
   const btn = (m) => ({
@@ -89,6 +93,7 @@ function ToggleTable({ label, tableType, sourceType, rows, text, aiTitle, isQuot
         sourceType={sourceType}
         rows={rows}
         text={text}
+        texts={texts}
         aiTitle={aiTitle}
         isQuote={isQuote}
         sourcePopup={mode === 'source popup'}
@@ -108,7 +113,7 @@ export const Overview = {
       <ToggleTable label="Surgery"        tableType="surgery"          sourceType="Medications"    rows={SURGERY_ROWS} />
       <ToggleTable label="Diagnosis"      tableType="diagnosis"        sourceType="Diagnosis"      rows={DIAG_ROWS} />
       <ToggleTable label="Progress Notes" tableType="highlighted-text" sourceType="Progress Notes" text={LOREM} />
-      <ToggleTable label="Doc Quote"      tableType="doc-quote"        sourceType="Documents"      text={QUOTE} isQuote />
+      <ToggleTable label="Doc Strings"    tableType="doc-strings"      sourceType="Documents"      texts={DOC_STRINGS} />
       <ToggleTable label="AI Summary"     tableType="ai-summary"       sourceType="Assessments"    aiTitle="AI-Generated Section M Summary" text={AI} />
     </div>
   ),
