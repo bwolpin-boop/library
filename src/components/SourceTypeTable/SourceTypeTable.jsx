@@ -16,10 +16,10 @@ const reg12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight
 // ─── Default column definitions per tabular table type ────────────────────────
 
 const DEFAULT_COLUMNS = {
-  'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose', width: 55 }, { label: 'Rate', width: 120 }, { label: 'Given on', width: 80 }, { label: 'Page', width: 128 }],
-  'tube-feeding': [{ label: 'Item' },       { label: 'Amount', width: 55 }, { label: 'Frequency', width: 120 }, { label: 'Given on', width: 80 }, { label: 'Page', width: 128 }],
-  surgery:        [{ label: 'Procedure' },  { label: 'Type', width: 55 }, { label: 'Details', width: 120 }, { label: 'Date', width: 80 }, { label: 'Page', width: 128 }],
-  diagnosis:      [{ label: 'Diagnosis' },  { label: 'Code', width: 55 }, { label: 'Type', width: 120 }, { label: 'Date', width: 80 }, { label: 'Page', width: 128 }],
+  'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose', width: 55 }, { label: 'Rate', width: 120 }, { label: 'Given on', width: 80 }, { label: 'Page', width: 100 }],
+  'tube-feeding': [{ label: 'Item' },       { label: 'Amount', width: 55 }, { label: 'Frequency', width: 120 }, { label: 'Given on', width: 80 }, { label: 'Page', width: 100 }],
+  surgery:        [{ label: 'Procedure' },  { label: 'Type', width: 55 }, { label: 'Details', width: 120 }, { label: 'Date', width: 80 }, { label: 'Page', width: 100 }],
+  diagnosis:      [{ label: 'Diagnosis' },  { label: 'Code', width: 55 }, { label: 'Type', width: 120 }, { label: 'Date', width: 80 }, { label: 'Page', width: 100 }],
 }
 
 const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosis'])
@@ -272,7 +272,17 @@ export function SourceTypeTable({
           onClick={hasArrow ? handleToggle : undefined}
           style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, cursor: hasArrow ? 'pointer' : 'default', userSelect: 'none' }}
         >
-          {hasArrow && <NavIcon name={collapsed ? 'arrow-down' : 'arrow-up'} size={16} />}
+          {hasArrow && (
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <path
+                d={collapsed ? 'M4 6L8 10L12 6' : 'M4 10L8 6L12 10'}
+                stroke={colors.primary}
+                strokeWidth={strokeWidths.icon}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
           <span style={{ ...sb12, color: '#323338', whiteSpace: 'nowrap' }}>{displayTitle}</span>
         </div>
       )}

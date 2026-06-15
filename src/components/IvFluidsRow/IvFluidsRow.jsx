@@ -4,6 +4,10 @@ import { VerifyAndDeny } from '../VerifyDeny/VerifyAndDeny.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 
+// Shared column layout — imported by SourceTypeTable so header and rows always match
+export const TABLE_COL_GAP     = spacing.gap16
+export const TABLE_COL_WIDTHS  = { vol: '55px', dosage: '120px', date: '80px', page: '128px' }
+
 const textStyle = {
   fontFamily: fonts.montserrat,
   fontSize: fontSizes.xs,
@@ -127,7 +131,7 @@ export function IvFluidsRow({
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        gap: spacing.gap24,
+        gap: spacing.gap16,
         height: '32px',
         padding: `0 ${spacing.gap24}`,
         borderBottom: `1px solid ${colors.dividerSubtle}`,
@@ -139,14 +143,16 @@ export function IvFluidsRow({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Name cell: number (source popup) or verify dot (prescrub) + name */}
+      {/* Name cell: status dot (or line number) + name text */}
       <Cell flex="1 0 0">
         {isSourcePopup ? (
-          <div style={{ width: 16, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ ...textStyle, width: '100%' }}>{lineNumber ?? ''}</span>
-          </div>
+          lineNumber != null && (
+            <span style={{ ...textStyle, width: '12px', flexShrink: 0, textAlign: 'right' }}>
+              {lineNumber}
+            </span>
+          )
         ) : (
-          <VerifyAndDeny type={vdTypeMap[verifyStatus] ?? 'empty'} size="small" />
+          <VerifyAndDeny type={vdTypeMap[verifyStatus] ?? 'empty'} size="small" onClick={() => setVerify('Default')} />
         )}
         <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>
           {name}
@@ -169,7 +175,7 @@ export function IvFluidsRow({
       </Cell>
 
       {/* Page ref */}
-      <Cell width="128px">
+      <Cell width="100px">
         <span style={textStyle}>{pageRef}</span>
       </Cell>
 
