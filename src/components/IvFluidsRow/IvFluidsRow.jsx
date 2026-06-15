@@ -92,13 +92,25 @@ export function IvFluidsRow({
   className,
 }) {
   const [hovered, setHovered] = useState(false)
+  const [vote, setVote]       = useState(null) // null | 'up' | 'down'
 
   if (purpose === 'view more' || purpose === 'view less') {
     return <ViewToggleRow purpose={purpose} count={count} onClick={onClick} style={style} />
   }
 
   const isSourcePopup = purpose === 'source popup'
-  const bgColor = hovered ? colors.surface : colors.white
+  const hasVote   = vote !== null
+  const showActions = hovered || hasVote
+  const bgColor   = showActions ? colors.surface : colors.white
+
+  function handleUpClick() {
+    setVote(v => v === 'up' ? null : 'up')
+    onUpClick?.()
+  }
+  function handleDownClick() {
+    setVote(v => v === 'down' ? null : 'down')
+    onDownClick?.()
+  }
 
   return (
     <div
@@ -153,8 +165,8 @@ export function IvFluidsRow({
         <span style={textStyle}>{pageRef}</span>
       </Cell>
 
-      {/* Hover overlay with gradient fade + actions */}
-      {hovered && (
+      {/* Actions overlay — visible on hover, and persists while a vote is active */}
+      {showActions && (
         <div
           style={{
             position: 'absolute',
@@ -176,8 +188,8 @@ export function IvFluidsRow({
             onDeny={onDeny}
             onPending={onPending}
             onCommentsClick={onCommentsClick}
-            onUpClick={onUpClick}
-            onDownClick={onDownClick}
+            onUpClick={handleUpClick}
+            onDownClick={handleDownClick}
           />
         </div>
       )}

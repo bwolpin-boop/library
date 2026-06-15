@@ -88,7 +88,7 @@ function ColumnHeaders() {
 }
 
 // ── Single data row ───────────────────────────────────────────────────────────
-function DiagnosisRow({ diagnosis, type, mdsMapping, diagnosisLabel, verifyType = 'empty', rowIndex = 0 }) {
+function DiagnosisRow({ diagnosis, type, mdsMapping, diagnosisLabel, verifyType = 'empty', rowIndex = 0, style: styleProp }) {
   const [hovered, setHovered] = useState(false)
   const isEven  = rowIndex % 2 === 0
   const bgBase  = isEven ? colors.white : colors.background
@@ -107,6 +107,7 @@ function DiagnosisRow({ diagnosis, type, mdsMapping, diagnosisLabel, verifyType 
         backgroundColor: bg,
         borderBottom:    `1px solid ${colors.dividerSubtle}`,
         transition:      'background-color 0.1s',
+        ...styleProp,
       }}
     >
       {/* Diagnosis (flex-1): status dot + text */}
@@ -154,7 +155,12 @@ function DiagnosisSection({ title, dateRange, fileName, rows }) {
           <SourceCellHeader title={fileName} />
           <ColumnHeaders />
           {rows.map((row, i) => (
-            <DiagnosisRow key={i} {...row} rowIndex={i} />
+            <DiagnosisRow
+              key={i}
+              {...row}
+              rowIndex={i}
+              style={i === rows.length - 1 ? { borderBottom: 'none' } : undefined}
+            />
           ))}
         </div>
       )}

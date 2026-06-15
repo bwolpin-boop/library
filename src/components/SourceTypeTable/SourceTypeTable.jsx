@@ -27,7 +27,10 @@ const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosi
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
 // Header row of a tabular table (column labels with sort arrows)
-function TableHeaderRow({ columns }) {
+// nameIndent: left spacer on the first column to align with the row's leading element
+//   source popup rows: 16px number + 8px gap = 24px
+//   prescrub rows:    ~12px dot  + 8px gap = 20px
+function TableHeaderRow({ columns, nameIndent = 0 }) {
   return (
     <div style={{
       display: 'flex',
@@ -47,8 +50,13 @@ function TableHeaderRow({ columns }) {
             width: col.width ?? undefined,
             minWidth: col.width ? undefined : '1px',
             flexShrink: col.width ? 0 : undefined,
+            display: 'flex',
+            alignItems: 'center',
           }}
         >
+          {i === 0 && nameIndent > 0 && (
+            <div style={{ width: nameIndent, flexShrink: 0 }} />
+          )}
           <HeaderCells label={col.label} variant="default" />
         </div>
       ))}
@@ -122,13 +130,14 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
 
   const cols        = columns ?? DEFAULT_COLUMNS[tableType] ?? DEFAULT_COLUMNS['iv-fluids']
   const purpose     = sourcePopup ? 'source popup' : 'prescrub'
+  const nameIndent  = sourcePopup ? 24 : 20  // line-number(16)+gap(8) or dot(12)+gap(8)
   const hasMore     = rows.length > initialRowCount
   const visibleRows = hasMore && !expanded ? rows.slice(0, initialRowCount) : rows
   const hiddenCount = viewMoreCount ?? (rows.length - initialRowCount)
 
   return (
     <>
-      <TableHeaderRow columns={cols} />
+      <TableHeaderRow columns={cols} nameIndent={nameIndent} />
       {visibleRows.map((row, i) => {
         const isLastDataRow = !hasMore && i === visibleRows.length - 1
         return (
