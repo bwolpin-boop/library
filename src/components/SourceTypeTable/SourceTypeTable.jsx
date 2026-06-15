@@ -142,6 +142,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             dosage={row.dosage ?? row.frequency}
             date={row.date}
             pageRef={row.pageRef ?? row.page}
+            hasMorePages={row.hasMorePages ?? false}
             lineNumber={row.lineNumber ?? (sourcePopup ? i + 1 : undefined)}
             onVerify={onVerify}
             onDeny={onDeny}

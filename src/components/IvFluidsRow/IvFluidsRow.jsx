@@ -30,7 +30,6 @@ function Cell({ width, flex, children }) {
         gap: '8px',
         height: '32px',
         padding: 0,
-        overflow: 'hidden',
         flexShrink: width ? 0 : undefined,
         width: width ?? undefined,
         flex: flex ?? undefined,
@@ -166,29 +165,32 @@ export function IvFluidsRow({
             onClick={() => setVerify('Default')}
           />
         )}
-        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>
+        <span
+          title={name}
+          style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}
+        >
           {name}
         </span>
       </Cell>
 
       {/* Volume */}
       <Cell width={`${TABLE_COL_WIDTHS.vol}px`}>
-        <span style={textStyle}>{volume}</span>
+        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={volume}>{volume}</span>
       </Cell>
 
       {/* Dosage / Rate */}
       <Cell width={`${TABLE_COL_WIDTHS.dosage}px`}>
-        <span style={textStyle}>{dosage}</span>
+        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={dosage}>{dosage}</span>
       </Cell>
 
       {/* Date / Given on */}
       <Cell width={`${TABLE_COL_WIDTHS.date}px`}>
-        <span style={textStyle}>{date}</span>
+        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>{date}</span>
       </Cell>
 
       {/* Page ref — optional + icon when there are multiple pages */}
       <Cell width={`${TABLE_COL_WIDTHS.page}px`}>
-        <span style={textStyle}>{pageRef}</span>
+        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>{pageRef}</span>
         {hasMorePages && (
           <button
             onClick={e => { e.stopPropagation(); onMorePages?.() }}

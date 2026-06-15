@@ -9,11 +9,41 @@ export default {
 
 // ─── Shared sample data ───────────────────────────────────────────────────────
 
-const BASE_ROW = { name: 'Sodium Chloride', volume: '50 mL', dosage: '80 mL/3x a day', date: '15/04/2025', pageRef: 'pg. 12' }
-const ROWS     = Array.from({ length: 8 }, (_, i) => ({
-  ...BASE_ROW,
+const FLUID_NAMES = [
+  'Normal Saline (0.9% NaCl)',
+  "Lactated Ringer's (LR) / Hartmann's Solution",
+  'Plasma-Lyte',
+  '0.45% Sodium Chloride (Half-Normal Saline)',
+  '5% Dextrose in Water (D5W)',
+  '3% or 5% Sodium Chloride (3% or 5% NaCl)',
+  'Human Albumin',
+  'Dextran',
+]
+
+const ROWS = FLUID_NAMES.map((name, i) => ({
+  name,
+  volume:       i % 2 === 0 ? '50 mL' : '100 mL',
+  dosage:       i % 3 === 0 ? '80 mL/3x a day' : '120 mL/2x a day',
+  date:         i % 2 === 0 ? '15/04/2025' : '20/04/2025',
   pageRef:      i % 3 === 0 ? 'pg. 1, 2, 3' : 'pg. 12',
   hasMorePages: i % 3 === 0,
+}))
+
+const TUBE_NAMES = [
+  'Central Venous Catheter (CVC)',
+  'Peripherally Inserted Central Catheter (PICC line)',
+  'Implanted Port (Port-a-Cath)',
+  'Peripheral IV Line',
+  'TPN (Total Parenteral Nutrition)',
+  'PPN (Partial Parenteral Nutrition)',
+]
+
+const TUBE_ROWS = TUBE_NAMES.map((name, i) => ({
+  name,
+  amount:    i % 2 === 0 ? '240 mL' : '500 mL',
+  frequency: i % 3 === 0 ? '3x a day' : 'continuous',
+  date:      i % 2 === 0 ? '15/04/2025' : '18/04/2025',
+  pageRef:   `pg. ${i + 1}`,
 }))
 
 const LOREM  = 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor.'
@@ -74,7 +104,7 @@ export const IvFluids = {
 
 export const TubeFeeding = {
   name: 'Tube Feeding',
-  render: () => <ToggleTable tableType="tube-feeding" title="Tube Feeding" sourceType="IV Fluids" rows={ROWS} />,
+  render: () => <ToggleTable tableType="tube-feeding" title="Tube Feeding" sourceType="IV Fluids" rows={TUBE_ROWS} />,
 }
 
 export const Surgery = {

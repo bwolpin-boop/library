@@ -18,13 +18,25 @@ const common = {
   upCount: 123, commentsCount: 4,
 }
 
-const IV_ROWS = Array.from({ length: 8 }, (_, i) => ({
-  name: 'Sodium Chloride', volume: '50 mL', dosage: '80 mL/3x a day', date: '15/04/2025', pageRef: 'pg. 12',
-}))
+const IV_ROWS = [
+  { name: 'Normal Saline (0.9% NaCl)',                    volume: '50 mL',  dosage: '80 mL/3x a day',   date: '15/04/2025', pageRef: 'pg. 1, 2, 3' },
+  { name: "Lactated Ringer's (LR) / Hartmann's Solution", volume: '100 mL', dosage: '120 mL/2x a day',  date: '20/04/2025', pageRef: 'pg. 12' },
+  { name: 'Plasma-Lyte',                                  volume: '50 mL',  dosage: '80 mL/3x a day',   date: '15/04/2025', pageRef: 'pg. 12' },
+  { name: '0.45% Sodium Chloride (Half-Normal Saline)',   volume: '100 mL', dosage: '100 mL/4x a day',  date: '18/04/2025', pageRef: 'pg. 1, 2, 3' },
+  { name: '5% Dextrose in Water (D5W)',                   volume: '50 mL',  dosage: '60 mL/2x a day',   date: '22/04/2025', pageRef: 'pg. 5' },
+  { name: '3% or 5% Sodium Chloride (3% or 5% NaCl)',    volume: '100 mL', dosage: '80 mL/3x a day',   date: '15/04/2025', pageRef: 'pg. 1, 2, 3' },
+  { name: 'Human Albumin',                                volume: '50 mL',  dosage: '50 mL/once daily', date: '17/04/2025', pageRef: 'pg. 8' },
+  { name: 'Dextran',                                      volume: '100 mL', dosage: '100 mL/2x a day',  date: '20/04/2025', pageRef: 'pg. 12' },
+]
 
-const TUBE_ROWS = Array.from({ length: 6 }, (_, i) => ({
-  name: 'Ensure Plus', amount: '240 mL', frequency: '3x a day', date: '15/04/2025', pageRef: 'pg. 8',
-}))
+const TUBE_ROWS = [
+  { name: 'Central Venous Catheter (CVC)',                        amount: '240 mL', frequency: '3x a day',   date: '15/04/2025', pageRef: 'pg. 8' },
+  { name: 'Peripherally Inserted Central Catheter (PICC line)',   amount: '180 mL', frequency: '4x a day',   date: '18/04/2025', pageRef: 'pg. 3' },
+  { name: 'Implanted Port (Port-a-Cath)',                         amount: '300 mL', frequency: '2x a day',   date: '20/04/2025', pageRef: 'pg. 5' },
+  { name: 'Peripheral IV Line',                                   amount: '120 mL', frequency: '6x a day',   date: '15/04/2025', pageRef: 'pg. 1, 2' },
+  { name: 'TPN (Total Parenteral Nutrition)',                      amount: '1000 mL', frequency: 'continuous', date: '22/04/2025', pageRef: 'pg. 9' },
+  { name: 'PPN (Partial Parenteral Nutrition)',                    amount: '500 mL', frequency: '2x a day',   date: '17/04/2025', pageRef: 'pg. 11' },
+]
 
 const SURGERY_ROWS = Array.from({ length: 5 }, (_, i) => ({
   name: 'Hip Replacement', volume: 'Elective', dosage: 'Right Hip Arthroplasty', date: '12/03/2025', pageRef: 'pg. 4',
