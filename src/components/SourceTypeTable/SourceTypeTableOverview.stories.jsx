@@ -54,17 +54,20 @@ const DIAG_ROWS = [
   { name: 'Hypothyroidism',            volume: 'E03.9',  dosage: 'Unspecified',  date: '20/01/2025', pageRef: 'pg. 8' },
 ]
 
-const LOREM = 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis.'
-const AI    = 'The patient has a Stage 3 pressure wound of the left buttock coccyx, full thickness. The wound has a duration of 39 days, measures 0.36 x 0.62 x 0.1 cm with a surface area of 0.22 cm².'
-const DOC_STRINGS = [
+const LOREM = 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.'
+const AI    = 'The patient has a Stage 3 pressure wound of the left buttock coccyx, full thickness (Page 2, Page 3). The wound has a duration of 39 days, measures 0.36 x 0.62 x 0.1 cm with a surface area of 0.22 cm² (Page 2). The wound progress is described as improved, evidenced by decreased depth and decreased surface area (Page 2). Healing potential is good, with moderate serous exudate, 10% slough, and 90% ...'
+const DOC_STRINGS_3 = [
   'The patient presented with elevated blood pressure readings consistently above 140/90 mmHg over a period of three weeks.',
   'Patient reports occasional headaches and dizziness in the morning, particularly upon standing from a seated position.',
   'Current medication regimen includes Lisinopril 10 mg daily; patient has been non-compliant with low-sodium dietary recommendations.',
 ]
+const DOC_STRINGS_1 = [
+  'The patient presented with elevated blood pressure readings consistently above 140/90 mmHg over a period of three weeks.',
+]
 
 // ─── Shared toggle component ─────────────────────────────────────────────────
 
-function ToggleTable({ label, tableType, sourceType, rows, text, texts, aiTitle, isQuote }) {
+function ToggleTable({ label, tableType, sourceType, rows, text, texts, aiTitle, isQuote, showSeeMore }) {
   const [mode, setMode] = useState('source popup')
 
   const btn = (m) => ({
@@ -96,6 +99,7 @@ function ToggleTable({ label, tableType, sourceType, rows, text, texts, aiTitle,
         texts={texts}
         aiTitle={aiTitle}
         isQuote={isQuote}
+        onSeeMore={showSeeMore ? () => {} : undefined}
         sourcePopup={mode === 'source popup'}
         {...common}
       />
@@ -113,8 +117,9 @@ export const Overview = {
       <ToggleTable label="Surgery"        tableType="surgery"          sourceType="Medications"    rows={SURGERY_ROWS} />
       <ToggleTable label="Diagnosis"      tableType="diagnosis"        sourceType="Diagnosis"      rows={DIAG_ROWS} />
       <ToggleTable label="Progress Notes" tableType="highlighted-text" sourceType="Progress Notes" text={LOREM} />
-      <ToggleTable label="Doc Strings"    tableType="doc-strings"      sourceType="Documents"      texts={DOC_STRINGS} />
-      <ToggleTable label="AI Summary"     tableType="ai-summary"       sourceType="Assessments"    aiTitle="AI-Generated Section M Summary" text={AI} />
+      <ToggleTable label="String"         tableType="doc-strings"      sourceType="Documents"      texts={DOC_STRINGS_1} />
+      <ToggleTable label="More Strings"   tableType="doc-strings"      sourceType="Documents"      texts={DOC_STRINGS_3} />
+      <ToggleTable label="AI Summary"     tableType="ai-summary"       sourceType="Assessments"    aiTitle="AI-Generated Section M Summary" text={AI} showSeeMore />
     </div>
   ),
 }

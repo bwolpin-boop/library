@@ -281,7 +281,8 @@ export function SourceTypeTable({
     surgery:              'Surgery',
     diagnosis:            'Diagnosis',
     'highlighted-text':   'Progress Notes',
-    'doc-strings':        'Doc Strings',
+    'doc-string':         'String',
+    'doc-strings':        'More Strings',
     'ai-summary':         'AI Summary',
   }[tableType] ?? tableType
 
@@ -356,7 +357,7 @@ export function SourceTypeTable({
 
             {isText && (
               <>
-                {tableType === 'doc-strings' ? (
+                {(tableType === 'doc-strings' || tableType === 'doc-string') ? (
                   <DocStringsContent texts={texts?.length ? texts : [text]} />
                 ) : (
                   <TextContent text={text} isQuote={isQuote} />

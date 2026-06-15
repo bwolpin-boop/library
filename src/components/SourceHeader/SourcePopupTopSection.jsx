@@ -104,6 +104,7 @@ export function SourcePopupTopSection({
   dueDate           = 'Mar 23, 2025',
   sourceTabs        = DEFAULT_TABS,
   answerType        = 'yes-dc',
+  stickyTabs        = false,  // when true the tabs row becomes position:sticky
   onClose,
   onTabClick,
   onVerifyAll,
@@ -112,10 +113,10 @@ export function SourcePopupTopSection({
   const isSmall = size === 'small'
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap32, width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: stickyTabs ? 0 : spacing.gap32, width: '100%' }}>
 
       {/* ── Top row: title left, DcSuggests + close right ── */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.gap16, width: '100%' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.gap16, width: '100%', marginBottom: stickyTabs ? spacing.gap32 : undefined }}>
 
         {/* Left: question info + optional assign section */}
         <div style={{ display: 'flex', flex: '1 0 0', flexDirection: 'column', gap: spacing.gap16, minWidth: '1px', overflow: 'hidden' }}>
@@ -161,7 +162,14 @@ export function SourcePopupTopSection({
       </div>
 
       {/* ── Bottom row: source filter tabs + action icons ── */}
-      <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', width: '100%',
+        ...(stickyTabs ? {
+          position: 'sticky', top: 0, zIndex: 10,
+          backgroundColor: colors.white,
+          paddingBottom: spacing.gap16,
+        } : {}),
+      }}>
 
         {/* Scrollable tabs with right fade */}
         <div style={{ position: 'relative', flex: '1 0 0', minWidth: '1px', overflow: 'hidden', height: '24px', display: 'flex', alignItems: 'center' }}>

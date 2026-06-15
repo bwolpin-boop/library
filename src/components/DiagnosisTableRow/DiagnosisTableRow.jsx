@@ -4,6 +4,7 @@ import { NavIcon } from '../Icon/NavIcon.jsx'
 import { VerifyAndDeny } from '../VerifyDeny/VerifyAndDeny.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
 import { TABLE_COL_GAP } from '../IvFluidsRow/IvFluidsRow.jsx'
+import { TypeTag } from '../TypeTag/TypeTag.jsx'
 
 // ─── VoteBadge (same pattern as IvFluidsRow) ─────────────────────────────────
 
@@ -143,9 +144,9 @@ export function DiagnosisTableRow({
         )}
       </div>
 
-      {/* Column 2 — Clinical Category (120px) */}
+      {/* Column 2 — Clinical Category (120px): TypeTag label */}
       <div style={{ display: 'flex', alignItems: 'center', width: '120px', height: '32px', flexShrink: 0 }}>
-        <span style={textSm}>{clinicalCategory}</span>
+        <TypeTag label={clinicalCategory} />
       </div>
 
       {/* Column 3 — MDS Mapping (80px) */}
