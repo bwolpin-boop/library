@@ -127,7 +127,7 @@ export function IvFluidsRow({
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        gap: spacing.gap16,
+        gap: spacing.gap24,
         height: '32px',
         padding: `0 ${spacing.gap24}`,
         borderBottom: `1px solid ${colors.dividerSubtle}`,
@@ -139,23 +139,13 @@ export function IvFluidsRow({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Line number — absolutely in the left padding gutter (source popup only) */}
-      {isSourcePopup && lineNumber != null && (
-        <span style={{
-          position:  'absolute',
-          left:      spacing.gap8,
-          width:     '14px',
-          textAlign: 'right',
-          ...textStyle,
-          flexShrink: 0,
-        }}>
-          {lineNumber}
-        </span>
-      )}
-
-      {/* Name cell — text starts flush at the 24px padding edge */}
+      {/* Name cell: number (source popup) or verify dot (prescrub) + name */}
       <Cell flex="1 0 0">
-        {!isSourcePopup && (
+        {isSourcePopup ? (
+          <div style={{ width: 16, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ ...textStyle, width: '100%' }}>{lineNumber ?? ''}</span>
+          </div>
+        ) : (
           <VerifyAndDeny type={vdTypeMap[verifyStatus] ?? 'empty'} size="small" />
         )}
         <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>
@@ -168,18 +158,18 @@ export function IvFluidsRow({
         <span style={textStyle}>{volume}</span>
       </Cell>
 
-      {/* Dosage */}
-      <Cell width="100px">
+      {/* Dosage / Rate */}
+      <Cell width="120px">
         <span style={textStyle}>{dosage}</span>
       </Cell>
 
-      {/* Date */}
-      <Cell width="72px">
+      {/* Date / Given on */}
+      <Cell width="80px">
         <span style={textStyle}>{date}</span>
       </Cell>
 
       {/* Page ref */}
-      <Cell width="80px">
+      <Cell width="128px">
         <span style={textStyle}>{pageRef}</span>
       </Cell>
 
@@ -218,8 +208,8 @@ export function IvFluidsRow({
           }}
         >
           <RowHoverActions
-            hasVerifyAndDeny={!isSourcePopup}
-            hasPending={!isSourcePopup}
+            hasVerifyAndDeny={true}
+            hasPending={true}
             upPressed={vote === 'up'}
             downPressed={vote === 'down'}
             activeVerify={verifyStatus !== 'Default' ? vdTypeMap[verifyStatus] : null}

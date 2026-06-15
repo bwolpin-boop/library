@@ -16,10 +16,10 @@ const reg12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight
 // ─── Default column definitions per tabular table type ────────────────────────
 
 const DEFAULT_COLUMNS = {
-  'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose', width: 55 }, { label: 'Rate', width: 100 }, { label: 'Given on', width: 72 }, { label: 'Page', width: 80 }],
-  'tube-feeding': [{ label: 'Item' },       { label: 'Amount', width: 55 }, { label: 'Frequency', width: 100 }, { label: 'Given on', width: 72 }, { label: 'Page', width: 80 }],
-  surgery:        [{ label: 'Procedure' },  { label: 'Type', width: 55 }, { label: 'Details', width: 100 }, { label: 'Date', width: 72 }, { label: 'Page', width: 80 }],
-  diagnosis:      [{ label: 'Diagnosis' },  { label: 'Code', width: 55 }, { label: 'Type', width: 100 }, { label: 'Date', width: 72 }, { label: 'Page', width: 80 }],
+  'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose', width: 55 }, { label: 'Rate', width: 120 }, { label: 'Given on', width: 80 }, { label: 'Page', width: 128 }],
+  'tube-feeding': [{ label: 'Item' },       { label: 'Amount', width: 55 }, { label: 'Frequency', width: 120 }, { label: 'Given on', width: 80 }, { label: 'Page', width: 128 }],
+  surgery:        [{ label: 'Procedure' },  { label: 'Type', width: 55 }, { label: 'Details', width: 120 }, { label: 'Date', width: 80 }, { label: 'Page', width: 128 }],
+  diagnosis:      [{ label: 'Diagnosis' },  { label: 'Code', width: 55 }, { label: 'Type', width: 120 }, { label: 'Date', width: 80 }, { label: 'Page', width: 128 }],
 }
 
 const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosis'])
@@ -31,7 +31,7 @@ function TableHeaderRow({ columns }) {
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: spacing.gap16,
+      gap: spacing.gap24,
       height: 32,
       padding: `0 ${spacing.gap24}`,
       borderBottom: `1px solid ${colors.dividerSubtle}`,
