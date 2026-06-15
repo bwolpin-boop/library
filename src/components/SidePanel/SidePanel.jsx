@@ -41,18 +41,14 @@ export function SidePanel({
 }) {
   return (
     <div style={{
-      position:        'absolute',
-      top:             0,
-      right:           0,
-      bottom:          0,
-      width,
-      backgroundColor: colors.surface,
+      width:           '100%',
+      height:          '100%',
+      backgroundColor: colors.white,
       borderLeft:      `1px solid ${colors.dividerSubtle}`,
-      borderRadius:    `0 ${radii.box} ${radii.box} 0`,
       display:         'flex',
       flexDirection:   'column',
-      boxShadow:       '-4px 0 16px rgba(0,0,0,0.08)',
-      zIndex:          10,
+      overflowY:       'auto',
+      boxSizing:       'border-box',
     }}>
 
       {/* Header */}

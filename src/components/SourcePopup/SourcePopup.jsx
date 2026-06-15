@@ -207,7 +207,13 @@ export function SourcePopup({
   const uniqueTypes = getUniqueSourceTypes(tables)
 
   const [selectedTab,   setSelectedTab]   = useState(null)   // null / 'All' = show one per type
-  const [sidePanel,     setSidePanel]     = useState(null)   // table object when open
+  const [sidePanel,     setSidePanel]     = useState(null)   // { table, mode: 'source'|'comments' }
+
+  function openPanel(table, mode = 'source') {
+    setSidePanel(prev =>
+      prev?.table === table && prev?.mode === mode ? null : { table, mode }
+    )
+  }
 
   const visibleTables = !selectedTab || selectedTab === 'All'
     ? dedupeBySourceType(tables)
@@ -217,21 +223,20 @@ export function SourcePopup({
     <div
       className={className}
       style={{
-        width:           '922px',
-        height:          '730px',
-        backgroundColor: colors.white,
-        border:          `1px solid ${colors.divider}`,
-        borderRadius:    radii.box,
-        overflow:        'hidden',
-        display:         'flex',
-        flexDirection:   'column',
-        boxSizing:       'border-box',
-        position:        'relative',
+        display:    'flex',
+        flexDirection: 'row',
+        height:     '730px',
+        borderRadius: radii.box,
+        overflow:   'hidden',
+        border:     `1px solid ${colors.divider}`,
+        boxSizing:  'border-box',
+        transition: 'width 0.25s ease',
+        width:      sidePanel ? '1502px' : '922px',
         ...style,
       }}
     >
-      {/* ── Single scroll container ─────────────────────────────────────────── */}
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+      {/* ── Popup content — always 922px, never shrinks ─────────────────────── */}
+      <div style={{ width: '922px', flexShrink: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', height: '100%' }}>
 
         {/* Top section */}
         <div style={{ padding: `${spacing.gap24} ${spacing.gap24} ${spacing.gap16}` }}>
@@ -283,22 +288,31 @@ export function SourcePopup({
               isQuote={table.isQuote}
               aiTitle={table.aiTitle}
               hasTitle={false}
-              onHeaderClick={() => setSidePanel(table)}
+              onHeaderClick={() => openPanel(table, 'source')}
+              onCommentsClick={() => openPanel(table, 'comments')}
             />
           ))}
         </div>
 
       </div>
 
-      {/* ── Side panel ──────────────────────────────────────────────────────── */}
-      {sidePanel && (
-        <SidePanel
-          sourceType={sidePanel.sourceType}
-          uploadedDate={sidePanel.uploadedDate}
-          docName={sidePanel.docName}
-          onClose={() => setSidePanel(null)}
-        />
-      )}
+      {/* ── Side panel — slides in beside the popup ─────────────────────────── */}
+      <div style={{
+        width:      sidePanel ? '580px' : '0px',
+        flexShrink: 0,
+        overflow:   'hidden',
+        transition: 'width 0.25s ease',
+        height:     '100%',
+      }}>
+        {sidePanel && (
+          <SidePanel
+            sourceType={sidePanel.table?.sourceType}
+            uploadedDate={sidePanel.table?.uploadedDate}
+            docName={sidePanel.table?.docName}
+            onClose={() => setSidePanel(null)}
+          />
+        )}
+      </div>
     </div>
   )
 }
