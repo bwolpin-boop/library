@@ -145,7 +145,7 @@ export function SidePanel({
 
   return (
     <div
-      className={className}
+      className={[className, 'sp-scroll'].filter(Boolean).join(' ')}
       style={{
         display:         'flex',
         flexDirection:   'column',

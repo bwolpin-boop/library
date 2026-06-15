@@ -1,35 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
+import { colors, radii, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { DcSuggests } from './DcSuggests.jsx'
 import { SourceTypeTabs } from '../SourceTypeTab/SourceTypeTabs.jsx'
-
-// ── Internal sub-components ─────────────────────────────────────────────────
-
-function QuestionTitle({ qCode, title, previousAnswer, truncate }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4 }}>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: spacing.gap8, color: colors.primary }}>
-        <span style={{ fontFamily: fonts.montserrat, fontSize: fontSizes.xl2, fontWeight: fontWeights.semibold, lineHeight: 'normal', whiteSpace: 'nowrap' }}>
-          {qCode}
-        </span>
-        <span style={{
-          fontFamily: fonts.montserrat, fontSize: fontSizes.base, fontWeight: fontWeights.regular, lineHeight: '1.428',
-          whiteSpace: truncate ? 'nowrap' : undefined,
-          overflow: truncate ? 'hidden' : undefined,
-          textOverflow: truncate ? 'ellipsis' : undefined,
-          maxWidth: truncate ? '120px' : undefined,
-        }}>
-          {title}
-        </span>
-      </div>
-      <div style={{ display: 'flex', gap: spacing.gap4, alignItems: 'flex-start', color: colors.secondary, fontSize: fontSizes.xs, lineHeight: lineHeights.base }}>
-        <span style={{ fontFamily: fonts.montserrat, fontWeight: fontWeights.regular, fontStyle: 'italic', whiteSpace: 'pre' }}>{'Previous MDS Answer:  '}</span>
-        <span style={{ fontFamily: fonts.montserrat, fontWeight: fontWeights.semibold, fontStyle: 'italic', whiteSpace: 'nowrap' }}>{previousAnswer}</span>
-      </div>
-    </div>
-  )
-}
+import { SourceTitle } from '../SourceTitle/SourceTitle.jsx'
 
 function Divider() {
   return (
@@ -143,11 +117,11 @@ export function SourcePopupTopSection({
 
         {/* Left: question info + optional assign section */}
         <div style={{ display: 'flex', flex: '1 0 0', flexDirection: 'column', gap: spacing.gap16, minWidth: '1px', overflow: 'hidden' }}>
-          <QuestionTitle
-            qCode={qCode}
-            title={questionTitle}
-            previousAnswer={previousAnswer}
-            truncate={isSmall}
+          <SourceTitle
+            id={qCode}
+            sourceName={questionTitle}
+            mdsAnswer={previousAnswer}
+            whichProduct="dashboard"
           />
 
           {assignAndCalendar && (

@@ -72,9 +72,8 @@ export function SourceTitle({
         display:    'flex',
         alignItems: 'flex-end',
         gap:        spacing.gap8,
-        flexShrink: 0,
+        minWidth:   0,
         color:      colors.primary,
-        whiteSpace: 'nowrap',
         wordBreak:  isBrowserExtension ? 'break-word' : undefined,
       }}>
         <span style={{
@@ -82,17 +81,21 @@ export function SourceTitle({
           fontWeight:  fontWeights.semibold,
           fontSize:    fontSizes.xl2,
           lineHeight:  'normal',
+          flexShrink:  0,
+          whiteSpace:  'nowrap',
         }}>
           {id}
         </span>
         <span style={{
-          fontFamily:  fonts.montserrat,
-          fontWeight:  fontWeights.regular,
-          fontSize:    fontSizes.base,
-          lineHeight:  '1.428',
-          overflow:    !longTitle ? 'hidden' : undefined,
-          textOverflow: !longTitle ? 'ellipsis' : undefined,
-          maxWidth:    !longTitle ? '60px' : undefined,
+          fontFamily:   fonts.montserrat,
+          fontWeight:   fontWeights.regular,
+          fontSize:     fontSizes.base,
+          lineHeight:   '1.428',
+          whiteSpace:   'nowrap',
+          overflow:     'hidden',
+          textOverflow: 'ellipsis',
+          minWidth:     0,
+          flexShrink:   1,
         }}>
           {sourceName}
         </span>

@@ -272,8 +272,15 @@ export function SourcePopup({
         ...style,
       }}
     >
+      {/* Thin 4px scrollbar in disabled color (#E7E7E7) for all scroll areas */}
+      <style>{`
+        .sp-scroll::-webkit-scrollbar { width: 4px; }
+        .sp-scroll::-webkit-scrollbar-track { background: transparent; }
+        .sp-scroll::-webkit-scrollbar-thumb { background: ${colors.disabled}; border-radius: 2px; }
+        .sp-scroll::-webkit-scrollbar-thumb:hover { background: ${colors.dividerDisabled}; }
+      `}</style>
       {/* ── Left: popup content ──────────────────────────────────────────────── */}
-      <div style={{
+      <div className="sp-scroll" style={{
         width:     sidePanel ? `${leftWidth}px` : '100%',
         flexShrink: 0,
         overflowY: 'auto',
@@ -381,6 +388,7 @@ export function SourcePopup({
             showPrimaryDiagnosis={false}
             showAiSummary={false}
             onClose={() => setSidePanel(null)}
+            style={{ borderLeft: 'none' }}
           />
         </div>
       )}
