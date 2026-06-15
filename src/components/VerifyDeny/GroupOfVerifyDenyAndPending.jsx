@@ -3,6 +3,8 @@ import { VerifyAndDeny } from './VerifyAndDeny.jsx'
 
 export function GroupOfVerifyDenyAndPending({
   hasPending = true,
+  // Seed the initial selection — used when the component remounts (e.g. hover overlay)
+  initialActiveType = null,
   // Story/display overrides — take priority over internal selection
   denyState,
   verifyState,
@@ -12,7 +14,7 @@ export function GroupOfVerifyDenyAndPending({
   onVerify,
   onPending,
 }) {
-  const [activeType, setActiveType] = useState(null)
+  const [activeType, setActiveType] = useState(initialActiveType)
 
   function handleClick(type, externalHandler) {
     setActiveType(prev => prev === type ? null : type)

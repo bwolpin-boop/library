@@ -11,6 +11,7 @@ export function RowHoverActions({
   downCount,
   upPressed = false,
   downPressed = false,
+  activeVerify = null,    // 'verify' | 'deny' | 'pending' | null — seeds GroupOfVerifyDenyAndPending
   onUpClick,
   onDownClick,
   onCommentsClick,
@@ -34,6 +35,7 @@ export function RowHoverActions({
       {hasVerifyAndDeny && (
         <GroupOfVerifyDenyAndPending
           hasPending={hasPending}
+          initialActiveType={activeVerify}
           onDeny={onDeny}
           onVerify={onVerify}
           onPending={onPending}

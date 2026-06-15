@@ -156,7 +156,7 @@ export function IvFluidsRow({
       {/* Name cell — text starts flush at the 24px padding edge */}
       <Cell flex="1 0 0">
         {!isSourcePopup && (
-          <VerifyAndDeny type={vdTypeMap[type] ?? 'empty'} size="small" />
+          <VerifyAndDeny type={vdTypeMap[verifyStatus] ?? 'empty'} size="small" />
         )}
         <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>
           {name}
@@ -218,10 +218,11 @@ export function IvFluidsRow({
           }}
         >
           <RowHoverActions
-            hasVerifyAndDeny={true}
-            hasPending={true}
+            hasVerifyAndDeny={!isSourcePopup}
+            hasPending={!isSourcePopup}
             upPressed={vote === 'up'}
             downPressed={vote === 'down'}
+            activeVerify={verifyStatus !== 'Default' ? vdTypeMap[verifyStatus] : null}
             onVerify={handleVerify}
             onDeny={handleDeny}
             onPending={handlePending}

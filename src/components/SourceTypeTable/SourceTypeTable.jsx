@@ -171,9 +171,8 @@ function TextContent({ text, isQuote }) {
         color: colors.primary,
         fontStyle: isQuote ? 'italic' : 'normal',
         margin: 0,
-        paddingLeft: isQuote ? spacing.gap24 : 0,
       }}>
-        {isQuote ? `‘‘${text}’’` : text}
+        {isQuote ? `"${text}"` : text}
       </p>
     </div>
   )
