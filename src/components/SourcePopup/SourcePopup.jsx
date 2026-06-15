@@ -7,6 +7,7 @@ import { Comments }               from '../Icon/Comments.jsx'
 import { PdfTitle }               from '../PdfTitle/PdfTitle.jsx'
 import { SourcePopupTopSection, SourceTabsBar } from '../SourceHeader/SourcePopupTopSection.jsx'
 import { SourceTypeTable }        from '../SourceTypeTable/SourceTypeTable.jsx'
+import { SidePanel }              from '../SidePanel/SidePanel.jsx'
 
 // ─── SourceCard — kept for standalone use ────────────────────────────────────
 
@@ -289,89 +290,14 @@ export function SourcePopup({
 
       </div>
 
-      {/* ── Side panel — slides in from the right when a header is clicked ─── */}
+      {/* ── Side panel ──────────────────────────────────────────────────────── */}
       {sidePanel && (
-        <div style={{
-          position:        'absolute',
-          top:             0,
-          right:           0,
-          bottom:          0,
-          width:           '320px',
-          backgroundColor: colors.surface,
-          borderLeft:      `1px solid ${colors.dividerSubtle}`,
-          borderRadius:    `0 ${radii.box} ${radii.box} 0`,
-          display:         'flex',
-          flexDirection:   'column',
-          boxShadow:       '-4px 0 16px rgba(0,0,0,0.08)',
-          zIndex:          10,
-        }}>
-          {/* Panel header */}
-          <div style={{
-            display:      'flex',
-            alignItems:   'center',
-            justifyContent: 'space-between',
-            padding:      `${spacing.gap16} ${spacing.gap16} ${spacing.gap16} ${spacing.gap16}`,
-            borderBottom: `1px solid ${colors.dividerSubtle}`,
-            flexShrink:   0,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8 }}>
-              <SourceTypeIcon type={sidePanel.sourceType} size={16} />
-              <span style={{
-                fontFamily:  fonts.montserrat,
-                fontSize:    fontSizes.xs,
-                fontWeight:  fontWeights.semibold,
-                lineHeight:  lineHeights.sm,
-                color:       colors.primary,
-              }}>
-                {sidePanel.sourceType}
-              </span>
-            </div>
-            <button
-              onClick={() => setSidePanel(null)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}
-            >
-              <NavIcon name="close" size={24} />
-            </button>
-          </div>
-
-          {/* Panel content */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: spacing.gap16, display: 'flex', flexDirection: 'column', gap: spacing.gap12 }}>
-            <div>
-              <span style={{
-                fontFamily: fonts.montserrat, fontSize: fontSizes.xxxs,
-                fontWeight: fontWeights.medium, color: colors.secondary,
-                textTransform: 'uppercase', letterSpacing: '0.05em',
-              }}>
-                Uploaded date
-              </span>
-              <p style={{
-                fontFamily: fonts.montserrat, fontSize: fontSizes.xs,
-                fontWeight: fontWeights.regular, lineHeight: lineHeights.sm,
-                color: colors.primary, margin: '4px 0 0',
-              }}>
-                {sidePanel.uploadedDate}
-              </p>
-            </div>
-            {sidePanel.docName && (
-              <div>
-                <span style={{
-                  fontFamily: fonts.montserrat, fontSize: fontSizes.xxxs,
-                  fontWeight: fontWeights.medium, color: colors.secondary,
-                  textTransform: 'uppercase', letterSpacing: '0.05em',
-                }}>
-                  Document
-                </span>
-                <p style={{
-                  fontFamily: fonts.montserrat, fontSize: fontSizes.xs,
-                  fontWeight: fontWeights.regular, lineHeight: lineHeights.sm,
-                  color: colors.primary, margin: '4px 0 0', wordBreak: 'break-word',
-                }}>
-                  {sidePanel.docName}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+        <SidePanel
+          sourceType={sidePanel.sourceType}
+          uploadedDate={sidePanel.uploadedDate}
+          docName={sidePanel.docName}
+          onClose={() => setSidePanel(null)}
+        />
       )}
     </div>
   )
