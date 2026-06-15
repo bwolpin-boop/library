@@ -91,25 +91,34 @@ export function IvFluidsRow({
   style,
   className,
 }) {
-  const [hovered, setHovered] = useState(false)
-  const [vote, setVote]       = useState(null) // null | 'up' | 'down'
+  const [hovered, setHovered]     = useState(false)
+  const [vote, setVote]           = useState(null)     // null | 'up' | 'down'
+  const [verifyStatus, setVerify] = useState(type)     // tracks the left-side dot
 
   if (purpose === 'view more' || purpose === 'view less') {
     return <ViewToggleRow purpose={purpose} count={count} onClick={onClick} style={style} />
   }
 
   const isSourcePopup = purpose === 'source popup'
-  const showActions   = hovered
-  const bgColor       = hovered ? colors.surface : colors.white
 
-  function handleUpClick() {
-    setVote(v => v === 'up' ? null : 'up')
-    onUpClick?.()
-  }
-  function handleDownClick() {
-    setVote(v => v === 'down' ? null : 'down')
-    onDownClick?.()
-  }
+  // Background colors per verify status — base and hover states from Figma
+  // verified-200 (#ebf8e9) and pending-200 (#fff9e5) are Figma tokens not yet in tokens.js
+  const STATUS_BASE  = { verified: colors.green100, denied: colors.error100, pending: colors.yellow100 }
+  const STATUS_HOVER = { verified: '#ebf8e9',        denied: colors.error200, pending: '#fff9e5'        }
+  const STATUS_GRAD  = { verified: 'rgba(246,255,246,0.5)', denied: 'rgba(255,242,242,0.5)', pending: 'rgba(255,249,228,0.5)' }
+
+  const isStatusSet   = verifyStatus !== 'Default'
+  const baseBg        = isStatusSet ? (STATUS_BASE[verifyStatus]  ?? colors.white)   : colors.white
+  const hoverBg       = isStatusSet ? (STATUS_HOVER[verifyStatus] ?? colors.surface)  : colors.surface
+  const gradientStart = isStatusSet ? (STATUS_GRAD[verifyStatus]  ?? 'rgba(247,247,248,0)') : 'rgba(247,247,248,0)'
+  const gradientEnd   = isStatusSet ? (STATUS_HOVER[verifyStatus] ?? colors.surface)  : colors.surface
+  const bgColor       = hovered ? hoverBg : baseBg
+
+  function handleUpClick()    { setVote(v => v === 'up'   ? null : 'up');   onUpClick?.()   }
+  function handleDownClick()  { setVote(v => v === 'down' ? null : 'down'); onDownClick?.() }
+  function handleVerify()     { setVerify(s => s === 'verified' ? 'Default' : 'verified'); onVerify?.()  }
+  function handleDeny()       { setVerify(s => s === 'denied'   ? 'Default' : 'denied');   onDeny?.()    }
+  function handlePending()    { setVerify(s => s === 'pending'  ? 'Default' : 'pending');  onPending?.() }
 
   return (
     <div
@@ -130,13 +139,23 @@ export function IvFluidsRow({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Name cell */}
+      {/* Line number — absolutely in the left padding gutter (source popup only) */}
+      {isSourcePopup && lineNumber != null && (
+        <span style={{
+          position:  'absolute',
+          left:      spacing.gap8,
+          width:     '14px',
+          textAlign: 'right',
+          ...textStyle,
+          flexShrink: 0,
+        }}>
+          {lineNumber}
+        </span>
+      )}
+
+      {/* Name cell — text starts flush at the 24px padding edge */}
       <Cell flex="1 0 0">
-        {isSourcePopup ? (
-          <span style={{ ...textStyle, minWidth: '28px', flexShrink: 0, textAlign: 'right' }}>
-            {lineNumber ?? ''}
-          </span>
-        ) : (
+        {!isSourcePopup && (
           <VerifyAndDeny type={vdTypeMap[type] ?? 'empty'} size="small" />
         )}
         <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>
@@ -194,16 +213,18 @@ export function IvFluidsRow({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            background: `linear-gradient(to right, rgba(247,247,248,0) 0%, ${colors.surface} 25%)`,
+            background: `linear-gradient(to right, ${gradientStart} 2.5%, ${gradientEnd} 25%)`,
             gap: spacing.gap24,
           }}
         >
           <RowHoverActions
-            hasVerifyAndDeny={!isSourcePopup}
-            hasPending={!isSourcePopup}
-            onVerify={onVerify}
-            onDeny={onDeny}
-            onPending={onPending}
+            hasVerifyAndDeny={true}
+            hasPending={true}
+            upPressed={vote === 'up'}
+            downPressed={vote === 'down'}
+            onVerify={handleVerify}
+            onDeny={handleDeny}
+            onPending={handlePending}
             onCommentsClick={onCommentsClick}
             onUpClick={handleUpClick}
             onDownClick={handleDownClick}
