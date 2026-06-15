@@ -144,8 +144,8 @@ export function DiagnosisTableRow({
         )}
       </div>
 
-      {/* Column 2 — Clinical Category (120px): TypeTag label */}
-      <div style={{ display: 'flex', alignItems: 'center', width: '120px', height: '32px', flexShrink: 0 }}>
+      {/* Column 2 — Clinical Category (165px): TypeTag label */}
+      <div style={{ display: 'flex', alignItems: 'center', width: '165px', height: '32px', flexShrink: 0 }}>
         <TypeTag label={clinicalCategory} />
       </div>
 

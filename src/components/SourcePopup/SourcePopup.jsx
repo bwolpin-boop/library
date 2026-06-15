@@ -205,7 +205,8 @@ export function SourcePopup({
 }) {
   const uniqueTypes = getUniqueSourceTypes(tables)
 
-  const [selectedTab, setSelectedTab] = useState(null)  // null / 'All' = show one per type
+  const [selectedTab,   setSelectedTab]   = useState(null)   // null / 'All' = show one per type
+  const [sidePanel,     setSidePanel]     = useState(null)   // table object when open
 
   const visibleTables = !selectedTab || selectedTab === 'All'
     ? dedupeBySourceType(tables)
@@ -224,17 +225,14 @@ export function SourcePopup({
         display:         'flex',
         flexDirection:   'column',
         boxSizing:       'border-box',
+        position:        'relative',
         ...style,
       }}
     >
-      {/* ── Single scroll container ───────────────────────────────────────────
-           Correct sticky setup:
-           • Top section (title + DcSuggests + close) scrolls away normally
-           • SourceTabsBar is a DIRECT CHILD of this container → position:sticky works
-           • Tables scroll freely under the stuck tabs bar                         */}
+      {/* ── Single scroll container ─────────────────────────────────────────── */}
       <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
 
-        {/* Top section — scrolls away completely */}
+        {/* Top section */}
         <div style={{ padding: `${spacing.gap24} ${spacing.gap24} ${spacing.gap16}` }}>
           <SourcePopupTopSection
             qCode={qCode}
@@ -244,7 +242,7 @@ export function SourcePopup({
             sourceTabs={uniqueTypes}
             selectedTab={selectedTab}
             answerType={answerType}
-            hideTabsRow       /* tabs are rendered below as sticky */
+            hideTabsRow
             onClose={onClose}
             onTabSelect={setSelectedTab}
             onVerifyAll={onVerifyAll}
@@ -252,19 +250,17 @@ export function SourcePopup({
           />
         </div>
 
-        {/* Tabs bar — direct child of scroll container so position:sticky works */}
-        <div style={{ padding: `0 ${spacing.gap24}` }}>
-          <SourceTabsBar
-            sourceTabs={uniqueTypes}
-            selectedTab={selectedTab}
-            onTabSelect={setSelectedTab}
-            onVerifyAll={onVerifyAll}
-            onComments={onComments}
-            sticky
-          />
-        </div>
+        {/* Sticky tabs bar */}
+        <SourceTabsBar
+          sourceTabs={uniqueTypes}
+          selectedTab={selectedTab}
+          onTabSelect={setSelectedTab}
+          onVerifyAll={onVerifyAll}
+          onComments={onComments}
+          sticky
+        />
 
-        {/* Source tables — scroll under the sticky tabs bar */}
+        {/* Source tables */}
         <div style={{
           display:       'flex',
           flexDirection: 'column',
@@ -286,11 +282,97 @@ export function SourcePopup({
               isQuote={table.isQuote}
               aiTitle={table.aiTitle}
               hasTitle={false}
+              onHeaderClick={() => setSidePanel(table)}
             />
           ))}
         </div>
 
       </div>
+
+      {/* ── Side panel — slides in from the right when a header is clicked ─── */}
+      {sidePanel && (
+        <div style={{
+          position:        'absolute',
+          top:             0,
+          right:           0,
+          bottom:          0,
+          width:           '320px',
+          backgroundColor: colors.surface,
+          borderLeft:      `1px solid ${colors.dividerSubtle}`,
+          borderRadius:    `0 ${radii.box} ${radii.box} 0`,
+          display:         'flex',
+          flexDirection:   'column',
+          boxShadow:       '-4px 0 16px rgba(0,0,0,0.08)',
+          zIndex:          10,
+        }}>
+          {/* Panel header */}
+          <div style={{
+            display:      'flex',
+            alignItems:   'center',
+            justifyContent: 'space-between',
+            padding:      `${spacing.gap16} ${spacing.gap16} ${spacing.gap16} ${spacing.gap16}`,
+            borderBottom: `1px solid ${colors.dividerSubtle}`,
+            flexShrink:   0,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8 }}>
+              <SourceTypeIcon type={sidePanel.sourceType} size={16} />
+              <span style={{
+                fontFamily:  fonts.montserrat,
+                fontSize:    fontSizes.xs,
+                fontWeight:  fontWeights.semibold,
+                lineHeight:  lineHeights.sm,
+                color:       colors.primary,
+              }}>
+                {sidePanel.sourceType}
+              </span>
+            </div>
+            <button
+              onClick={() => setSidePanel(null)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}
+            >
+              <NavIcon name="close" size={24} />
+            </button>
+          </div>
+
+          {/* Panel content */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: spacing.gap16, display: 'flex', flexDirection: 'column', gap: spacing.gap12 }}>
+            <div>
+              <span style={{
+                fontFamily: fonts.montserrat, fontSize: fontSizes.xxxs,
+                fontWeight: fontWeights.medium, color: colors.secondary,
+                textTransform: 'uppercase', letterSpacing: '0.05em',
+              }}>
+                Uploaded date
+              </span>
+              <p style={{
+                fontFamily: fonts.montserrat, fontSize: fontSizes.xs,
+                fontWeight: fontWeights.regular, lineHeight: lineHeights.sm,
+                color: colors.primary, margin: '4px 0 0',
+              }}>
+                {sidePanel.uploadedDate}
+              </p>
+            </div>
+            {sidePanel.docName && (
+              <div>
+                <span style={{
+                  fontFamily: fonts.montserrat, fontSize: fontSizes.xxxs,
+                  fontWeight: fontWeights.medium, color: colors.secondary,
+                  textTransform: 'uppercase', letterSpacing: '0.05em',
+                }}>
+                  Document
+                </span>
+                <p style={{
+                  fontFamily: fonts.montserrat, fontSize: fontSizes.xs,
+                  fontWeight: fontWeights.regular, lineHeight: lineHeights.sm,
+                  color: colors.primary, margin: '4px 0 0', wordBreak: 'break-word',
+                }}>
+                  {sidePanel.docName}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

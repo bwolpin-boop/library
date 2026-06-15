@@ -67,12 +67,16 @@ export function SourceTabsBar({
       width:           '100%',
       backgroundColor: colors.white,
       ...(sticky ? {
-        position:     'sticky',
-        top:          0,
-        zIndex:       10,
-        paddingTop:   spacing.gap12,
+        position:      'sticky',
+        top:           0,
+        zIndex:        10,
+        paddingTop:    spacing.gap12,
         paddingBottom: spacing.gap12,
-        borderBottom: `1px solid ${colors.dividerSubtle}`,
+        paddingLeft:   spacing.gap24,
+        paddingRight:  spacing.gap24,
+        borderBottom:  `1px solid ${colors.dividerSubtle}`,
+        marginLeft:    `-${spacing.gap24}`,
+        marginRight:   `-${spacing.gap24}`,
       } : {}),
     }}>
       <div style={{ flex: '1 0 0', minWidth: '1px' }}>

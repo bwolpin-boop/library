@@ -30,7 +30,7 @@ const DEFAULT_COLUMNS = {
   'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose',      width: W_VOL }, { label: 'Rate',      width: W_DOSAGE }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
   'tube-feeding': [{ label: 'Formula name' }, { label: 'Dose', width: W_VOL }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
   surgery:        [{ label: 'Surgery name' }, { label: 'Category',         width: W_DATE }, { label: 'Page', width: W_PAGE }],
-  diagnosis:      [{ label: 'Diagnosis' },   { label: 'Clinical Category', width: 120 }, { label: 'MDS Mapping', width: 80 }],
+  diagnosis:      [{ label: 'Diagnosis' },   { label: 'Clinical Category', width: 165 }, { label: 'MDS Mapping', width: 80 }],
 }
 
 const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosis'])
@@ -285,6 +285,7 @@ export function SourceTypeTable({
   downCount,
   commentsCount,
   // Callbacks
+  onHeaderClick,  // called when the uploaded-date header row is clicked
   onToggle,
   onViewDoc,
   onViewMore,
@@ -361,6 +362,7 @@ export function SourceTypeTable({
             uploadedDate={uploadedDate}
             tabs={tabs}
             onTabClick={onTabClick}
+            onClick={onHeaderClick}
           />
 
           {/* PDF filename row */}
