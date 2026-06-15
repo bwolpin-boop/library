@@ -10,7 +10,7 @@ export function SideBarTitle({
 
   return (
     <div
-      style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', maxWidth: '100%' }}
+      style={{ display: 'flex', alignItems: 'center', gap: '4px', width: '100%', minWidth: 0 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
