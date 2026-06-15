@@ -55,3 +55,7 @@ export const SortArrows          = { args: { name: 'sort-arrows', size: 12 } }
 export const PrimaryDiagnosis    = { args: { name: 'primary-diagnosis' } }
 export const NtaDiamond          = { args: { name: 'nta-diamond' } }
 export const Export              = { args: { name: 'export' } }
+export const TableIvFluids    = { args: { name: 'table-iv-fluids',    size: 16 } }
+export const TableTubeFeeding = { args: { name: 'table-tube-feeding', size: 16 } }
+export const TableSurgery     = { args: { name: 'table-surgery',      size: 16 } }
+export const TableDiagnosis   = { args: { name: 'table-diagnosis',    size: 16 } }

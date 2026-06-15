@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, radii } from '../../tokens.js'
 import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
 import { SourceAlsoAnswers } from '../SourceAlsoAnswers/SourceAlsoAnswers.jsx'
 
@@ -30,16 +30,18 @@ export function SourceHeader({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display:         'flex',
-        alignItems:      'center',
-        justifyContent:  'space-between',
-        padding:         isIpa ? '4px 24px' : '6.5px 24px',
-        height:          isIpa ? 32 : 34,
-        borderBottom:    `1px solid ${colors.dividerSubtle}`,
-        boxSizing:       'border-box',
-        backgroundColor: hovered ? colors.surface : 'transparent',
-        cursor:          onClick ? 'pointer' : 'default',
-        transition:      'background-color 0.1s',
+        display:              'flex',
+        alignItems:           'center',
+        justifyContent:       'space-between',
+        padding:              isIpa ? '4px 24px' : '6.5px 24px',
+        height:               isIpa ? 32 : 34,
+        borderBottom:         `1px solid ${colors.dividerSubtle}`,
+        boxSizing:            'border-box',
+        backgroundColor:      hovered ? colors.surface : 'transparent',
+        borderTopLeftRadius:  radii.box,
+        borderTopRightRadius: radii.box,
+        cursor:               'pointer',
+        transition:           'background-color 0.1s',
       }}
     >
       {/* Left: icon + date + optional doc name */}

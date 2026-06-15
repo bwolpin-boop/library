@@ -6,6 +6,7 @@ import { SourceHeader } from '../SourceHeader/SourceHeader.jsx'
 import { PdfTitle } from '../PdfTitle/PdfTitle.jsx'
 import { HeaderCells } from '../HeaderCells/HeaderCells.jsx'
 import { IvFluidsRow, TABLE_COL_GAP, TABLE_COL_WIDTHS } from '../IvFluidsRow/IvFluidsRow.jsx'
+import { DiagnosisTableRow } from '../DiagnosisTableRow/DiagnosisTableRow.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
 
 // ─── Text styles ─────────────────────────────────────────────────────────────
@@ -17,11 +18,19 @@ const reg12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight
 
 const { vol: W_VOL, dosage: W_DOSAGE, date: W_DATE, page: W_PAGE } = TABLE_COL_WIDTHS
 
+// NavIcon name shown next to the collapse arrow in the table title row
+const TABLE_TITLE_ICON = {
+  'iv-fluids':    'table-iv-fluids',
+  'tube-feeding': 'table-tube-feeding',
+  surgery:        'table-surgery',
+  diagnosis:      'table-diagnosis',
+}
+
 const DEFAULT_COLUMNS = {
   'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose',      width: W_VOL }, { label: 'Rate',      width: W_DOSAGE }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
   'tube-feeding': [{ label: 'Formula name' }, { label: 'Dose', width: W_VOL }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
   surgery:        [{ label: 'Surgery name' }, { label: 'Category',         width: W_DATE }, { label: 'Page', width: W_PAGE }],
-  diagnosis:      [{ label: 'Diagnosis' },   { label: 'Clinical Category', width: W_DOSAGE }, { label: 'MDS Mapping', width: W_PAGE }],
+  diagnosis:      [{ label: 'Diagnosis' },   { label: 'Clinical Category', width: 120 }, { label: 'MDS Mapping', width: 80 }],
 }
 
 const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosis'])
@@ -132,6 +141,28 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
       <TableHeaderRow columns={cols} />
       {visibleRows.map((row, i) => {
         const isLastDataRow = !hasMore && i === visibleRows.length - 1
+        const lastStyle = isLastDataRow ? { borderBottom: 'none', borderRadius: `0 0 ${radii.box} ${radii.box}` } : undefined
+
+        if (tableType === 'diagnosis') {
+          return (
+            <DiagnosisTableRow
+              key={i}
+              diagnosis={row.name}
+              clinicalCategory={row.dosage ?? row.clinicalCategory ?? 'Acute'}
+              mdsMapping={row.volume ?? row.mdsMapping ?? ''}
+              verifyStatus="none"
+              rowVariant={i % 2 === 0 ? 'light' : 'dark'}
+              onVerify={onVerify}
+              onDeny={onDeny}
+              onPending={onPending}
+              onUpClick={onUpClick}
+              onDownClick={onDownClick}
+              onCommentsClick={onCommentsClick}
+              style={lastStyle}
+            />
+          )
+        }
+
         return (
           <IvFluidsRow
             key={i}
@@ -140,9 +171,8 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             name={row.name}
             volume={row.volume ?? row.amount}
             dosage={row.dosage ?? row.frequency}
-            showVolume={tableType !== 'surgery' && tableType !== 'diagnosis'}
+            showVolume={tableType !== 'surgery'}
             showDosage={tableType !== 'tube-feeding' && tableType !== 'surgery'}
-            showDate={tableType !== 'diagnosis'}
             date={row.date}
             pages={row.pages}
             pageRef={row.pageRef ?? row.page}
@@ -154,7 +184,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             onUpClick={onUpClick}
             onDownClick={onDownClick}
             onCommentsClick={onCommentsClick}
-            style={isLastDataRow ? { borderBottom: 'none', borderRadius: `0 0 ${radii.box} ${radii.box}` } : undefined}
+            style={lastStyle}
           />
         )
       })}
@@ -308,6 +338,9 @@ export function SourceTypeTable({
                 strokeLinejoin="round"
               />
             </svg>
+          )}
+          {TABLE_TITLE_ICON[tableType] && (
+            <NavIcon name={TABLE_TITLE_ICON[tableType]} size={16} />
           )}
           <span style={{ ...sb12, color: '#323338', whiteSpace: 'nowrap' }}>{displayTitle}</span>
         </div>

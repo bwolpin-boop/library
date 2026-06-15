@@ -67,6 +67,7 @@ import { Overview as _SourceAlsoAnswers }  from './SourceAlsoAnswers/SourceAlsoA
 import { Overview as _SourceHeader }       from './SourceHeader/SourceHeaderOverview.stories.jsx'
 import { Overview as _IvFluidsRow }        from './IvFluidsRow/IvFluidsRowOverview.stories.jsx'
 import { Overview as _PdfTitle }           from './PdfTitle/PdfTitleOverview.stories.jsx'
+import { Overview as _SideBarTitle }       from './SideBarTitle/SideBarTitleOverview.stories.jsx'
 import { Overview as _SourcesHeaders }     from './SourcesHeaders/SourcesHeadersOverview.stories.jsx'
 import { Overview as _DiagnosisTableRow }  from './DiagnosisTableRow/DiagnosisTableRowOverview.stories.jsx'
 import { Overview as _DcSuggests }              from './SourceHeader/DcSuggestsOverview.stories.jsx'
@@ -147,6 +148,7 @@ export const SourceAlsoAnswers = { ..._SourceAlsoAnswers, name: '📁 SourceAlso
 export const SourceHeader      = { ..._SourceHeader,      name: '📁 SourceHeader' }
 export const IvFluidsRow       = { ..._IvFluidsRow,       name: '📁 IvFluidsRow' }
 export const PdfTitle          = { ..._PdfTitle,          name: '📁 PdfTitle' }
+export const SideBarTitle      = { ..._SideBarTitle,      name: '📁 SideBarTitle' }
 export const SourcesHeaders    = { ..._SourcesHeaders,    name: '📁 SourcesHeaders' }
 export const DiagnosisTableRow = { ..._DiagnosisTableRow, name: '📁 DiagnosisTableRow' }
 export const DcSuggests             = { ..._DcSuggests,             name: '📁 DcSuggests' }

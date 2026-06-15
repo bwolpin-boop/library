@@ -53,6 +53,10 @@ import ntaDiamondIcon      from '../../assets/icons/nta-diamond.svg'
 import exportIcon          from '../../assets/icons/export.svg'
 import facilityIcon         from '../../assets/icons/facility.svg'
 import indicatorYellowIcon  from '../../assets/icons/indicator-yellow.svg'
+import tableIvFluidsIcon    from '../../assets/icons/table-iv-fluids.svg'
+import tableTubeFeedingIcon from '../../assets/icons/table-tube-feeding.svg'
+import tableSurgeryIcon     from '../../assets/icons/table-surgery.svg'
+import tableDiagnosisIcon   from '../../assets/icons/table-diagnosis.svg'
 
 const icons = {
   // General
@@ -121,6 +125,11 @@ const icons = {
   // Source title icons
   facility:                facilityIcon,
   'indicator-yellow':      indicatorYellowIcon,
+  // Source table title icons (16px, from Nav Icons set)
+  'table-iv-fluids':       tableIvFluidsIcon,
+  'table-tube-feeding':    tableTubeFeedingIcon,
+  'table-surgery':         tableSurgeryIcon,
+  'table-diagnosis':       tableDiagnosisIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -192,6 +201,11 @@ export const iconNativeSizes = {
   // Source title icons
   facility:                24,
   'indicator-yellow':      24,
+  // Source table title icons
+  'table-iv-fluids':       16,
+  'table-tube-feeding':    16,
+  'table-surgery':         16,
+  'table-diagnosis':       16,
 }
 
 export function NavIcon({ name, size = 24, className }) {

@@ -128,12 +128,12 @@ const SURGERY_ROWS = [
 ]
 
 const DIAG_ROWS = [
-  { name: 'Hypertension (High Blood Pressure)', volume: 'Acute',   dosage: 'IGHFP', pages: [1] },
-  { name: 'Type 2 Diabetes Mellitus',           volume: 'Chronic', dosage: 'IGHFP', pages: [2] },
-  { name: 'Chronic Kidney Disease Stage 3',     volume: 'Chronic', dosage: 'IGHFP', pages: [3] },
-  { name: 'Heart Failure — Systolic',           volume: 'Acute',   dosage: 'IGHFP', pages: [4] },
-  { name: 'COPD — Moderate',                    volume: 'Chronic', dosage: 'IGHFP', pages: [5] },
-  { name: 'Atrial Fibrillation',                volume: 'Chronic', dosage: 'IGHFP', pages: [6] },
+  { name: 'Hypertension (High Blood Pressure)', dosage: 'Acute',              volume: 'IGHFP' },
+  { name: 'Type 2 Diabetes Mellitus',           dosage: 'Chronic',            volume: 'IGHFP' },
+  { name: 'Chronic Kidney Disease Stage 3',     dosage: 'Chronic',            volume: 'IGHFP' },
+  { name: 'Heart Failure — Systolic',           dosage: 'Medical Management', volume: 'IGHFP' },
+  { name: 'COPD — Moderate',                    dosage: 'Chronic',            volume: 'IGHFP' },
+  { name: 'Atrial Fibrillation — Persistent',   dosage: 'Medical Management', volume: 'IGHFP' },
 ]
 
 export const Surgery = {

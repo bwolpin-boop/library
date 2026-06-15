@@ -44,14 +44,14 @@ const SURGERY_ROWS = [
 ]
 
 const DIAG_ROWS = [
-  { name: 'Hypertension',              volume: 'I10',    dosage: 'Chronic',      date: '10/01/2025', pageRef: 'pg. 1' },
-  { name: 'Type 2 Diabetes',           volume: 'E11.9',  dosage: 'Controlled',   date: '10/01/2025', pageRef: 'pg. 2' },
-  { name: 'Chronic Kidney Disease',    volume: 'N18.3',  dosage: 'Stage 3',      date: '12/01/2025', pageRef: 'pg. 3' },
-  { name: 'Heart Failure',             volume: 'I50.9',  dosage: 'Systolic',     date: '14/01/2025', pageRef: 'pg. 4' },
-  { name: 'COPD',                      volume: 'J44.1',  dosage: 'Moderate',     date: '15/01/2025', pageRef: 'pg. 5' },
-  { name: 'Atrial Fibrillation',       volume: 'I48.91', dosage: 'Persistent',   date: '16/01/2025', pageRef: 'pg. 6' },
-  { name: 'Osteoporosis',              volume: 'M81.0',  dosage: 'Post-menopausal', date: '18/01/2025', pageRef: 'pg. 7' },
-  { name: 'Hypothyroidism',            volume: 'E03.9',  dosage: 'Unspecified',  date: '20/01/2025', pageRef: 'pg. 8' },
+  { name: 'Hypertension (High Blood Pressure)', dosage: 'Acute',              volume: 'IGHFP' },
+  { name: 'Type 2 Diabetes Mellitus',           dosage: 'Chronic',            volume: 'IGHFP' },
+  { name: 'Chronic Kidney Disease Stage 3',     dosage: 'Chronic',            volume: 'IGHFP' },
+  { name: 'Heart Failure — Systolic',           dosage: 'Medical Management', volume: 'IGHFP' },
+  { name: 'COPD — Moderate',                    dosage: 'Chronic',            volume: 'IGHFP' },
+  { name: 'Atrial Fibrillation — Persistent',   dosage: 'Medical Management', volume: 'IGHFP' },
+  { name: 'Osteoporosis',                       dosage: 'Chronic',            volume: 'IGHFP' },
+  { name: 'Hypothyroidism — Unspecified',       dosage: 'Chronic',            volume: 'IGHFP' },
 ]
 
 const LOREM = 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.'
