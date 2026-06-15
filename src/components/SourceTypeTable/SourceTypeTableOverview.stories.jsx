@@ -12,23 +12,23 @@ const common = { uploadedDate: '15/12/2025', docName: 'Diagnosis hospital_record
 
 const IV_ROWS = [
   { name: 'Normal Saline (0.9% NaCl)',                    volume: '50 mL',  dosage: '80 mL/3x a day',   date: '15/04/2025', pageRef: 'pg. 1, 2, 3', hasMorePages: true, upVotes: 5 },
-  { name: "Lactated Ringer's (LR) / Hartmann's Solution", volume: '100 mL', dosage: '120 mL/2x a day',  date: '20/04/2025', pageRef: 'pg. 12' },
+  { name: "Lactated Ringer's (LR) / Hartmann's Solution", volume: '100 mL', dosage: '120 mL/2x a day',  date: '20/04/2025', pageRef: 'pg. 12', downVotes: 1 },
   { name: 'Plasma-Lyte',                                  volume: '50 mL',  dosage: '80 mL/3x a day',   date: '15/04/2025', pageRef: 'pg. 12',       downVotes: 2 },
   { name: '0.45% Sodium Chloride (Half-Normal Saline)',   volume: '100 mL', dosage: '100 mL/4x a day',  date: '18/04/2025', pageRef: 'pg. 1, 2, 3', hasMorePages: true, upVotes: 12 },
-  { name: '5% Dextrose in Water (D5W)',                   volume: '50 mL',  dosage: '60 mL/2x a day',   date: '22/04/2025', pageRef: 'pg. 5' },
+  { name: '5% Dextrose in Water (D5W)',                   volume: '50 mL',  dosage: '60 mL/2x a day',   date: '22/04/2025', pageRef: 'pg. 5',  upVotes: 3, downVotes: 1 },
   { name: '3% or 5% Sodium Chloride (3% or 5% NaCl)',    volume: '100 mL', dosage: '80 mL/3x a day',   date: '15/04/2025', pageRef: 'pg. 1, 2, 3', hasMorePages: true, downVotes: 3 },
   { name: 'Human Albumin',                                volume: '50 mL',  dosage: '50 mL/once daily', date: '17/04/2025', pageRef: 'pg. 8',        upVotes: 8 },
-  { name: 'Dextran',                                      volume: '100 mL', dosage: '100 mL/2x a day',  date: '20/04/2025', pageRef: 'pg. 12' },
+  { name: 'Dextran',                                      volume: '100 mL', dosage: '100 mL/2x a day',  date: '20/04/2025', pageRef: 'pg. 12', downVotes: 6 },
 ]
 
 const TUBE_ROWS = [
-  { name: 'Central Venous Catheter (CVC)',                      amount: '240 mL',  frequency: '3x a day',   date: '15/04/2025', pageRef: 'pg. 8' },
+  { name: 'Central Venous Catheter (CVC)',                      amount: '240 mL',  frequency: '3x a day',   date: '15/04/2025', pageRef: 'pg. 8',  upVotes: 7 },
   { name: 'Peripherally Inserted Central Catheter (PICC line)', amount: '180 mL',  frequency: '4x a day',   date: '18/04/2025', pageRef: 'pg. 3' },
-  { name: 'Implanted Port (Port-a-Cath)',                       amount: '300 mL',  frequency: '2x a day',   date: '20/04/2025', pageRef: 'pg. 5' },
+  { name: 'Implanted Port (Port-a-Cath)',                       amount: '300 mL',  frequency: '2x a day',   date: '20/04/2025', pageRef: 'pg. 5',  downVotes: 3 },
   { name: 'Peripheral IV Line',                                 amount: '120 mL',  frequency: '6x a day',   date: '15/04/2025', pageRef: 'pg. 1, 2' },
-  { name: 'TPN (Total Parenteral Nutrition)',                   amount: '1000 mL', frequency: 'continuous',  date: '22/04/2025', pageRef: 'pg. 9' },
-  { name: 'PPN (Partial Parenteral Nutrition)',                 amount: '500 mL',  frequency: '2x a day',   date: '17/04/2025', pageRef: 'pg. 11' },
-  { name: 'Midline Catheter',                                   amount: '250 mL',  frequency: '3x a day',   date: '19/04/2025', pageRef: 'pg. 6' },
+  { name: 'TPN (Total Parenteral Nutrition)',                   amount: '1000 mL', frequency: 'continuous',  date: '22/04/2025', pageRef: 'pg. 9',  upVotes: 4 },
+  { name: 'PPN (Partial Parenteral Nutrition)',                 amount: '500 mL',  frequency: '2x a day',   date: '17/04/2025', pageRef: 'pg. 11', downVotes: 2 },
+  { name: 'Midline Catheter',                                   amount: '250 mL',  frequency: '3x a day',   date: '19/04/2025', pageRef: 'pg. 6',  upVotes: 1 },
   { name: 'Tunneled Catheter (Hickman)',                        amount: '400 mL',  frequency: 'continuous',  date: '21/04/2025', pageRef: 'pg. 14' },
 ]
 

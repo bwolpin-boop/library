@@ -20,12 +20,25 @@ const FLUID_NAMES = [
   'Dextran',
 ]
 
+// upVotes / downVotes = votes from OTHER people (not the current user)
+const OTHER_VOTES = [
+  { upVotes: 5 },             // Normal Saline
+  {},                         // Lactated Ringer's
+  { downVotes: 2 },           // Plasma-Lyte
+  { upVotes: 12 },            // 0.45% NaCl
+  { downVotes: 1 },           // D5W
+  { upVotes: 3, downVotes: 4 }, // 3%/5% NaCl — both
+  { upVotes: 8 },             // Human Albumin
+  { downVotes: 6 },           // Dextran
+]
+
 const ROWS = FLUID_NAMES.map((name, i) => ({
   name,
-  volume: i % 2 === 0 ? '50 mL' : '100 mL',
-  dosage: i % 3 === 0 ? '80 mL/3x a day' : '120 mL/2x a day',
-  date:   i % 2 === 0 ? '15/04/2025' : '20/04/2025',
-  pages:  i % 5 === 0 ? [12, 24, 35, 47] : i % 3 === 0 ? [5, 13, 52] : i % 2 === 0 ? [12, 24] : [12],
+  volume:    i % 2 === 0 ? '50 mL' : '100 mL',
+  dosage:    i % 3 === 0 ? '80 mL/3x a day' : '120 mL/2x a day',
+  date:      i % 2 === 0 ? '15/04/2025' : '20/04/2025',
+  pages:     i % 5 === 0 ? [12, 24, 35, 47] : i % 3 === 0 ? [5, 13, 52] : i % 2 === 0 ? [12, 24] : [12],
+  ...OTHER_VOTES[i],
 }))
 
 const TUBE_NAMES = [

@@ -85,7 +85,7 @@ function VoteBadge({ direction, count, isSelected, onClick }) {
         cursor:          'pointer',
         padding:         '1px 3px',
         borderRadius:    '3px',
-        backgroundColor: isSelected && hov ? colors.surfaceHover : 'transparent',
+        backgroundColor: isSelected ? colors.surfacePressed : (hov ? colors.surfaceHover : 'transparent'),
         flexShrink:      0,
         transition:      'background-color 0.1s',
       }}
