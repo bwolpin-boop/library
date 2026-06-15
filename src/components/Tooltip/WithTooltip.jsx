@@ -27,7 +27,7 @@ export function WithTooltip({ label, children, position = 'top' }) {
       {children}
       {visible && label && (
         <div style={bubbleStyle}>
-          <Tooltip mode="dark" size="small" arrow={isTop ? 'down' : 'up'}>
+          <Tooltip mode="dark" arrow={isTop ? 'down' : 'up'}>
             {label}
           </Tooltip>
         </div>

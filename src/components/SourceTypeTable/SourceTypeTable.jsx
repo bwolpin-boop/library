@@ -149,7 +149,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             onUpClick={onUpClick}
             onDownClick={onDownClick}
             onCommentsClick={onCommentsClick}
-            style={isLastDataRow ? { borderBottom: 'none' } : undefined}
+            style={isLastDataRow ? { borderBottom: 'none', borderRadius: `0 0 ${radii.box} ${radii.box}` } : undefined}
           />
         )
       })}
@@ -158,7 +158,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
           purpose={expanded ? 'view less' : 'view more'}
           count={expanded ? undefined : hiddenCount}
           onClick={() => { toggle(); onViewMore?.() }}
-          style={{ borderBottom: 'none' }}
+          style={{ borderBottom: 'none', borderRadius: `0 0 ${radii.box} ${radii.box}` }}
         />
       )}
     </>
@@ -296,7 +296,6 @@ export function SourceTypeTable({
           borderRadius: radii.box,
           display: 'flex',
           flexDirection: 'column',
-          overflow: 'hidden',
         }}>
           {/* Upload date row */}
           <SourceHeader

@@ -3,13 +3,14 @@ import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } fr
 import { VerifyAndDeny } from '../VerifyDeny/VerifyAndDeny.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
 import { NavIcon } from '../Icon/NavIcon.jsx'
+import { WithTooltip } from '../Tooltip/WithTooltip.jsx'
 
 // ── Shared layout constants ─────────────────────────────────────────────────
 // IMPORTANT: TABLE_COL_GAP is imported by SourceTypeTable's TableHeaderRow.
 // If you change any value here you MUST keep SourceTypeTable's DEFAULT_COLUMNS in sync.
-export const TABLE_COL_GAP = spacing.gap24   // gap between every column cell
+export const TABLE_COL_GAP = spacing.gap16   // gap between every column cell
 // Fixed column widths — must match DEFAULT_COLUMNS in SourceTypeTable
-export const TABLE_COL_WIDTHS = { vol: 55, dosage: 120, date: 80, page: 100 }
+export const TABLE_COL_WIDTHS = { vol: 50, dosage: 95, date: 75, page: 60 }
 
 const textStyle = {
   fontFamily: fonts.montserrat,
@@ -29,6 +30,7 @@ function Cell({ width, flex, children }) {
         gap: '8px',
         height: '32px',
         padding: 0,
+        overflow: 'hidden',
         flexShrink: width ? 0 : undefined,
         width: width ?? undefined,
         flex: flex ?? undefined,
@@ -85,10 +87,12 @@ export function IvFluidsRow({
   dosage = '80 mL/3x a day',
   date = '15/04/2025',
   pageRef = 'pg. 12',
+  hasMorePages = false,     // shows + icon after page text (e.g. "pg. 1, 2, 3 +")
   lineNumber,               // shown instead of verify/deny when purpose='source popup'
   count,                    // number shown in 'view more' e.g. 234
   // callbacks
   onClick,
+  onMorePages,              // called when the + page icon is clicked
   onVerify,
   onDeny,
   onPending,
@@ -155,7 +159,12 @@ export function IvFluidsRow({
             </span>
           )
         ) : (
-          <VerifyAndDeny type={vdTypeMap[verifyStatus] ?? 'empty'} size="small" onClick={() => setVerify('Default')} />
+          <VerifyAndDeny
+            type={vdTypeMap[verifyStatus] ?? 'empty'}
+            size="small"
+            tooltipLabel={`Status: ${{ Default: 'Empty', verified: 'Verified', denied: 'Denied', pending: 'Pending' }[verifyStatus] ?? 'Empty'}`}
+            onClick={() => setVerify('Default')}
+          />
         )}
         <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>
           {name}
@@ -163,23 +172,31 @@ export function IvFluidsRow({
       </Cell>
 
       {/* Volume */}
-      <Cell width="55px">
+      <Cell width={`${TABLE_COL_WIDTHS.vol}px`}>
         <span style={textStyle}>{volume}</span>
       </Cell>
 
       {/* Dosage / Rate */}
-      <Cell width="120px">
+      <Cell width={`${TABLE_COL_WIDTHS.dosage}px`}>
         <span style={textStyle}>{dosage}</span>
       </Cell>
 
       {/* Date / Given on */}
-      <Cell width="80px">
+      <Cell width={`${TABLE_COL_WIDTHS.date}px`}>
         <span style={textStyle}>{date}</span>
       </Cell>
 
-      {/* Page ref */}
+      {/* Page ref — optional + icon when there are multiple pages */}
       <Cell width={`${TABLE_COL_WIDTHS.page}px`}>
         <span style={textStyle}>{pageRef}</span>
+        {hasMorePages && (
+          <button
+            onClick={e => { e.stopPropagation(); onMorePages?.() }}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', flexShrink: 0 }}
+          >
+            <NavIcon name="more" size={16} />
+          </button>
+        )}
       </Cell>
 
       {/* Compact vote badge — shown when voted but not hovering */}

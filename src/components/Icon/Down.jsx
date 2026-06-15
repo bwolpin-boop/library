@@ -20,33 +20,35 @@ export function Down({ count, selected: selectedProp, onClick, className }) {
     : 'transparent'
 
   return (
-    <button
-      onClick={handleClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => { setHover(false); setPressing(false) }}
-      onMouseDown={() => setPressing(true)}
-      onMouseUp={() => setPressing(false)}
-      style={{
-        background: 'none',
-        border: 'none',
-        padding: 0,
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: spacing.gap4,
-        borderRadius: radii.icon,
-        backgroundColor: bg,
-        flexShrink: 0,
-        transition: 'background-color 0.1s',
-      }}
-      className={className}
-    >
-      <NavIcon name={selected ? 'thumbs-down-pressed' : 'thumbs-down'} />
-      {count !== undefined && (
-        <span style={{ ...textStyles.body14Medium, color: colors.secondary, whiteSpace: 'nowrap' }}>
-          {count}
-        </span>
-      )}
-    </button>
+    <WithTooltip label="Don't Approve">
+      <button
+        onClick={handleClick}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => { setHover(false); setPressing(false) }}
+        onMouseDown={() => setPressing(true)}
+        onMouseUp={() => setPressing(false)}
+        style={{
+          background: 'none',
+          border: 'none',
+          padding: 0,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: spacing.gap4,
+          borderRadius: radii.icon,
+          backgroundColor: bg,
+          flexShrink: 0,
+          transition: 'background-color 0.1s',
+        }}
+        className={className}
+      >
+        <NavIcon name={selected ? 'thumbs-down-pressed' : 'thumbs-down'} />
+        {count !== undefined && (
+          <span style={{ ...textStyles.body14Medium, color: colors.secondary, whiteSpace: 'nowrap' }}>
+            {count}
+          </span>
+        )}
+      </button>
+    </WithTooltip>
   )
 }
