@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(npm *)",
+      "Bash(node *)",
+      "Bash(ls *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(echo *)",
+      "Bash(sed *)",
+      "Bash(python3 *)",
+      "Bash(bash *)",
+      "Bash(rm *)",
+      "Read",
+      "Edit",
+      "Write",
+      "mcp__figma__get_design_context",
+      "mcp__figma__download_assets",
+      "mcp__figma__use_figma",
+      "mcp__figma__get_metadata",
+      "mcp__figma__get_screenshot",
+      "mcp__figma__search_design_system"
+    ]
+  }
+}

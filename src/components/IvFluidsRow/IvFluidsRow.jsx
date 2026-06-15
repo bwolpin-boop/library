@@ -10,7 +10,7 @@ import { WithTooltip } from '../Tooltip/WithTooltip.jsx'
 // If you change any value here you MUST keep SourceTypeTable's DEFAULT_COLUMNS in sync.
 export const TABLE_COL_GAP = spacing.gap16   // gap between every column cell
 // Fixed column widths — must match DEFAULT_COLUMNS in SourceTypeTable
-export const TABLE_COL_WIDTHS = { vol: 50, dosage: 95, date: 75, page: 60 }
+export const TABLE_COL_WIDTHS = { vol: 50, dosage: 95, date: 75, page: 90 }
 
 const textStyle = {
   fontFamily: fonts.montserrat,
@@ -39,6 +39,28 @@ function Cell({ width, flex, children }) {
     >
       {children}
     </div>
+  )
+}
+
+function PlusButton({ onClick }) {
+  const [hovered, setHovered] = useState(false)
+  const [pressed, setPressed] = useState(false)
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => { setHovered(false); setPressed(false) }}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      style={{
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        width: 16, height: 16, flexShrink: 0,
+        background: pressed ? colors.surfaceActive : hovered ? colors.surfacePressed : 'none',
+        border: 'none', borderRadius: radii.boxSm, cursor: 'pointer', padding: 0,
+      }}
+    >
+      <NavIcon name="plus-small" size={16} />
+    </button>
   )
 }
 
@@ -85,8 +107,9 @@ export function IvFluidsRow({
   volume = '50 mL',
   dosage = '80 mL/3x a day',
   date = '15/04/2025',
-  pageRef = 'pg. 12',
-  hasMorePages = false,     // shows + icon after page text (e.g. "pg. 1, 2, 3 +")
+  pageRef = 'pg. 12',       // legacy string display; use `pages` array for smart rendering
+  pages,                    // array of page numbers, e.g. [12] | [12,24] | [5,13,52] | [5,13,52,47,...]
+  hasMorePages = false,     // legacy fallback when `pages` is not provided
   lineNumber,               // shown instead of verify/deny when purpose='source popup'
   count,                    // number shown in 'view more' e.g. 234
   // callbacks
@@ -171,6 +194,18 @@ export function IvFluidsRow({
         >
           {name}
         </span>
+        {vote !== null && !hovered && (
+          <div style={{
+            display:         'flex',
+            alignItems:      'center',
+            padding:         '2px',
+            backgroundColor: colors.surfacePressed,
+            borderRadius:    '2px',
+            flexShrink:      0,
+          }}>
+            <NavIcon name={vote === 'up' ? 'thumbs-up-pressed' : 'thumbs-down-pressed'} size={16} />
+          </div>
+        )}
       </Cell>
 
       {/* Volume */}
@@ -188,36 +223,26 @@ export function IvFluidsRow({
         <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>{date}</span>
       </Cell>
 
-      {/* Page ref — optional + icon when there are multiple pages */}
+      {/* Page ref */}
       <Cell width={`${TABLE_COL_WIDTHS.page}px`}>
-        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>{pageRef}</span>
-        {hasMorePages && (
-          <button
-            onClick={e => { e.stopPropagation(); onMorePages?.() }}
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', flexShrink: 0 }}
-          >
-            <NavIcon name="more" size={16} />
-          </button>
+        {pages != null ? (
+          <>
+            <span style={{ ...textStyle, flexShrink: 0 }}>
+              {pages.slice(0, 3).join(', ')}
+            </span>
+            {pages.length > 3 && (
+              <PlusButton onClick={e => { e.stopPropagation(); onMorePages?.() }} />
+            )}
+          </>
+        ) : (
+          <>
+            <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>{pageRef}</span>
+            {hasMorePages && (
+              <PlusButton onClick={e => { e.stopPropagation(); onMorePages?.() }} />
+            )}
+          </>
         )}
       </Cell>
-
-      {/* Compact vote badge — shown when voted but not hovering */}
-      {vote !== null && !hovered && (
-        <div style={{
-          position:        'absolute',
-          right:           spacing.gap24,
-          top:             '50%',
-          transform:       'translateY(-50%)',
-          display:         'flex',
-          alignItems:      'center',
-          padding:         '2px',
-          backgroundColor: colors.surfacePressed,
-          borderRadius:    '2px',
-          flexShrink:      0,
-        }}>
-          <NavIcon name={vote === 'up' ? 'thumbs-up-pressed' : 'thumbs-down-pressed'} size={16} />
-        </div>
-      )}
 
       {/* Full actions overlay — visible on hover */}
       {hovered && (

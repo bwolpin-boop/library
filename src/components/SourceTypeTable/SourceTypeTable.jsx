@@ -117,7 +117,7 @@ function AiGradientBar() {
 
 // ─── Content areas per table type ────────────────────────────────────────────
 
-function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCount = 7, sourcePopup, onViewMore, onVerify, onDeny, onPending, onUpClick, onDownClick, onCommentsClick }) {
+function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCount = 5, sourcePopup, onViewMore, onVerify, onDeny, onPending, onUpClick, onDownClick, onCommentsClick }) {
   const [expanded, setExpanded] = useState(false)
   const toggle = useCallback(() => setExpanded(e => !e), [])
 
@@ -221,7 +221,7 @@ export function SourceTypeTable({
   columns,
   rows            = [],
   viewMoreCount,
-  initialRowCount = 7,
+  initialRowCount = 5,
   // Text / quote
   text          = '',
   isQuote       = false,
@@ -300,7 +300,7 @@ export function SourceTypeTable({
         }}>
           {/* Upload date row */}
           <SourceHeader
-            type="sources"
+            type={sourcePopup ? 'sources' : 'prescrub'}
             sourceType={sourceType}
             uploadedDate={uploadedDate}
             tabs={tabs}

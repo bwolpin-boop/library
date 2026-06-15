@@ -21,12 +21,14 @@ export default {
   decorators: [(Story) => React.createElement('div', { style: { width: 705 } }, React.createElement(Story))],
 }
 
-export const Default          = { args: { purpose: 'prescrub', type: 'Default' } }
-export const WithMorePages    = { args: { purpose: 'prescrub', type: 'Default', pageRef: 'pg. 1, 2, 3', hasMorePages: true } }
-export const Verified         = { args: { purpose: 'prescrub', type: 'verified' } }
-export const Pending          = { args: { purpose: 'prescrub', type: 'pending' } }
-export const Denied           = { args: { purpose: 'prescrub', type: 'denied' } }
-export const SourcePopup      = { args: { purpose: 'source popup', lineNumber: '23' } }
-export const SourcePopupPages = { args: { purpose: 'source popup', lineNumber: '1', pageRef: 'pg. 1, 2, 3', hasMorePages: true } }
-export const ViewMore         = { args: { purpose: 'view more', count: 234 } }
+export const Default          = { args: { purpose: 'prescrub',      pages: [12] } }
+export const TwoPages         = { args: { purpose: 'prescrub',      pages: [12, 24] } }
+export const ThreePages       = { args: { purpose: 'prescrub',      pages: [5, 13, 52] } }
+export const ManyPages        = { args: { purpose: 'prescrub',      pages: [5, 13, 52, 47, 103] } }
+export const Verified         = { args: { purpose: 'prescrub',      pages: [12], type: 'verified' } }
+export const Pending          = { args: { purpose: 'prescrub',      pages: [12], type: 'pending' } }
+export const Denied           = { args: { purpose: 'prescrub',      pages: [12], type: 'denied' } }
+export const SourcePopup      = { args: { purpose: 'source popup',  pages: [12], lineNumber: '23' } }
+export const SourcePopupPages = { args: { purpose: 'source popup',  pages: [5, 13, 52], lineNumber: '1' } }
+export const ViewMore         = { args: { purpose: 'view more',  count: 234 } }
 export const ViewLess         = { args: { purpose: 'view less' } }

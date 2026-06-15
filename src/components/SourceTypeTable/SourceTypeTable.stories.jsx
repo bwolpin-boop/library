@@ -22,11 +22,10 @@ const FLUID_NAMES = [
 
 const ROWS = FLUID_NAMES.map((name, i) => ({
   name,
-  volume:       i % 2 === 0 ? '50 mL' : '100 mL',
-  dosage:       i % 3 === 0 ? '80 mL/3x a day' : '120 mL/2x a day',
-  date:         i % 2 === 0 ? '15/04/2025' : '20/04/2025',
-  pageRef:      i % 3 === 0 ? 'pg. 1, 2, 3' : 'pg. 12',
-  hasMorePages: i % 3 === 0,
+  volume: i % 2 === 0 ? '50 mL' : '100 mL',
+  dosage: i % 3 === 0 ? '80 mL/3x a day' : '120 mL/2x a day',
+  date:   i % 2 === 0 ? '15/04/2025' : '20/04/2025',
+  pages:  i % 5 === 0 ? [12, 24, 35, 47] : i % 3 === 0 ? [5, 13, 52] : i % 2 === 0 ? [12, 24] : [12],
 }))
 
 const TUBE_NAMES = [
@@ -43,7 +42,7 @@ const TUBE_ROWS = TUBE_NAMES.map((name, i) => ({
   amount:    i % 2 === 0 ? '240 mL' : '500 mL',
   frequency: i % 3 === 0 ? '3x a day' : 'continuous',
   date:      i % 2 === 0 ? '15/04/2025' : '18/04/2025',
-  pageRef:   `pg. ${i + 1}`,
+  pages:     [i + 1],
 }))
 
 const LOREM  = 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor.'
