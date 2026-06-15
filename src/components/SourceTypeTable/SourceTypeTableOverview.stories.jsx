@@ -33,14 +33,14 @@ const TUBE_ROWS = [
 ]
 
 const SURGERY_ROWS = [
-  { name: 'Hip Replacement',          volume: 'Elective',   dosage: 'Right Hip Arthroplasty',          date: '12/03/2025', pageRef: 'pg. 4' },
-  { name: 'Knee Replacement',         volume: 'Elective',   dosage: 'Left Total Knee Arthroplasty',    date: '15/03/2025', pageRef: 'pg. 7' },
-  { name: 'Appendectomy',             volume: 'Emergency',  dosage: 'Laparoscopic',                    date: '20/03/2025', pageRef: 'pg. 2' },
-  { name: 'Coronary Artery Bypass',   volume: 'Elective',   dosage: 'Triple Bypass Grafting',          date: '05/03/2025', pageRef: 'pg. 9' },
-  { name: 'Cholecystectomy',          volume: 'Elective',   dosage: 'Laparoscopic',                    date: '10/03/2025', pageRef: 'pg. 3' },
-  { name: 'Colectomy',                volume: 'Urgent',     dosage: 'Partial Right Hemicolectomy',     date: '18/03/2025', pageRef: 'pg. 11' },
-  { name: 'Laminectomy',              volume: 'Elective',   dosage: 'L4-L5 Decompression',             date: '22/03/2025', pageRef: 'pg. 5' },
-  { name: 'Cataract Extraction',      volume: 'Elective',   dosage: 'Phacoemulsification Right Eye',   date: '25/03/2025', pageRef: 'pg. 1' },
+  { name: 'Hip Replacement',          date: 'Orthopedics',   pageRef: 'pg. 4' },
+  { name: 'Knee Replacement',         date: 'Orthopedics',   pageRef: 'pg. 7',  hasMorePages: true },
+  { name: 'Appendectomy',             date: 'General',       pageRef: 'pg. 2' },
+  { name: 'Coronary Artery Bypass',   date: 'Cardiac',       pageRef: 'pg. 9',  hasMorePages: true },
+  { name: 'Cholecystectomy',          date: 'General',       pageRef: 'pg. 3' },
+  { name: 'Colectomy',                date: 'General',       pageRef: 'pg. 11' },
+  { name: 'Laminectomy',              date: 'Spine',         pageRef: 'pg. 5' },
+  { name: 'Cataract Extraction',      date: 'Ophthalmology', pageRef: 'pg. 1' },
 ]
 
 const DIAG_ROWS = [

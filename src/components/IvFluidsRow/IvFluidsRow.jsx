@@ -153,7 +153,9 @@ export function IvFluidsRow({
   pageRef = 'pg. 12',       // legacy string display; use `pages` array for smart rendering
   pages,                    // array of page numbers, e.g. [12] | [12,24] | [5,13,52] | [5,13,52,47,...]
   hasMorePages = false,     // legacy fallback when `pages` is not provided
-  showDosage = true,        // set false for tube-feeding (no Rate/Frequency column)
+  showVolume = true,        // set false for surgery/diagnosis (no Dose column)
+  showDosage = true,        // set false for tube-feeding/surgery/diagnosis (no Rate column)
+  showDate   = true,        // set false for diagnosis (no Given on column)
   lineNumber,               // shown instead of verify/deny when purpose='source popup'
   count,                    // number shown in 'view more' e.g. 234
   upVotes   = 0,            // existing votes from others — thumbs up
@@ -258,22 +260,26 @@ export function IvFluidsRow({
         )}
       </Cell>
 
-      {/* Volume */}
-      <Cell width={`${TABLE_COL_WIDTHS.vol}px`}>
-        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={volume}>{volume}</span>
-      </Cell>
+      {/* Volume / Dose — hidden for surgery & diagnosis */}
+      {showVolume && (
+        <Cell width={`${TABLE_COL_WIDTHS.vol}px`}>
+          <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={volume}>{volume}</span>
+        </Cell>
+      )}
 
-      {/* Dosage / Rate — hidden for tube-feeding which has no Rate column */}
+      {/* Dosage / Rate — hidden for tube-feeding, surgery & diagnosis */}
       {showDosage && (
         <Cell width={`${TABLE_COL_WIDTHS.dosage}px`}>
           <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={dosage}>{dosage}</span>
         </Cell>
       )}
 
-      {/* Date / Given on */}
-      <Cell width={`${TABLE_COL_WIDTHS.date}px`}>
-        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>{date}</span>
-      </Cell>
+      {/* Date / Given on / Category — hidden for diagnosis */}
+      {showDate && (
+        <Cell width={`${TABLE_COL_WIDTHS.date}px`}>
+          <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>{date}</span>
+        </Cell>
+      )}
 
       {/* Page ref */}
       <Cell width={`${TABLE_COL_WIDTHS.page}px`}>

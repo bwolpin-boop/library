@@ -20,8 +20,8 @@ const { vol: W_VOL, dosage: W_DOSAGE, date: W_DATE, page: W_PAGE } = TABLE_COL_W
 const DEFAULT_COLUMNS = {
   'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose',      width: W_VOL }, { label: 'Rate',      width: W_DOSAGE }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
   'tube-feeding': [{ label: 'Formula name' }, { label: 'Dose', width: W_VOL }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
-  surgery:        [{ label: 'Procedure' },  { label: 'Type',      width: W_VOL }, { label: 'Details',   width: W_DOSAGE }, { label: 'Date',     width: W_DATE }, { label: 'Page', width: W_PAGE }],
-  diagnosis:      [{ label: 'Diagnosis' },  { label: 'Code',      width: W_VOL }, { label: 'Type',      width: W_DOSAGE }, { label: 'Date',     width: W_DATE }, { label: 'Page', width: W_PAGE }],
+  surgery:        [{ label: 'Surgery name' }, { label: 'Category',         width: W_DATE }, { label: 'Page', width: W_PAGE }],
+  diagnosis:      [{ label: 'Diagnosis' },   { label: 'Clinical Category', width: W_DOSAGE }, { label: 'MDS Mapping', width: W_PAGE }],
 }
 
 const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosis'])
@@ -140,7 +140,9 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             name={row.name}
             volume={row.volume ?? row.amount}
             dosage={row.dosage ?? row.frequency}
-            showDosage={tableType !== 'tube-feeding'}
+            showVolume={tableType !== 'surgery' && tableType !== 'diagnosis'}
+            showDosage={tableType !== 'tube-feeding' && tableType !== 'surgery'}
+            showDate={tableType !== 'diagnosis'}
             date={row.date}
             pages={row.pages}
             pageRef={row.pageRef ?? row.page}

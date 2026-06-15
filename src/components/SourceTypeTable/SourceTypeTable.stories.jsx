@@ -118,14 +118,32 @@ export const TubeFeeding = {
   render: () => <ToggleTable tableType="tube-feeding" title="Tube Feeding" sourceType="IV Fluids" rows={TUBE_ROWS} />,
 }
 
+const SURGERY_ROWS = [
+  { name: 'Hip Replacement',          date: 'Orthopedics',   pages: [4] },
+  { name: 'Knee Replacement',         date: 'Orthopedics',   pages: [7, 8] },
+  { name: 'Appendectomy',             date: 'General',       pages: [2] },
+  { name: 'Coronary Artery Bypass',   date: 'Cardiac',       pages: [9, 10, 11] },
+  { name: 'Cholecystectomy',          date: 'General',       pages: [3] },
+  { name: 'Colectomy',                date: 'General',       pages: [11] },
+]
+
+const DIAG_ROWS = [
+  { name: 'Hypertension (High Blood Pressure)', volume: 'Acute',   dosage: 'IGHFP', pages: [1] },
+  { name: 'Type 2 Diabetes Mellitus',           volume: 'Chronic', dosage: 'IGHFP', pages: [2] },
+  { name: 'Chronic Kidney Disease Stage 3',     volume: 'Chronic', dosage: 'IGHFP', pages: [3] },
+  { name: 'Heart Failure — Systolic',           volume: 'Acute',   dosage: 'IGHFP', pages: [4] },
+  { name: 'COPD — Moderate',                    volume: 'Chronic', dosage: 'IGHFP', pages: [5] },
+  { name: 'Atrial Fibrillation',                volume: 'Chronic', dosage: 'IGHFP', pages: [6] },
+]
+
 export const Surgery = {
   name: 'Surgery',
-  render: () => <ToggleTable tableType="surgery" title="Surgery" sourceType="Medications" rows={ROWS} />,
+  render: () => <ToggleTable tableType="surgery" title="Surgery" sourceType="Medications" rows={SURGERY_ROWS} />,
 }
 
 export const Diagnosis = {
   name: 'Diagnosis',
-  render: () => <ToggleTable tableType="diagnosis" title="Diagnosis" sourceType="Diagnosis" rows={ROWS} />,
+  render: () => <ToggleTable tableType="diagnosis" title="Diagnosis" sourceType="Diagnosis" rows={DIAG_ROWS} />,
 }
 
 export const ProgressNotes = {

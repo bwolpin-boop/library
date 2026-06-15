@@ -5,7 +5,7 @@ import { SourceTypeIcon }         from '../Icon/SourceTypeIcon.jsx'
 import { ThumbsComponent }        from '../Icon/ThumbsComponent.jsx'
 import { Comments }               from '../Icon/Comments.jsx'
 import { PdfTitle }               from '../PdfTitle/PdfTitle.jsx'
-import { SourcePopupTopSection }  from '../SourceHeader/SourcePopupTopSection.jsx'
+import { SourcePopupTopSection, SourceTabsBar } from '../SourceHeader/SourcePopupTopSection.jsx'
 import { SourceTypeTable }        from '../SourceTypeTable/SourceTypeTable.jsx'
 
 // ─── SourceCard — kept for standalone use ────────────────────────────────────
@@ -227,35 +227,51 @@ export function SourcePopup({
         ...style,
       }}
     >
-      {/* ── Single scroll container — everything lives here ───────────────────
-           The top section (title + close + DcSuggests) scrolls away normally.
-           The tabs bar becomes sticky when it reaches the top of this container. */}
-      <div style={{ flex: 1, overflowY: 'auto' }}>
+      {/* ── Single scroll container ───────────────────────────────────────────
+           Correct sticky setup:
+           • Top section (title + DcSuggests + close) scrolls away normally
+           • SourceTabsBar is a DIRECT CHILD of this container → position:sticky works
+           • Tables scroll freely under the stuck tabs bar                         */}
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
 
-        {/* Top section — scrolls away */}
-        <div style={{ padding: `${spacing.gap24} ${spacing.gap24} 0` }}>
+        {/* Top section — scrolls away completely */}
+        <div style={{ padding: `${spacing.gap24} ${spacing.gap24} ${spacing.gap16}` }}>
           <SourcePopupTopSection
             qCode={qCode}
             questionTitle={questionTitle}
             previousAnswer={previousAnswer}
             hasLittleMan={hasLittleMan}
-            sourceTabs={tabList}
+            sourceTabs={uniqueTypes}
+            selectedTab={selectedTab}
             answerType={answerType}
-            stickyTabs={true}
+            hideTabsRow       /* tabs are rendered below as sticky */
             onClose={onClose}
-            onTabClick={setTabIndex}
+            onTabSelect={setSelectedTab}
             onVerifyAll={onVerifyAll}
             onComments={onComments}
           />
         </div>
 
-        {/* Source tables — scroll beneath the sticky tabs bar */}
+        {/* Tabs bar — direct child of scroll container so position:sticky works */}
+        <div style={{ padding: `0 ${spacing.gap24}` }}>
+          <SourceTabsBar
+            sourceTabs={uniqueTypes}
+            selectedTab={selectedTab}
+            onTabSelect={setSelectedTab}
+            onVerifyAll={onVerifyAll}
+            onComments={onComments}
+            sticky
+          />
+        </div>
+
+        {/* Source tables — scroll under the sticky tabs bar */}
         <div style={{
           display:       'flex',
           flexDirection: 'column',
           gap:           spacing.gap24,
           padding:       spacing.gap24,
           paddingTop:    spacing.gap16,
+          flex:          1,
         }}>
           {visibleTables.map((table, i) => (
             <SourceTypeTable

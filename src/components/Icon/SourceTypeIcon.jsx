@@ -18,6 +18,7 @@ import ivFluids        from '../../assets/source-type-icons/iv-fluids.svg'
 import highRiskAlerts  from '../../assets/source-type-icons/high-risk-alerts.svg'
 import incidents       from '../../assets/source-type-icons/incidents.svg'
 import previousTarget  from '../../assets/source-type-icons/previous-target.svg'
+import sourceStacked   from '../../assets/source-type-icons/source-stacked.svg'
 
 const iconMap = {
   'Progress Notes':     progressNotes,
@@ -27,7 +28,8 @@ const iconMap = {
   'PCC Docs':           pccDocs,
   'Therapy Docs':       therapyDocs,
   'Medications':        medications,
-  'Diagnosis':          diagnosis,
+  'Diagnosis':          sourceStacked,   // stacked multi-source icon for diagnosis
+  'Diagnosis (single)': diagnosis,
   'Orders Notes':       ordersNotes,
   'Doctors Orders':     doctorsOrders,
   'PCC Connect':        pccConnect,

@@ -49,6 +49,49 @@ function IconBtn({ name, size = 24, onClick }) {
   )
 }
 
+// ── Exported tabs bar — used as a standalone sticky element in SourcePopup ──
+// Must be a *direct child* of the scroll container for position:sticky to work.
+
+export function SourceTabsBar({
+  sourceTabs  = [],
+  selectedTab = null,
+  onTabSelect,
+  onVerifyAll,
+  onComments,
+  sticky      = false,
+}) {
+  return (
+    <div style={{
+      display:         'flex',
+      alignItems:      'center',
+      width:           '100%',
+      backgroundColor: colors.white,
+      ...(sticky ? {
+        position:     'sticky',
+        top:          0,
+        zIndex:       10,
+        paddingTop:   spacing.gap12,
+        paddingBottom: spacing.gap12,
+        borderBottom: `1px solid ${colors.dividerSubtle}`,
+      } : {}),
+    }}>
+      <div style={{ flex: '1 0 0', minWidth: '1px' }}>
+        <SourceTypeTabs
+          tabs={sourceTabs}
+          selectedTab={selectedTab}
+          onTabSelect={onTabSelect}
+          size="small"
+        />
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+        <Divider />
+        <IconBtn name="verify"           size={24} onClick={onVerifyAll} />
+        <IconBtn name="reaction-comment" size={24} onClick={onComments} />
+      </div>
+    </div>
+  )
+}
+
 // ── Main export ─────────────────────────────────────────────────────────────
 
 export function SourcePopupTopSection({
@@ -63,9 +106,10 @@ export function SourcePopupTopSection({
   sourceTabs        = ['Progress Notes', 'Assessments', 'Mars', 'Therapy Docs'],  // source type strings
   selectedTab       = null,   // null/'All' or a sourceType string
   answerType        = 'yes-dc',
-  stickyTabs        = false,  // when true the tabs row becomes position:sticky
+  stickyTabs        = false,
+  hideTabsRow       = false,  // set true when parent renders SourceTabsBar separately
   onClose,
-  onTabSelect,                // (type: string | 'All') => void
+  onTabSelect,
   onVerifyAll,
   onComments,
 }) {
@@ -120,37 +164,17 @@ export function SourcePopupTopSection({
         </div>
       </div>
 
-      {/* ── Bottom row: source filter tabs + action icons ── */}
-      <div style={{
-        display: 'flex', alignItems: 'center', width: '100%',
-        ...(stickyTabs ? {
-          position:        'sticky',
-          top:             0,
-          zIndex:          10,
-          backgroundColor: colors.white,
-          paddingTop:      spacing.gap12,
-          paddingBottom:   spacing.gap12,
-          borderBottom:    `1px solid ${colors.dividerSubtle}`,
-        } : {}),
-      }}>
-
-        {/* SourceTypeTabs design system component */}
-        <div style={{ flex: '1 0 0', minWidth: '1px' }}>
-          <SourceTypeTabs
-            tabs={sourceTabs}
-            selectedTab={selectedTab}
-            onTabSelect={onTabSelect}
-            size="small"
-          />
-        </div>
-
-        {/* Divider + icon buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-          <Divider />
-          <IconBtn name="verify" size={24} onClick={onVerifyAll} />
-          <IconBtn name="reaction-comment" size={24} onClick={onComments} />
-        </div>
-      </div>
+      {/* Tabs row — rendered inline when not hoisted out as a sticky element */}
+      {!hideTabsRow && (
+        <SourceTabsBar
+          sourceTabs={sourceTabs}
+          selectedTab={selectedTab}
+          onTabSelect={onTabSelect}
+          onVerifyAll={onVerifyAll}
+          onComments={onComments}
+          sticky={stickyTabs}
+        />
+      )}
 
     </div>
   )
