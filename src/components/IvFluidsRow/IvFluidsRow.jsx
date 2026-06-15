@@ -92,8 +92,8 @@ function VoteBadge({ direction, count, isSelected, onClick }) {
     >
       <NavIcon
         name={direction === 'up'
-          ? (isSelected ? 'thumbs-up-small'   : 'thumbs-up')
-          : (isSelected ? 'thumbs-down-small' : 'thumbs-down')}
+          ? (isSelected ? 'thumbs-up-pressed'   : 'thumbs-up')
+          : (isSelected ? 'thumbs-down-pressed' : 'thumbs-down')}
         size={12}
       />
       <span style={{
