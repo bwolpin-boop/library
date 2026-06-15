@@ -27,10 +27,10 @@ export function GroupOfVerifyDenyAndPending({
 
   return (
     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-      <VerifyAndDeny type="deny"    forceState={denyForce}    onClick={() => handleClick('deny',    onDeny)} />
-      <VerifyAndDeny type="verify"  forceState={verifyForce}  onClick={() => handleClick('verify',  onVerify)} />
+      <VerifyAndDeny type="deny"    tooltipLabel="Deny"    forceState={denyForce}    onClick={() => handleClick('deny',    onDeny)} />
+      <VerifyAndDeny type="verify"  tooltipLabel="Verify"  forceState={verifyForce}  onClick={() => handleClick('verify',  onVerify)} />
       {hasPending && (
-        <VerifyAndDeny type="pending" forceState={pendingForce} onClick={() => handleClick('pending', onPending)} />
+        <VerifyAndDeny type="pending" tooltipLabel="Pending" forceState={pendingForce} onClick={() => handleClick('pending', onPending)} />
       )}
     </div>
   )

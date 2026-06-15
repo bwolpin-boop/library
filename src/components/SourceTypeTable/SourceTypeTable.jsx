@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
 import { SourceHeader } from '../SourceHeader/SourceHeader.jsx'
 import { PdfTitle } from '../PdfTitle/PdfTitle.jsx'
 import { HeaderCells } from '../HeaderCells/HeaderCells.jsx'
-import { IvFluidsRow } from '../IvFluidsRow/IvFluidsRow.jsx'
+import { IvFluidsRow, TABLE_COL_GAP, TABLE_COL_WIDTHS } from '../IvFluidsRow/IvFluidsRow.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
 
 // ─── Text styles ─────────────────────────────────────────────────────────────
@@ -15,11 +15,13 @@ const reg12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight
 
 // ─── Default column definitions per tabular table type ────────────────────────
 
+const { vol: W_VOL, dosage: W_DOSAGE, date: W_DATE, page: W_PAGE } = TABLE_COL_WIDTHS
+
 const DEFAULT_COLUMNS = {
-  'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose', width: 55 }, { label: 'Rate', width: 120 }, { label: 'Given on', width: 80 }, { label: 'Page', width: 100 }],
-  'tube-feeding': [{ label: 'Item' },       { label: 'Amount', width: 55 }, { label: 'Frequency', width: 120 }, { label: 'Given on', width: 80 }, { label: 'Page', width: 100 }],
-  surgery:        [{ label: 'Procedure' },  { label: 'Type', width: 55 }, { label: 'Details', width: 120 }, { label: 'Date', width: 80 }, { label: 'Page', width: 100 }],
-  diagnosis:      [{ label: 'Diagnosis' },  { label: 'Code', width: 55 }, { label: 'Type', width: 120 }, { label: 'Date', width: 80 }, { label: 'Page', width: 100 }],
+  'iv-fluids':    [{ label: 'Fluid name' }, { label: 'Dose',      width: W_VOL }, { label: 'Rate',      width: W_DOSAGE }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
+  'tube-feeding': [{ label: 'Item' },       { label: 'Amount',    width: W_VOL }, { label: 'Frequency', width: W_DOSAGE }, { label: 'Given on', width: W_DATE }, { label: 'Page', width: W_PAGE }],
+  surgery:        [{ label: 'Procedure' },  { label: 'Type',      width: W_VOL }, { label: 'Details',   width: W_DOSAGE }, { label: 'Date',     width: W_DATE }, { label: 'Page', width: W_PAGE }],
+  diagnosis:      [{ label: 'Diagnosis' },  { label: 'Code',      width: W_VOL }, { label: 'Type',      width: W_DOSAGE }, { label: 'Date',     width: W_DATE }, { label: 'Page', width: W_PAGE }],
 }
 
 const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosis'])
@@ -31,7 +33,7 @@ function TableHeaderRow({ columns }) {
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: spacing.gap24,
+      gap: TABLE_COL_GAP,  // must always equal IvFluidsRow's TABLE_COL_GAP
       height: 32,
       padding: `0 ${spacing.gap24}`,
       borderBottom: `1px solid ${colors.dividerSubtle}`,

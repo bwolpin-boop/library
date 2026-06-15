@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
+import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon }              from '../Icon/NavIcon.jsx'
 import { VerifyAndDeny }        from '../VerifyDeny/VerifyAndDeny.jsx'
 import { TypeTag }              from '../TypeTag/TypeTag.jsx'
@@ -141,7 +141,15 @@ function DiagnosisSection({ title, dateRange, fileName, rows }) {
         onClick={() => setCollapsed(c => !c)}
         style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, cursor: 'pointer', userSelect: 'none' }}
       >
-        <NavIcon name={collapsed ? 'arrow-right' : 'arrow-down'} size={16} />
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+            <path
+              d={collapsed ? 'M6 4L10 8L6 12' : 'M4 6L8 10L12 6'}
+              stroke={colors.primary}
+              strokeWidth={strokeWidths.icon}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         <NavIcon name="primary-diagnosis" size={16} />
         <span style={{ fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.semibold, lineHeight: lineHeights.md, color: '#323338', whiteSpace: 'nowrap' }}>
           {title}

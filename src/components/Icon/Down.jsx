@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { colors, textStyles, radii, spacing } from '../../tokens.js'
 import { NavIcon } from './NavIcon.jsx'
+import { WithTooltip } from '../Tooltip/WithTooltip.jsx'
 
 export function Down({ count, selected: selectedProp, onClick, className }) {
   const isControlled               = selectedProp !== undefined

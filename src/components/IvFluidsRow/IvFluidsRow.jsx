@@ -4,9 +4,12 @@ import { VerifyAndDeny } from '../VerifyDeny/VerifyAndDeny.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 
-// Shared column layout — imported by SourceTypeTable so header and rows always match
-export const TABLE_COL_GAP     = spacing.gap16
-export const TABLE_COL_WIDTHS  = { vol: '55px', dosage: '120px', date: '80px', page: '128px' }
+// ── Shared layout constants ─────────────────────────────────────────────────
+// IMPORTANT: TABLE_COL_GAP is imported by SourceTypeTable's TableHeaderRow.
+// If you change any value here you MUST keep SourceTypeTable's DEFAULT_COLUMNS in sync.
+export const TABLE_COL_GAP = spacing.gap24   // gap between every column cell
+// Fixed column widths — must match DEFAULT_COLUMNS in SourceTypeTable
+export const TABLE_COL_WIDTHS = { vol: 55, dosage: 120, date: 80, page: 100 }
 
 const textStyle = {
   fontFamily: fonts.montserrat,
@@ -131,7 +134,7 @@ export function IvFluidsRow({
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        gap: spacing.gap16,
+        gap: TABLE_COL_GAP,
         height: '32px',
         padding: `0 ${spacing.gap24}`,
         borderBottom: `1px solid ${colors.dividerSubtle}`,
@@ -175,7 +178,7 @@ export function IvFluidsRow({
       </Cell>
 
       {/* Page ref */}
-      <Cell width="100px">
+      <Cell width={`${TABLE_COL_WIDTHS.page}px`}>
         <span style={textStyle}>{pageRef}</span>
       </Cell>
 
