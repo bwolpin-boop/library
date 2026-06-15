@@ -37,6 +37,8 @@ import thumbsUpIcon      from '../../assets/icons/thumbs-up.svg'
 import thumbsUpPressedIcon from '../../assets/icons/thumbs-up-pressed.svg'
 import thumbsDownIcon    from '../../assets/icons/thumbs-down.svg'
 import thumbsDownPressedIcon from '../../assets/icons/thumbs-down-pressed.svg'
+import thumbsUpSmallIcon   from '../../assets/icons/thumbs-up-small.svg'
+import thumbsDownSmallIcon from '../../assets/icons/thumbs-down-small.svg'
 import lockIcon            from '../../assets/icons/lock.svg'
 import arrowUpIcon         from '../../assets/icons/arrow-up.svg'
 import arrowDownIcon       from '../../assets/icons/arrow-down.svg'
@@ -100,8 +102,10 @@ const icons = {
   'reaction-comment':      reactionCommentIcon,
   'thumbs-up':             thumbsUpIcon,
   'thumbs-up-pressed':     thumbsUpPressedIcon,
+  'thumbs-up-small':       thumbsUpSmallIcon,
   'thumbs-down':           thumbsDownIcon,
   'thumbs-down-pressed':   thumbsDownPressedIcon,
+  'thumbs-down-small':     thumbsDownSmallIcon,
   'sort-arrows':           sortArrowsIcon,
   // Row Cells icons
   profile:                 profileIcon,
@@ -169,8 +173,10 @@ export const iconNativeSizes = {
   'reaction-comment':      24,
   'thumbs-up':             24,
   'thumbs-up-pressed':     24,
+  'thumbs-up-small':       12,
   'thumbs-down':           24,
   'thumbs-down-pressed':   24,
+  'thumbs-down-small':     12,
   'sort-arrows':           12,
   // Row Cells icons
   profile:                 24,

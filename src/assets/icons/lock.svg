@@ -1,5 +1,18 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="3" y="11" width="18" height="10.5" rx="2.3" stroke="#222222" stroke-width="1.2"/>
-  <path d="M8 11V8C8 5.791 9.791 4 12 4C14.209 4 16 5.791 16 8V11" stroke="#222222" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="10" y="14" width="4" height="5" rx="2" stroke="#222222" stroke-width="1.2"/>
+
+<g id="Nav Icons">
+
+
+<g id="Icon=lock">
+<g id="Group 185600">
+<g id="Group 185585">
+<rect id="Rectangle 3098" x="3.6" y="7.66677" width="15.8" height="13.25" rx="1.70769" stroke="#222222" stroke-width="1.2"/>
+<path id="Rectangle 34624845" d="M11.7 11.9656C12.4731 11.9656 13.1003 12.5928 13.1003 13.366V15.366C13.1003 16.1392 12.4731 16.7664 11.7 16.7664C10.9268 16.7664 10.2996 16.1392 10.2996 15.366V13.366C10.2996 12.5928 10.9268 11.9656 11.7 11.9656Z" stroke="#222222" stroke-width="1.2"/>
+<g id="Group 185584">
+<path id="Vector 293" d="M6.5 7.2V5.31C6.5 4.03422 7.53422 3 8.81 3L14.19 3C15.4658 3 16.5 4.03422 16.5 5.31V7.5" stroke="#222222" stroke-width="1.2" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
 </svg>

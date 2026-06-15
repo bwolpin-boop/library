@@ -67,6 +67,49 @@ function PlusButton({ onClick }) {
 // type: 'Default' | 'verified' | 'pending' | 'denied'
 const vdTypeMap = { verified: 'verify', pending: 'pending', denied: 'deny', Default: 'empty' }
 
+// Inline vote badge — shows after the name, counts existing votes + own
+function VoteBadge({ direction, count, isSelected, onClick }) {
+  const [hov, setHov] = useState(false)
+  if (count <= 0) return null
+  return (
+    <button
+      onClick={e => { e.stopPropagation(); onClick() }}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        display:         'inline-flex',
+        alignItems:      'center',
+        gap:             '2px',
+        background:      'none',
+        border:          'none',
+        cursor:          'pointer',
+        padding:         '1px 3px',
+        borderRadius:    '3px',
+        backgroundColor: hov ? colors.surfaceHover : 'transparent',
+        flexShrink:      0,
+        transition:      'background-color 0.1s',
+      }}
+    >
+      <NavIcon
+        name={direction === 'up'
+          ? (isSelected ? 'thumbs-up-small'   : 'thumbs-up')
+          : (isSelected ? 'thumbs-down-small' : 'thumbs-down')}
+        size={12}
+      />
+      <span style={{
+        fontFamily:  fonts.montserrat,
+        fontSize:    fontSizes.xxxs,
+        fontWeight:  fontWeights.medium,
+        lineHeight:  'normal',
+        color:       isSelected ? colors.primary : colors.secondary,
+        whiteSpace:  'nowrap',
+      }}>
+        {count}
+      </span>
+    </button>
+  )
+}
+
 function ViewToggleRow({ purpose, count, onClick, style }) {
   const isMore = purpose === 'view more'
   const [hovered, setHovered] = useState(false)
@@ -112,6 +155,8 @@ export function IvFluidsRow({
   hasMorePages = false,     // legacy fallback when `pages` is not provided
   lineNumber,               // shown instead of verify/deny when purpose='source popup'
   count,                    // number shown in 'view more' e.g. 234
+  upVotes   = 0,            // existing votes from others — thumbs up
+  downVotes = 0,            // existing votes from others — thumbs down
   // callbacks
   onClick,
   onMorePages,              // called when the + page icon is clicked
@@ -176,7 +221,7 @@ export function IvFluidsRow({
       <Cell flex="1 0 0">
         {isSourcePopup ? (
           lineNumber != null && (
-            <span style={{ ...textStyle, width: '12px', flexShrink: 0, textAlign: 'right' }}>
+            <span style={{ ...textStyle, width: '12px', flexShrink: 0, textAlign: 'left' }}>
               {lineNumber}
             </span>
           )
@@ -194,17 +239,21 @@ export function IvFluidsRow({
         >
           {name}
         </span>
-        {vote !== null && (
-          <div style={{
-            display:         'flex',
-            alignItems:      'center',
-            padding:         '2px',
-            backgroundColor: colors.surfacePressed,
-            borderRadius:    '2px',
-            flexShrink:      0,
-          }}>
-            <NavIcon name={vote === 'up' ? 'thumbs-up-pressed' : 'thumbs-down-pressed'} size={12} />
-          </div>
+        {!hovered && (upVotes > 0 || vote === 'up') && (
+          <VoteBadge
+            direction="up"
+            count={upVotes + (vote === 'up' ? 1 : 0)}
+            isSelected={vote === 'up'}
+            onClick={handleUpClick}
+          />
+        )}
+        {!hovered && (downVotes > 0 || vote === 'down') && (
+          <VoteBadge
+            direction="down"
+            count={downVotes + (vote === 'down' ? 1 : 0)}
+            isSelected={vote === 'down'}
+            onClick={handleDownClick}
+          />
         )}
       </Cell>
 
