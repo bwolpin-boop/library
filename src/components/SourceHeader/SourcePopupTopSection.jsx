@@ -1,7 +1,7 @@
 import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
-import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
 import { DcSuggests } from './DcSuggests.jsx'
+import { SourceTypeTabs } from '../SourceTypeTab/SourceTypeTabs.jsx'
 
 // ── Internal sub-components ─────────────────────────────────────────────────
 
@@ -30,37 +30,6 @@ function QuestionTitle({ qCode, title, previousAnswer, truncate }) {
   )
 }
 
-function SourceFilterTab({ label, sourceType, selected = false, onClick }) {
-  const hasIcon = Boolean(sourceType)
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: hasIcon ? spacing.gap4 : undefined,
-        paddingLeft: hasIcon ? spacing.gap4 : spacing.gap8,
-        paddingRight: spacing.gap8,
-        paddingTop: '2px',
-        paddingBottom: '2px',
-        height: '22px',
-        borderRadius: radii.boxSm,
-        backgroundColor: colors.white,
-        border: `0.5px solid ${selected ? colors.primary : colors.dividerSubtle}`,
-        cursor: 'pointer',
-        whiteSpace: 'nowrap',
-        flexShrink: 0,
-        outline: 'none',
-      }}
-    >
-      {hasIcon && <SourceTypeIcon type={sourceType} size={14} />}
-      <span style={{ fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.regular, lineHeight: lineHeights.sm, color: colors.primary }}>
-        {label}
-      </span>
-    </button>
-  )
-}
-
 function Divider() {
   return (
     <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -80,17 +49,6 @@ function IconBtn({ name, size = 24, onClick }) {
   )
 }
 
-// ── Defaults ────────────────────────────────────────────────────────────────
-
-const DEFAULT_TABS = [
-  { label: 'All' },
-  { label: 'Progress Notes', sourceType: 'Progress Notes' },
-  { label: 'Assessments',    sourceType: 'Assessments', selected: true },
-  { label: 'Mars',           sourceType: 'Mars' },
-  { label: 'Therapy Docs',   sourceType: 'Therapy Docs' },
-  { label: 'Progress Notes', sourceType: 'Progress Notes' },
-]
-
 // ── Main export ─────────────────────────────────────────────────────────────
 
 export function SourcePopupTopSection({
@@ -102,11 +60,12 @@ export function SourcePopupTopSection({
   assignAndCalendar = false,
   assignee          = 'No Assignee',
   dueDate           = 'Mar 23, 2025',
-  sourceTabs        = DEFAULT_TABS,
+  sourceTabs        = ['Progress Notes', 'Assessments', 'Mars', 'Therapy Docs'],  // source type strings
+  selectedTab       = null,   // null/'All' or a sourceType string
   answerType        = 'yes-dc',
   stickyTabs        = false,  // when true the tabs row becomes position:sticky
   onClose,
-  onTabClick,
+  onTabSelect,                // (type: string | 'All') => void
   onVerifyAll,
   onComments,
 }) {
@@ -165,31 +124,24 @@ export function SourcePopupTopSection({
       <div style={{
         display: 'flex', alignItems: 'center', width: '100%',
         ...(stickyTabs ? {
-          position: 'sticky', top: 0, zIndex: 10,
+          position:        'sticky',
+          top:             0,
+          zIndex:          10,
           backgroundColor: colors.white,
-          paddingBottom: spacing.gap16,
+          paddingTop:      spacing.gap12,
+          paddingBottom:   spacing.gap12,
+          borderBottom:    `1px solid ${colors.dividerSubtle}`,
         } : {}),
       }}>
 
-        {/* Scrollable tabs with right fade */}
-        <div style={{ position: 'relative', flex: '1 0 0', minWidth: '1px', overflow: 'hidden', height: '24px', display: 'flex', alignItems: 'center' }}>
-          <div style={{ display: 'flex', gap: spacing.gap4, alignItems: 'center' }}>
-            {sourceTabs.map((tab, i) => (
-              <SourceFilterTab
-                key={i}
-                label={tab.label}
-                sourceType={tab.sourceType}
-                selected={tab.selected ?? false}
-                onClick={() => onTabClick?.(i)}
-              />
-            ))}
-          </div>
-          {/* Right overflow gradient fade */}
-          <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '47px', background: 'linear-gradient(to right, rgba(255,255,255,0) 11%, white 41%)', pointerEvents: 'none' }} />
-          {/* Right arrow indicator */}
-          <div style={{ position: 'absolute', right: '4px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-            <NavIcon name="arrow-right" size={16} />
-          </div>
+        {/* SourceTypeTabs design system component */}
+        <div style={{ flex: '1 0 0', minWidth: '1px' }}>
+          <SourceTypeTabs
+            tabs={sourceTabs}
+            selectedTab={selectedTab}
+            onTabSelect={onTabSelect}
+            size="small"
+          />
         </div>
 
         {/* Divider + icon buttons */}

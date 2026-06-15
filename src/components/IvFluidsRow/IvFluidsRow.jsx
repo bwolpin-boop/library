@@ -263,10 +263,12 @@ export function IvFluidsRow({
         <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={volume}>{volume}</span>
       </Cell>
 
-      {/* Dosage / Rate */}
-      <Cell width={`${TABLE_COL_WIDTHS.dosage}px`}>
-        <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={dosage}>{dosage}</span>
-      </Cell>
+      {/* Dosage / Rate — hidden for tube-feeding which has no Rate column */}
+      {showDosage && (
+        <Cell width={`${TABLE_COL_WIDTHS.dosage}px`}>
+          <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={dosage}>{dosage}</span>
+        </Cell>
+      )}
 
       {/* Date / Given on */}
       <Cell width={`${TABLE_COL_WIDTHS.date}px`}>

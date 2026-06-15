@@ -140,6 +140,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             name={row.name}
             volume={row.volume ?? row.amount}
             dosage={row.dosage ?? row.frequency}
+            showDosage={tableType !== 'tube-feeding'}
             date={row.date}
             pages={row.pages}
             pageRef={row.pageRef ?? row.page}

@@ -203,14 +203,11 @@ export function SourcePopup({
   style,
   className,
 }) {
-  // Tab list: ['All', 'Progress Notes', 'IV Fluids', ...]
   const uniqueTypes = getUniqueSourceTypes(tables)
-  const tabList     = ['All', ...uniqueTypes]
 
-  const [tabIndex, setTabIndex] = useState(0)  // 0 = 'All'
-  const selectedTab = tabList[tabIndex] ?? 'All'
+  const [selectedTab, setSelectedTab] = useState(null)  // null / 'All' = show one per type
 
-  const visibleTables = selectedTab === 'All'
+  const visibleTables = !selectedTab || selectedTab === 'All'
     ? dedupeBySourceType(tables)
     : tables.filter(t => t.sourceType === selectedTab)
 
@@ -230,55 +227,53 @@ export function SourcePopup({
         ...style,
       }}
     >
-      {/* ── Sticky header: title + close + DC suggests + tabs ────────────────
-           This section never scrolls. The close button and the source filter
-           tabs + action icons are always visible regardless of scroll position. */}
-      <div style={{
-        flexShrink:      0,
-        padding:         spacing.gap24,
-        paddingBottom:   spacing.gap16,
-        borderBottom:    `1px solid ${colors.dividerSubtle}`,
-        backgroundColor: colors.white,
-      }}>
-        <SourcePopupTopSection
-          qCode={qCode}
-          questionTitle={questionTitle}
-          previousAnswer={previousAnswer}
-          hasLittleMan={hasLittleMan}
-          sourceTabs={tabList}
-          answerType={answerType}
-          stickyTabs={false}
-          onClose={onClose}
-          onTabClick={setTabIndex}
-          onVerifyAll={onVerifyAll}
-          onComments={onComments}
-        />
-      </div>
+      {/* ── Single scroll container — everything lives here ───────────────────
+           The top section (title + close + DcSuggests) scrolls away normally.
+           The tabs bar becomes sticky when it reaches the top of this container. */}
+      <div style={{ flex: 1, overflowY: 'auto' }}>
 
-      {/* ── Scrollable source tables ────────────────────────────────────────── */}
-      <div style={{
-        flex:            1,
-        overflowY:       'auto',
-        display:         'flex',
-        flexDirection:   'column',
-        gap:             spacing.gap24,
-        padding:         spacing.gap24,
-      }}>
-        {visibleTables.map((table, i) => (
-          <SourceTypeTable
-            key={`${table.sourceType}-${i}`}
-            sourcePopup={true}
-            tableType={table.tableType}
-            sourceType={table.sourceType}
-            uploadedDate={table.uploadedDate}
-            docName={table.docName}
-            rows={table.rows}
-            text={table.text}
-            isQuote={table.isQuote}
-            aiTitle={table.aiTitle}
-            hasTitle={false}
+        {/* Top section — scrolls away */}
+        <div style={{ padding: `${spacing.gap24} ${spacing.gap24} 0` }}>
+          <SourcePopupTopSection
+            qCode={qCode}
+            questionTitle={questionTitle}
+            previousAnswer={previousAnswer}
+            hasLittleMan={hasLittleMan}
+            sourceTabs={tabList}
+            answerType={answerType}
+            stickyTabs={true}
+            onClose={onClose}
+            onTabClick={setTabIndex}
+            onVerifyAll={onVerifyAll}
+            onComments={onComments}
           />
-        ))}
+        </div>
+
+        {/* Source tables — scroll beneath the sticky tabs bar */}
+        <div style={{
+          display:       'flex',
+          flexDirection: 'column',
+          gap:           spacing.gap24,
+          padding:       spacing.gap24,
+          paddingTop:    spacing.gap16,
+        }}>
+          {visibleTables.map((table, i) => (
+            <SourceTypeTable
+              key={`${table.sourceType}-${i}`}
+              sourcePopup={true}
+              tableType={table.tableType}
+              sourceType={table.sourceType}
+              uploadedDate={table.uploadedDate}
+              docName={table.docName}
+              rows={table.rows}
+              text={table.text}
+              isQuote={table.isQuote}
+              aiTitle={table.aiTitle}
+              hasTitle={false}
+            />
+          ))}
+        </div>
+
       </div>
     </div>
   )

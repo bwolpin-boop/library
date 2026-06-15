@@ -22,14 +22,14 @@ const IV_ROWS = [
 ]
 
 const TUBE_ROWS = [
-  { name: 'Central Venous Catheter (CVC)',                      amount: '240 mL',  frequency: '3x a day',   date: '15/04/2025', pageRef: 'pg. 8',  upVotes: 7 },
-  { name: 'Peripherally Inserted Central Catheter (PICC line)', amount: '180 mL',  frequency: '4x a day',   date: '18/04/2025', pageRef: 'pg. 3' },
-  { name: 'Implanted Port (Port-a-Cath)',                       amount: '300 mL',  frequency: '2x a day',   date: '20/04/2025', pageRef: 'pg. 5',  downVotes: 3 },
-  { name: 'Peripheral IV Line',                                 amount: '120 mL',  frequency: '6x a day',   date: '15/04/2025', pageRef: 'pg. 1, 2' },
-  { name: 'TPN (Total Parenteral Nutrition)',                   amount: '1000 mL', frequency: 'continuous',  date: '22/04/2025', pageRef: 'pg. 9',  upVotes: 4 },
-  { name: 'PPN (Partial Parenteral Nutrition)',                 amount: '500 mL',  frequency: '2x a day',   date: '17/04/2025', pageRef: 'pg. 11', downVotes: 2 },
-  { name: 'Midline Catheter',                                   amount: '250 mL',  frequency: '3x a day',   date: '19/04/2025', pageRef: 'pg. 6',  upVotes: 1 },
-  { name: 'Tunneled Catheter (Hickman)',                        amount: '400 mL',  frequency: 'continuous',  date: '21/04/2025', pageRef: 'pg. 14' },
+  { name: 'Ensure Plus (1.5 kcal/mL)',       volume: '240 mL', date: '15/04/2025', pageRef: 'pg. 8',  upVotes: 7 },
+  { name: 'Osmolite 1.5',                    volume: '180 mL', date: '18/04/2025', pageRef: 'pg. 3' },
+  { name: 'Jevity 1.5 Cal',                  volume: '300 mL', date: '20/04/2025', pageRef: 'pg. 5',  downVotes: 3 },
+  { name: 'Nutren 2.0',                      volume: '120 mL', date: '15/04/2025', pageRef: 'pg. 1, 2' },
+  { name: 'TwoCal HN',                       volume: '200 mL', date: '22/04/2025', pageRef: 'pg. 9',  upVotes: 4 },
+  { name: 'Glucerna 1.5 Cal',                volume: '250 mL', date: '17/04/2025', pageRef: 'pg. 11', downVotes: 2 },
+  { name: 'Nepro with Carb Steady',          volume: '237 mL', date: '19/04/2025', pageRef: 'pg. 6',  upVotes: 1 },
+  { name: 'Peptamen 1.5',                    volume: '500 mL', date: '21/04/2025', pageRef: 'pg. 14' },
 ]
 
 const SURGERY_ROWS = [

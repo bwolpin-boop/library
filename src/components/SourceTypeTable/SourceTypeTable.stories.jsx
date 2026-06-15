@@ -42,18 +42,17 @@ const ROWS = FLUID_NAMES.map((name, i) => ({
 }))
 
 const TUBE_NAMES = [
-  'Central Venous Catheter (CVC)',
-  'Peripherally Inserted Central Catheter (PICC line)',
-  'Implanted Port (Port-a-Cath)',
-  'Peripheral IV Line',
-  'TPN (Total Parenteral Nutrition)',
-  'PPN (Partial Parenteral Nutrition)',
+  'Ensure Plus (1.5 kcal/mL)',
+  'Osmolite 1.5',
+  'Jevity 1.5 Cal',
+  'Nutren 2.0',
+  'TwoCal HN',
+  'Glucerna 1.5 Cal',
 ]
 
 const TUBE_ROWS = TUBE_NAMES.map((name, i) => ({
   name,
-  amount:    i % 2 === 0 ? '240 mL' : '500 mL',
-  frequency: i % 3 === 0 ? '3x a day' : 'continuous',
+  volume:    i % 2 === 0 ? '240 mL' : '500 mL',
   date:      i % 2 === 0 ? '15/04/2025' : '18/04/2025',
   pages:     [i + 1],
 }))
