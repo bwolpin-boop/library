@@ -45,7 +45,6 @@ export const VdDenySmall         = { args: { name: 'vd-deny-small',     size: 12
 export const VdPendingSmall      = { args: { name: 'vd-pending-small',  size: 12 } }
 export const VdEmptySmall        = { args: { name: 'vd-empty-small',    size: 12 } }
 // Reactions & comments
-export const Poc                 = { args: { name: 'poc' } }
 export const ReactionComment     = { args: { name: 'reaction-comment' } }
 export const ThumbsUp            = { args: { name: 'thumbs-up' } }
 export const ThumbsUpPressed     = { args: { name: 'thumbs-up-pressed' } }

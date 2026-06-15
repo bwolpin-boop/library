@@ -200,7 +200,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
   )
 }
 
-function TextContent({ text, isQuote }) {
+function TextContent({ text, isQuote, sourcePopup = false }) {
   return (
     <div style={{ padding: `0 ${spacing.gap24}` }}>
       <p style={{
@@ -208,6 +208,13 @@ function TextContent({ text, isQuote }) {
         color: colors.primary,
         fontStyle: isQuote ? 'italic' : 'normal',
         margin: 0,
+        // In prescrub mode clamp to 5 lines; in source popup show everything
+        ...(!sourcePopup ? {
+          display:           '-webkit-box',
+          WebkitLineClamp:   5,
+          WebkitBoxOrient:   'vertical',
+          overflow:          'hidden',
+        } : {}),
       }}>
         {isQuote ? `"${text}"` : text}
       </p>
@@ -398,7 +405,7 @@ export function SourceTypeTable({
                 {(tableType === 'doc-strings' || tableType === 'doc-string') ? (
                   <DocStringsContent texts={texts?.length ? texts : [text]} />
                 ) : (
-                  <TextContent text={text} isQuote={isQuote} />
+                  <TextContent text={text} isQuote={isQuote} sourcePopup={sourcePopup} />
                 )}
                 <CardFooter
                   upCount={upCount}

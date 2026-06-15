@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 import { NavIcon }                from '../Icon/NavIcon.jsx'
 import { SourceTypeIcon }         from '../Icon/SourceTypeIcon.jsx'
@@ -206,14 +206,49 @@ export function SourcePopup({
 }) {
   const uniqueTypes = getUniqueSourceTypes(tables)
 
-  const [selectedTab,   setSelectedTab]   = useState(null)   // null / 'All' = show one per type
-  const [sidePanel,     setSidePanel]     = useState(null)   // { table, mode: 'source'|'comments' }
+  const [selectedTab, setSelectedTab] = useState(null)
+  const [sidePanel,   setSidePanel]   = useState(null)   // { table, mode }
+  const [leftWidth,   setLeftWidth]   = useState(615)    // left panel px when both open
+  const [divHovered,  setDivHovered]  = useState(false)
+  const containerRef = useRef(null)
+  const dragging     = useRef(false)
 
   function openPanel(table, mode = 'source') {
     setSidePanel(prev =>
       prev?.table === table && prev?.mode === mode ? null : { table, mode }
     )
+    // Reset split to 60% of container when opening
+    if (!sidePanel && containerRef.current) {
+      const w = containerRef.current.getBoundingClientRect().width
+      setLeftWidth(Math.round(w * 0.6))
+    }
   }
+
+  // Drag-resize
+  const onDividerMouseDown = useCallback((e) => {
+    e.preventDefault()
+    dragging.current = true
+    document.body.style.cursor    = 'col-resize'
+    document.body.style.userSelect = 'none'
+
+    function onMove(ev) {
+      if (!dragging.current || !containerRef.current) return
+      const rect  = containerRef.current.getBoundingClientRect()
+      const raw   = ev.clientX - rect.left
+      const MIN   = 360
+      const MAX   = rect.width - 260
+      setLeftWidth(Math.max(MIN, Math.min(MAX, raw)))
+    }
+    function onUp() {
+      dragging.current = false
+      document.body.style.cursor    = ''
+      document.body.style.userSelect = ''
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup',   onUp)
+    }
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup',   onUp)
+  }, [sidePanel])
 
   const visibleTables = !selectedTab || selectedTab === 'All'
     ? dedupeBySourceType(tables)
@@ -221,22 +256,33 @@ export function SourcePopup({
 
   return (
     <div
+      ref={containerRef}
       className={className}
       style={{
-        display:    'flex',
-        flexDirection: 'row',
-        height:     '730px',
-        borderRadius: radii.box,
-        overflow:   'hidden',
-        border:     `1px solid ${colors.divider}`,
-        boxSizing:  'border-box',
-        transition: 'width 0.25s ease',
-        width:      sidePanel ? '1502px' : '922px',
+        display:         'flex',
+        flexDirection:   'row',
+        height:          '730px',
+        borderRadius:    radii.box,
+        overflow:        'hidden',
+        border:          `1px solid ${colors.divider}`,
+        backgroundColor: colors.white,
+        boxSizing:       'border-box',
+        width:           sidePanel ? '100%' : '922px',
+        maxWidth:        '100%',
         ...style,
       }}
     >
-      {/* ── Popup content — always 922px, never shrinks ─────────────────────── */}
-      <div style={{ width: '922px', flexShrink: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {/* ── Left: popup content ──────────────────────────────────────────────── */}
+      <div style={{
+        width:     sidePanel ? `${leftWidth}px` : '100%',
+        flexShrink: 0,
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        display:   'flex',
+        flexDirection: 'column',
+        height:    '100%',
+        transition: dragging.current ? 'none' : 'width 0.2s ease',
+      }}>
 
         {/* Top section */}
         <div style={{ padding: `${spacing.gap24} ${spacing.gap24} ${spacing.gap16}` }}>
@@ -296,23 +342,48 @@ export function SourcePopup({
 
       </div>
 
-      {/* ── Side panel — slides in beside the popup ─────────────────────────── */}
-      <div style={{
-        width:      sidePanel ? '580px' : '0px',
-        flexShrink: 0,
-        overflow:   'hidden',
-        transition: 'width 0.25s ease',
-        height:     '100%',
-      }}>
-        {sidePanel && (
+      {/* ── Drag-resize divider ───────────────────────────────────────────────── */}
+      {sidePanel && (
+        <div
+          onMouseDown={onDividerMouseDown}
+          onMouseEnter={() => setDivHovered(true)}
+          onMouseLeave={() => setDivHovered(false)}
+          style={{
+            width:          divHovered ? '10px' : '1px',
+            flexShrink:     0,
+            height:         '100%',
+            cursor:         'col-resize',
+            backgroundColor: divHovered
+              ? 'rgba(168,82,255,0.3)'
+              : colors.dividerSubtle,
+            position:       'relative',
+            transition:     'width 0.15s ease, background-color 0.15s ease',
+            display:        'flex',
+            alignItems:     'center',
+            justifyContent: 'center',
+            zIndex:         5,
+          }}
+        >
+          {divHovered && (
+            <div style={{ position: 'absolute', pointerEvents: 'none' }}>
+              <NavIcon name="resize-horizontal" size={24} />
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Right: side panel ────────────────────────────────────────────────── */}
+      {sidePanel && (
+        <div style={{ flex: 1, minWidth: 0, height: '100%', overflow: 'hidden' }}>
           <SidePanel
-            sourceType={sidePanel.table?.sourceType}
-            uploadedDate={sidePanel.table?.uploadedDate}
-            docName={sidePanel.table?.docName}
+            docTitle={sidePanel.table?.docName}
+            tables={[sidePanel.table]}
+            showPrimaryDiagnosis={false}
+            showAiSummary={false}
             onClose={() => setSidePanel(null)}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -69,7 +69,6 @@ import { Overview as _IvFluidsRow }        from './IvFluidsRow/IvFluidsRowOvervi
 import { Overview as _PdfTitle }           from './PdfTitle/PdfTitleOverview.stories.jsx'
 import { Overview as _SideBarTitle }       from './SideBarTitle/SideBarTitleOverview.stories.jsx'
 import { Overview  as _SidePanel }         from './SidePanel/SidePanelOverview.stories.jsx'
-import { WithTabs   as _PccSidePanel }     from './PccSidePanel/PccSidePanel.stories.jsx'
 import { Overview as _SourcesHeaders }     from './SourcesHeaders/SourcesHeadersOverview.stories.jsx'
 import { Overview as _DiagnosisTableRow }  from './DiagnosisTableRow/DiagnosisTableRowOverview.stories.jsx'
 import { Overview as _DcSuggests }              from './SourceHeader/DcSuggestsOverview.stories.jsx'
@@ -152,7 +151,6 @@ export const IvFluidsRow       = { ..._IvFluidsRow,       name: '📁 IvFluidsRo
 export const PdfTitle          = { ..._PdfTitle,          name: '📁 PdfTitle' }
 export const SideBarTitle      = { ..._SideBarTitle,      name: '📁 SideBarTitle' }
 export const SidePanel         = { ..._SidePanel,         name: '📁 SidePanel' }
-export const PccSidePanel      = { ..._PccSidePanel,      name: '📁 PccSidePanel' }
 export const SourcesHeaders    = { ..._SourcesHeaders,    name: '📁 SourcesHeaders' }
 export const DiagnosisTableRow = { ..._DiagnosisTableRow, name: '📁 DiagnosisTableRow' }
 export const DcSuggests             = { ..._DcSuggests,             name: '📁 DcSuggests' }

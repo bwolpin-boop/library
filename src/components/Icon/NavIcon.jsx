@@ -31,7 +31,6 @@ import vdVerifySmall     from '../../assets/icons/vd-verify-small.svg'
 import vdDenySmall       from '../../assets/icons/vd-deny-small.svg'
 import vdPendingSmall    from '../../assets/icons/vd-pending-small.svg'
 import vdEmptySmall      from '../../assets/icons/vd-empty-small.svg'
-import pocIcon           from '../../assets/icons/poc.svg'
 import reactionCommentIcon from '../../assets/icons/reaction-comment.svg'
 import thumbsUpIcon      from '../../assets/icons/thumbs-up.svg'
 import thumbsUpPressedIcon from '../../assets/icons/thumbs-up-pressed.svg'
@@ -51,6 +50,7 @@ import lessIcon            from '../../assets/icons/less.svg'
 import primaryDiagnosisIcon from '../../assets/icons/primary-diagnosis.svg'
 import ntaDiamondIcon      from '../../assets/icons/nta-diamond.svg'
 import exportIcon          from '../../assets/icons/export.svg'
+import resizeHorizontalIcon from '../../assets/icons/resize-horizontal.svg'
 import facilityIcon         from '../../assets/icons/facility.svg'
 import indicatorYellowIcon  from '../../assets/icons/indicator-yellow.svg'
 import tableIvFluidsIcon    from '../../assets/icons/table-iv-fluids.svg'
@@ -102,7 +102,6 @@ const icons = {
   'vd-pending-small':      vdPendingSmall,
   'vd-empty-small':        vdEmptySmall,
   // Reactions & comments
-  poc:                     pocIcon,
   'reaction-comment':      reactionCommentIcon,
   'thumbs-up':             thumbsUpIcon,
   'thumbs-up-pressed':     thumbsUpPressedIcon,
@@ -125,6 +124,7 @@ const icons = {
   // Source title icons
   facility:                facilityIcon,
   'indicator-yellow':      indicatorYellowIcon,
+  'resize-horizontal':     resizeHorizontalIcon,
   // Source table title icons (16px, from Nav Icons set)
   'table-iv-fluids':       tableIvFluidsIcon,
   'table-tube-feeding':    tableTubeFeedingIcon,
@@ -178,7 +178,6 @@ export const iconNativeSizes = {
   'vd-pending-small':      12,
   'vd-empty-small':        12,
   // Reactions & comments
-  poc:                     24,
   'reaction-comment':      24,
   'thumbs-up':             24,
   'thumbs-up-pressed':     24,
@@ -201,6 +200,7 @@ export const iconNativeSizes = {
   // Source title icons
   facility:                24,
   'indicator-yellow':      24,
+  'resize-horizontal':     24,
   // Source table title icons
   'table-iv-fluids':       16,
   'table-tube-feeding':    16,
