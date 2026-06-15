@@ -85,7 +85,7 @@ function VoteBadge({ direction, count, isSelected, onClick }) {
         cursor:          'pointer',
         padding:         '1px 3px',
         borderRadius:    '3px',
-        backgroundColor: hov ? colors.surfaceHover : 'transparent',
+        backgroundColor: isSelected && hov ? colors.surfaceHover : 'transparent',
         flexShrink:      0,
         transition:      'background-color 0.1s',
       }}
@@ -239,7 +239,7 @@ export function IvFluidsRow({
         >
           {name}
         </span>
-        {!hovered && (upVotes > 0 || vote === 'up') && (
+        {(upVotes > 0 || vote === 'up') && (
           <VoteBadge
             direction="up"
             count={upVotes + (vote === 'up' ? 1 : 0)}
@@ -247,7 +247,7 @@ export function IvFluidsRow({
             onClick={handleUpClick}
           />
         )}
-        {!hovered && (downVotes > 0 || vote === 'down') && (
+        {(downVotes > 0 || vote === 'down') && (
           <VoteBadge
             direction="down"
             count={downVotes + (vote === 'down' ? 1 : 0)}
