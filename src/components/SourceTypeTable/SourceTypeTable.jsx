@@ -182,6 +182,24 @@ function TextContent({ text, isQuote }) {
   )
 }
 
+function DocStringsContent({ texts }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap8, padding: `0 ${spacing.gap24}` }}>
+      {texts.map((t, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.gap4 }}>
+          {/* bullet dot */}
+          <div style={{ width: 16, height: 16, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: colors.secondary, flexShrink: 0 }} />
+          </div>
+          <p style={{ ...reg12, color: colors.primary, fontStyle: 'italic', margin: 0, flex: '1 0 0' }}>
+            {`"${t}"`}
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function AiContent({ aiTitle, text, onSeeMore }) {
   return (
     <div style={{ display: 'flex', gap: 10, padding: `0 ${spacing.gap24}`, alignItems: 'stretch' }}>
@@ -223,8 +241,9 @@ export function SourceTypeTable({
   rows            = [],
   viewMoreCount,
   initialRowCount = 5,
-  // Text / quote
+  // Text / quote / doc strings
   text          = '',
+  texts,        // array of strings for doc-strings tableType
   isQuote       = false,
   // AI summary
   aiTitle       = 'AI-Generated Summary',
@@ -262,8 +281,7 @@ export function SourceTypeTable({
     surgery:              'Surgery',
     diagnosis:            'Diagnosis',
     'highlighted-text':   'Progress Notes',
-    'doc-quote':          'Doc Quote',
-    'more-doc-quotes':    'More Doc Quotes',
+    'doc-strings':        'Doc Strings',
     'ai-summary':         'AI Summary',
   }[tableType] ?? tableType
 
@@ -338,7 +356,11 @@ export function SourceTypeTable({
 
             {isText && (
               <>
-                <TextContent text={text} isQuote={isQuote || tableType === 'doc-quote' || tableType === 'more-doc-quotes'} />
+                {tableType === 'doc-strings' ? (
+                  <DocStringsContent texts={texts?.length ? texts : [text]} />
+                ) : (
+                  <TextContent text={text} isQuote={isQuote} />
+                )}
                 <CardFooter
                   upCount={upCount}
                   downCount={downCount}

@@ -19,7 +19,7 @@ export function DiagnosisTableRow({
   rowVariant = 'light',     // 'light' | 'dark'
   // Content
   diagnosis     = 'Hypertension (High Blood Pressure)',
-  hasDescription = true,
+  hasDescription = false,
   description   = 'The patient presented with a closed dislocation of the right hip...',
   clinicalCategory = 'Acute',
   mdsMapping    = 'HGHGD',

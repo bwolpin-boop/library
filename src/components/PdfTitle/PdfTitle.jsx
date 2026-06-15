@@ -1,4 +1,4 @@
-import { colors, fonts, fontSizes, fontWeights, lineHeights, spacing } from '../../tokens.js'
+import { colors, textStyles, spacing } from '../../tokens.js'
 
 export function PdfTitle({ title = 'Diagnosis hospital_records file hypervention .pdf' }) {
   return (
@@ -15,10 +15,7 @@ export function PdfTitle({ title = 'Diagnosis hospital_records file hypervention
     >
       <span
         style={{
-          fontFamily: fonts.montserrat,
-          fontSize: fontSizes.xs,
-          fontWeight: fontWeights.regular,
-          lineHeight: lineHeights.sm,
+          ...textStyles.body12Regular,
           color: colors.secondary,
           whiteSpace: 'nowrap',
           overflow: 'hidden',

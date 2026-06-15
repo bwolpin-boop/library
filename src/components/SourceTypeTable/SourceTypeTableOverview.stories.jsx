@@ -78,10 +78,7 @@ function ToggleTable({ label, tableType, sourceType, rows, text, aiTitle, isQuot
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 32 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontFamily: font, fontSize: '11px', fontWeight: 600, color: '#A3A3A3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          {label}
-        </span>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <div style={{ display: 'flex', gap: 6 }}>
           <button style={btn('source popup')} onClick={() => setMode('source popup')}>Source Popup</button>
           <button style={btn('prescrub')}     onClick={() => setMode('prescrub')}>Prescrub</button>
