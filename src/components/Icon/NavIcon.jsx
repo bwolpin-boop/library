@@ -57,6 +57,7 @@ import tableIvFluidsIcon    from '../../assets/icons/table-iv-fluids.svg'
 import tableTubeFeedingIcon from '../../assets/icons/table-tube-feeding.svg'
 import tableSurgeryIcon     from '../../assets/icons/table-surgery.svg'
 import tableDiagnosisIcon   from '../../assets/icons/table-diagnosis.svg'
+import denyAllCircleIcon    from '../../assets/icons/deny-all-circle.svg'
 
 const icons = {
   // General
@@ -130,6 +131,7 @@ const icons = {
   'table-tube-feeding':    tableTubeFeedingIcon,
   'table-surgery':         tableSurgeryIcon,
   'table-diagnosis':       tableDiagnosisIcon,
+  'deny-all-circle':       denyAllCircleIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -206,6 +208,7 @@ export const iconNativeSizes = {
   'table-tube-feeding':    16,
   'table-surgery':         16,
   'table-diagnosis':       16,
+  'deny-all-circle':       24,
 }
 
 export function NavIcon({ name, size = 24, className }) {

@@ -21,7 +21,18 @@ const TABLES = [
 export default {
   title: '🟠   📁 sources/Side Panel',
   component: SidePanel,
-  parameters: { controls: { disable: true }, actions: { disable: true } },
+  argTypes: {
+    docTitle:             { control: 'text' },
+    sourceCount:          { control: { type: 'number', min: 0 } },
+    sourceSelected:       { control: 'boolean' },
+    commentCount:         { control: { type: 'number', min: 0 } },
+    showPrimaryDiagnosis: { control: 'boolean' },
+    showAiSummary:        { control: 'boolean' },
+    aiSummaryText:        { control: 'text' },
+    tables:               { control: false },
+    style:                { control: false },
+    className:            { control: false },
+  },
   decorators: [(Story) => (
     <div style={{ width: 636, height: 900, background: '#f5f5f5' }}>
       <Story />
@@ -30,27 +41,25 @@ export default {
 }
 
 export const Default = {
-  render: () => (
-    <SidePanel
-      docTitle="HOW Bridgeview.pdf"
-      sourceCount={23}
-      commentCount={4}
-      showPrimaryDiagnosis
-      showAiSummary
-      tables={TABLES}
-    />
-  ),
+  args: {
+    docTitle:             'HOW Bridgeview.pdf',
+    sourceCount:          23,
+    sourceSelected:       true,
+    commentCount:         4,
+    showPrimaryDiagnosis: true,
+    showAiSummary:        true,
+    tables:               TABLES,
+  },
 }
 
 export const NoExtras = {
-  render: () => (
-    <SidePanel
-      docTitle="Progress_notes_jan2025.pdf"
-      sourceCount={4}
-      commentCount={2}
-      showPrimaryDiagnosis={false}
-      showAiSummary={false}
-      tables={TABLES.slice(0, 1)}
-    />
-  ),
+  args: {
+    docTitle:             'Progress_notes_jan2025.pdf',
+    sourceCount:          4,
+    sourceSelected:       true,
+    commentCount:         2,
+    showPrimaryDiagnosis: false,
+    showAiSummary:        false,
+    tables:               TABLES.slice(0, 1),
+  },
 }

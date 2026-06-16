@@ -272,23 +272,24 @@ export function SourcePopup({
         ...style,
       }}
     >
-      {/* Thin 4px scrollbar in disabled color (#E7E7E7) for all scroll areas */}
+      {/* Thin 4px scrollbar in disabled color (#E7E7E7) for all scroll areas, offset 4px from the right edge */}
       <style>{`
-        .sp-scroll::-webkit-scrollbar { width: 4px; }
+        .sp-scroll::-webkit-scrollbar { width: 8px; }
         .sp-scroll::-webkit-scrollbar-track { background: transparent; }
-        .sp-scroll::-webkit-scrollbar-thumb { background: ${colors.disabled}; border-radius: 2px; }
-        .sp-scroll::-webkit-scrollbar-thumb:hover { background: ${colors.dividerDisabled}; }
+        .sp-scroll::-webkit-scrollbar-thumb { background: ${colors.disabled}; border-radius: 2px; border-right: 4px solid transparent; background-clip: content-box; }
+        .sp-scroll::-webkit-scrollbar-thumb:hover { background: ${colors.dividerDisabled}; background-clip: content-box; }
       `}</style>
       {/* ── Left: popup content ──────────────────────────────────────────────── */}
       <div className="sp-scroll" style={{
-        width:     sidePanel ? `${leftWidth}px` : '100%',
-        flexShrink: 0,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        display:   'flex',
-        flexDirection: 'column',
-        height:    '100%',
-        transition: dragging.current ? 'none' : 'width 0.2s ease',
+        width:          sidePanel ? `${leftWidth}px` : '100%',
+        flexShrink:     0,
+        overflowY:      'auto',
+        overflowX:      'hidden',
+        scrollbarGutter: 'stable',
+        display:        'flex',
+        flexDirection:  'column',
+        height:         '100%',
+        transition:     dragging.current ? 'none' : 'width 0.2s ease',
       }}>
 
         {/* Top section */}

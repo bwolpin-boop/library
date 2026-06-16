@@ -25,7 +25,7 @@ export function SideBarTitle({
         textOverflow:  'ellipsis',
         minWidth:      0,
         flexShrink:    1,
-        textDecoration: hovered ? 'underline' : 'none',
+        boxShadow:     hovered ? `inset 0 -1px 0 0 ${colors.primary}` : 'none',
       }}>
         {label}
       </span>

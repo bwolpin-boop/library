@@ -7,6 +7,7 @@ import { SideBarTitle }     from '../SideBarTitle/SideBarTitle.jsx'
 import { SourceTypeTabs }   from '../SourceTypeTab/SourceTypeTabs.jsx'
 import { SourceTypeTable }  from '../SourceTypeTable/SourceTypeTable.jsx'
 import { Button }           from '../Button/Button.jsx'
+import { WithTooltip }      from '../Tooltip/WithTooltip.jsx'
 
 // ─── Primary Diagnosis Banner ────────────────────────────────────────────────
 
@@ -116,9 +117,11 @@ export function SidePanel({
   onClose,
   onExport,
   // Actions row
-  sourceCount   = 23,
-  commentCount  = 4,
+  sourceCount        = 23,
+  sourceSelected     = true,
+  commentCount       = 4,
   onCommentsClick,
+  onSourceClick,
   onUpClick,
   onDownClick,
   // Primary diagnosis banner
@@ -185,16 +188,26 @@ export function SidePanel({
 
         {/* Row 2: source count + comments + thumbs */}
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap16, flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap4 }}>
-            <NavIcon name="dolphincare-logo" size={24} />
-            <span style={{
-              fontFamily: fonts.montserrat, fontSize: fontSizes.sm,
-              fontWeight: fontWeights.medium, lineHeight: 'normal',
-              color: colors.secondary, whiteSpace: 'nowrap',
-            }}>
-              {sourceCount}
-            </span>
-          </div>
+          <WithTooltip label={`${sourceCount} sources found`}>
+            <div
+              onClick={onSourceClick}
+              style={{
+                display: 'flex', alignItems: 'center', gap: spacing.gap4,
+                cursor: 'pointer', padding: '2px',
+                borderRadius: radii.icon,
+                backgroundColor: sourceSelected ? colors.surfacePressed : 'transparent',
+              }}
+            >
+              <NavIcon name="dolphincare-logo" size={20} />
+              <span style={{
+                fontFamily: fonts.montserrat, fontSize: fontSizes.sm,
+                fontWeight: fontWeights.medium, lineHeight: 'normal',
+                color: colors.secondary, whiteSpace: 'nowrap',
+              }}>
+                {sourceCount}
+              </span>
+            </div>
+          </WithTooltip>
           <Comments count={commentCount} onClick={onCommentsClick} />
           <ThumbsComponent onUpClick={onUpClick} onDownClick={onDownClick} />
         </div>

@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { colors, radii } from '../../tokens.js'
 import { NavIcon } from './NavIcon.jsx'
 
-export function IconButton({ name, size = 24, onClick, disabled, className, onMouseEnter, onMouseLeave, onMouseDown, onMouseUp }) {
+export function IconButton({ name, size = 24, onClick, disabled, active = false, className, onMouseEnter, onMouseLeave, onMouseDown, onMouseUp }) {
   const [hover, setHover] = useState(false)
   const [pressed, setPressed] = useState(false)
 
-  const bg = disabled ? 'transparent'
-    : pressed ? colors.dividerSubtle
-    : hover    ? colors.surfacePressed
+  const bg = disabled       ? 'transparent'
+    : pressed               ? colors.dividerSubtle
+    : active                ? colors.surfacePressed
+    : hover                 ? colors.surfacePressed
     : 'transparent'
 
   const btnSize = Math.max(size, 24)

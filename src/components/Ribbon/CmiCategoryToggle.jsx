@@ -53,19 +53,9 @@ export function CmiCategoryToggle({
   const containerRef = useRef(null)
   const [pill, setPill] = useState({ left: 0, width: 0 })
 
-  // Fixed width budget for the squares zone — the category with the most squares.
-  const maxSectionCount = Math.max(...categories.map(c => (c.sections ?? []).length))
-  const squaresZoneWidth = maxSectionCount > 0
-    ? maxSectionCount * 16 + (maxSectionCount - 1) * 6
-    : 0
-
-  // How much of the budget is unused by the currently active tab's squares.
-  // This goes into paddingRight so there's no extra flex item (and no extra gap).
-  const activeSections = categories[activeIndex]?.sections ?? []
-  const activeSquaresWidth = activeSections.length > 0
-    ? activeSections.length * 16 + (activeSections.length - 1) * 6
-    : 0
-  const trailingPad = Math.max(0, squaresZoneWidth - activeSquaresWidth)
+  // Width of each tab's sections zone (needed for maxWidth animation)
+  const sectionZoneWidth = (sections) =>
+    sections.length > 0 ? sections.length * 16 + (sections.length - 1) * 6 : 0
 
   useEffect(() => { setSelectedSection(null) }, [activeIndex])
 
@@ -97,18 +87,11 @@ export function CmiCategoryToggle({
         paddingTop: spacing.gap4,
         paddingBottom: spacing.gap4,
         paddingLeft: spacing.gap4,
-        paddingRight: `${4 + trailingPad}px`,
+        paddingRight: spacing.gap4,
         backgroundColor: colors.surfacePressed,
         borderRadius: `${radii.boxSm} 0 0 ${radii.boxSm}`,
       }}
     >
-      <style>{`
-        @keyframes cmi-fade-in {
-          from { opacity: 0; transform: scale(0.7); }
-          to   { opacity: 1; transform: scale(1); }
-        }
-      `}</style>
-
       <div style={{
         position: 'absolute',
         top: spacing.gap4,
@@ -157,30 +140,43 @@ export function CmiCategoryToggle({
                 {cat.label}
               </span>
 
-              {isActive && sections.length > 0 && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '15px', overflow: 'visible', flexShrink: 0 }}>
-                  {sections.map((sec, j) => {
-                    const type = sec.type ?? 'letter'
-                    const baseState = sec.state ?? 'disabled'
-                    const isClickable = type !== 'verify' && type !== 'deny' && baseState !== 'disabled'
-                    const resolvedState = isClickable && selectedSection === j ? 'selected' : baseState
-                    return (
-                      <div
-                        key={j}
-                        style={{ opacity: 0, animation: `cmi-fade-in 0.28s ease-in-out ${j * 0.055}s forwards` }}
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <Section
-                          letter={sec.letter}
-                          type={type}
-                          state={resolvedState}
-                          size="small"
-                          badge={sec.badge}
-                          onClick={isClickable ? () => setSelectedSection(j) : undefined}
-                        />
-                      </div>
-                    )
-                  })}
+              {sections.length > 0 && (
+                <div style={{
+                  maxWidth:   isActive ? `${sectionZoneWidth(sections)}px` : '0px',
+                  overflow:   'hidden',
+                  flexShrink: 0,
+                  transition: 'max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '15px' }}>
+                    {sections.map((sec, j) => {
+                      const type = sec.type ?? 'letter'
+                      const baseState = sec.state ?? 'disabled'
+                      const isClickable = type !== 'verify' && type !== 'deny' && baseState !== 'disabled'
+                      const resolvedState = isClickable && selectedSection === j ? 'selected' : baseState
+                      return (
+                        <div
+                          key={j}
+                          style={{
+                            opacity:   isActive ? 1 : 0,
+                            transform: isActive ? 'scale(1)' : 'scale(0.7)',
+                            transition: isActive
+                              ? `opacity 0.22s ease ${j * 0.055}s, transform 0.22s ease ${j * 0.055}s`
+                              : 'none',
+                          }}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <Section
+                            letter={sec.letter}
+                            type={type}
+                            state={resolvedState}
+                            size="small"
+                            badge={sec.badge}
+                            onClick={isClickable ? () => setSelectedSection(j) : undefined}
+                          />
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               )}
           </button>

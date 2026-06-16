@@ -10,6 +10,14 @@ function RightChevron({ size = 16 }) {
   )
 }
 
+function LeftChevron({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+      <path d="M10 4L6 8L10 12" stroke={colors.primary} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export function SourceTypeTabs({
   tabs = ['Progress Notes', 'Assessments', 'Mars', 'Therapy Docs'],
   selectedTab,
@@ -18,7 +26,8 @@ export function SourceTypeTabs({
   tabWithArrows = null,
 }) {
   const scrollRef = useRef(null)
-  const [canScroll, setCanScroll] = useState(false)
+  const [canScroll,     setCanScroll]     = useState(false)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [allHovered, setAllHovered] = useState(false)
 
   // Internal selection state — syncs when the controlled prop changes
@@ -33,7 +42,10 @@ export function SourceTypeTabs({
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return
-    const check = () => setCanScroll(Math.ceil(el.scrollLeft + el.clientWidth) < el.scrollWidth)
+    const check = () => {
+      setCanScroll(Math.ceil(el.scrollLeft + el.clientWidth) < el.scrollWidth)
+      setCanScrollLeft(el.scrollLeft > 0)
+    }
     check()
     const ro = new ResizeObserver(check)
     ro.observe(el)
@@ -42,6 +54,7 @@ export function SourceTypeTabs({
   }, [tabs])
 
   const scrollRight = () => scrollRef.current?.scrollBy({ left: 120, behavior: 'smooth' })
+  const scrollLeft  = () => scrollRef.current?.scrollBy({ left: -120, behavior: 'smooth' })
 
   const isBig = size === 'big'
   const fontSize = isBig ? fontSizes.sm : fontSizes.xs
@@ -121,6 +134,42 @@ export function SourceTypeTabs({
           </div>
         ))}
       </div>
+
+      {canScrollLeft && (
+        <>
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: `${gradientWidth}px`,
+              background: 'linear-gradient(to left, rgba(255,255,255,0) 11%, #ffffff 41%)',
+              pointerEvents: 'none',
+            }}
+          />
+          <button
+            onClick={scrollLeft}
+            aria-label="Scroll tabs left"
+            style={{
+              position: 'absolute',
+              left: `${arrowRight}px`,
+              top: `${arrowTop}px`,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '16px',
+              height: '16px',
+            }}
+          >
+            <LeftChevron />
+          </button>
+        </>
+      )}
 
       {canScroll && (
         <>

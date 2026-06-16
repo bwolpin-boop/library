@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
 import { colors, radii, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
+import { IconButton } from '../Icon/IconButton.jsx'
 import { DcSuggests } from './DcSuggests.jsx'
 import { SourceTypeTabs } from '../SourceTypeTab/SourceTypeTabs.jsx'
 import { SourceTitle } from '../SourceTitle/SourceTitle.jsx'
@@ -13,16 +13,6 @@ function Divider() {
   )
 }
 
-function IconBtn({ name, size = 24, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: spacing.gap4, borderRadius: radii.box, border: 'none', background: 'none', cursor: 'pointer', flexShrink: 0 }}
-    >
-      <NavIcon name={name} size={size} />
-    </button>
-  )
-}
 
 // ── Exported tabs bar — used as a standalone sticky element in SourcePopup ──
 // Must be a *direct child* of the scroll container for position:sticky to work.
@@ -35,23 +25,8 @@ export function SourceTabsBar({
   onComments,
   sticky      = false,
 }) {
-  // Sentinel-based detection: border only appears when the bar is actually stuck
-  const sentinelRef = useRef(null)
-  const [isStuck, setIsStuck] = useState(false)
-
-  useEffect(() => {
-    if (!sticky || !sentinelRef.current) return
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsStuck(!entry.isIntersecting),
-      { threshold: 0 }
-    )
-    observer.observe(sentinelRef.current)
-    return () => observer.disconnect()
-  }, [sticky])
-
   return (
     <>
-      {sticky && <div ref={sentinelRef} style={{ height: 1, flexShrink: 0 }} />}
       <div style={{
         display:         'flex',
         alignItems:      'center',
@@ -65,7 +40,7 @@ export function SourceTabsBar({
           paddingBottom: spacing.gap12,
           paddingLeft:   spacing.gap24,
           paddingRight:  spacing.gap24,
-          borderBottom:  isStuck ? `1px solid ${colors.dividerSubtle}` : 'none',
+          borderBottom:  `1px solid ${colors.dividerSubtle}`,
         } : {}),
       }}>
       <div style={{ flex: '1 0 0', minWidth: '1px' }}>
@@ -78,8 +53,8 @@ export function SourceTabsBar({
       </div>
       <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
         <Divider />
-        <IconBtn name="verify"           size={24} onClick={onVerifyAll} />
-        <IconBtn name="reaction-comment" size={24} onClick={onComments} />
+        <IconButton name="deny-all-circle" size={24} onClick={onVerifyAll} />
+        <IconButton name="reaction-comment" size={24} onClick={onComments} />
       </div>
     </div>
     </>
