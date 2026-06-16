@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { colors, radii } from '../../tokens.js'
 import { NavIcon } from './NavIcon.jsx'
 
-export function IconButton({ name, size = 24, onClick, disabled, active = false, className, onMouseEnter, onMouseLeave, onMouseDown, onMouseUp }) {
+export function IconButton({ name, size = 24, onClick, disabled, active = false, className, color, onMouseEnter, onMouseLeave, onMouseDown, onMouseUp }) {
   const [hover, setHover] = useState(false)
   const [pressed, setPressed] = useState(false)
 
@@ -38,7 +38,7 @@ export function IconButton({ name, size = 24, onClick, disabled, active = false,
       }}
       className={className}
     >
-      <NavIcon name={name} size={size} />
+      <NavIcon name={name} size={size} color={color} />
     </button>
   )
 }

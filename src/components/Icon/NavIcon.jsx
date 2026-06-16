@@ -211,9 +211,11 @@ export const iconNativeSizes = {
   'deny-all-circle':       24,
 }
 
-export function NavIcon({ name, size = 24, className }) {
+export function NavIcon({ name, size = 24, className, color }) {
   const src = icons[name]
   if (!src) return null
+
+  const colorFilter = color === 'secondary' ? { filter: 'invert(52%)' } : {}
 
   return (
     <img
@@ -222,7 +224,7 @@ export function NavIcon({ name, size = 24, className }) {
       width={size}
       height={size}
       className={className}
-      style={{ flexShrink: 0, display: 'block' }}
+      style={{ flexShrink: 0, display: 'block', ...colorFilter }}
     />
   )
 }

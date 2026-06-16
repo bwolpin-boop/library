@@ -52,10 +52,12 @@ export function SourceAlsoAnswers({
   type = 'Source popup',       // 'Source popup' | 'IPA'
   hasText = true,
   hasVerifyAndDeny = true,
+  hasTabs = true,              // set false to hide tabs (keep VD only)
   qkScroll = false,
   tabs = ['M1200B', 'M1200B', 'M1200B'],
   activeTabIndex = 0,
   strengthLabel = 'Strong',
+  forcedStatus,
   onTabClick,
   onDeny,
   onVerify,
@@ -74,7 +76,7 @@ export function SourceAlsoAnswers({
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.gap16 }}>
         <Strength label={strengthLabel} />
         {hasVerifyAndDeny && (
-          <GroupOfVerifyDenyAndPending hasPending={false} onDeny={onDeny} onVerify={onVerify} />
+          <GroupOfVerifyDenyAndPending hasPending={false} forcedStatus={forcedStatus} onDeny={onDeny} onVerify={onVerify} />
         )}
       </div>
     )
@@ -118,7 +120,7 @@ export function SourceAlsoAnswers({
         </div>
         {hasVerifyAndDeny && <Divider />}
         {hasVerifyAndDeny && (
-          <GroupOfVerifyDenyAndPending hasPending={false} onDeny={onDeny} onVerify={onVerify} />
+          <GroupOfVerifyDenyAndPending hasPending={false} forcedStatus={forcedStatus} onDeny={onDeny} onVerify={onVerify} />
         )}
       </div>
     )
@@ -144,20 +146,22 @@ export function SourceAlsoAnswers({
         </span>
       )}
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-          {tabs.map((tab, i) => (
-            <QkNumberTabs
-              key={i}
-              label={tab}
-              size="small"
-              state={i === selectedIndex ? 'clicked' : 'default'}
-              onClick={() => handleTabClick(i)}
-            />
-          ))}
-        </div>
+        {hasTabs && (
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            {tabs.map((tab, i) => (
+              <QkNumberTabs
+                key={i}
+                label={tab}
+                size="small"
+                state={i === selectedIndex ? 'clicked' : 'default'}
+                onClick={() => handleTabClick(i)}
+              />
+            ))}
+          </div>
+        )}
         {hasVerifyAndDeny && <Divider />}
         {hasVerifyAndDeny && (
-          <GroupOfVerifyDenyAndPending hasPending={false} onDeny={onDeny} onVerify={onVerify} />
+          <GroupOfVerifyDenyAndPending hasPending={false} forcedStatus={forcedStatus} onDeny={onDeny} onVerify={onVerify} />
         )}
       </div>
     </div>

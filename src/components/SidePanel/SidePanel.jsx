@@ -72,7 +72,8 @@ function AiSummary({ text }) {
 
 function getUniqueSourceTypes(tables) {
   const seen = new Set()
-  return tables.reduce((acc, t) => {
+  return (tables ?? []).reduce((acc, t) => {
+    if (!t) return acc
     if (!seen.has(t.sourceType)) { seen.add(t.sourceType); acc.push(t.sourceType) }
     return acc
   }, [])
@@ -80,7 +81,8 @@ function getUniqueSourceTypes(tables) {
 
 function dedupeBySourceType(tables) {
   const seen = new Set()
-  return tables.filter(t => {
+  return (tables ?? []).filter(t => {
+    if (!t) return false
     if (seen.has(t.sourceType)) return false
     seen.add(t.sourceType)
     return true
@@ -118,8 +120,8 @@ export function SidePanel({
   onExport,
   // Actions row
   sourceCount        = 23,
-  sourceSelected     = true,
   commentCount       = 4,
+  initialActiveTab   = 'sources',  // 'sources' | 'comments'
   onCommentsClick,
   onSourceClick,
   onUpClick,
@@ -141,6 +143,17 @@ export function SidePanel({
 }) {
   const uniqueTypes  = getUniqueSourceTypes(tables)
   const [selectedTab, setSelectedTab] = useState(null)
+  const [activeTab,   setActiveTab]   = useState(initialActiveTab)
+
+  function handleSourceClick() {
+    setActiveTab('sources')
+    onSourceClick?.()
+  }
+
+  function handleCommentsClick() {
+    setActiveTab('comments')
+    onCommentsClick?.()
+  }
 
   const visibleTables = !selectedTab || selectedTab === 'All'
     ? dedupeBySourceType(tables)
@@ -156,6 +169,7 @@ export function SidePanel({
         overflowY:       'auto',
         borderLeft:      `1px solid ${colors.dividerSubtle}`,
         padding:         spacing.gap24,
+        paddingTop:      spacing.gap16,
         backgroundColor: colors.white,
         boxSizing:       'border-box',
         gap:             spacing.gap32,
@@ -186,16 +200,17 @@ export function SidePanel({
           </button>
         </div>
 
-        {/* Row 2: source count + comments + thumbs */}
+        {/* Row 2: source tab + comments tab + thumbs — sources/comments are mutually exclusive */}
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap16, flexShrink: 0 }}>
           <WithTooltip label={`${sourceCount} sources found`}>
             <div
-              onClick={onSourceClick}
+              onClick={handleSourceClick}
               style={{
                 display: 'flex', alignItems: 'center', gap: spacing.gap4,
                 cursor: 'pointer', padding: '2px',
                 borderRadius: radii.icon,
-                backgroundColor: sourceSelected ? colors.surfacePressed : 'transparent',
+                backgroundColor: activeTab === 'sources' ? colors.surfacePressed : 'transparent',
+                transition: 'background-color 0.1s',
               }}
             >
               <NavIcon name="dolphincare-logo" size={20} />
@@ -208,7 +223,7 @@ export function SidePanel({
               </span>
             </div>
           </WithTooltip>
-          <Comments count={commentCount} onClick={onCommentsClick} />
+          <Comments count={commentCount} selected={activeTab === 'comments'} onClick={handleCommentsClick} />
           <ThumbsComponent onUpClick={onUpClick} onDownClick={onDownClick} />
         </div>
 
@@ -240,7 +255,7 @@ export function SidePanel({
         </span>
 
         <SourceTypeTabs
-          tabs={['All', ...uniqueTypes]}
+          tabs={uniqueTypes}
           selectedTab={selectedTab ?? 'All'}
           onTabSelect={t => setSelectedTab(t === 'All' ? null : t)}
           size="small"
@@ -251,6 +266,7 @@ export function SidePanel({
             <SourceTypeTable
               key={`${table.sourceType}-${i}`}
               sourcePopup={true}
+              onHeaderClick={() => {/* TODO: open PCC side panel */}}
               tableType={table.tableType}
               sourceType={table.sourceType}
               uploadedDate={table.uploadedDate}

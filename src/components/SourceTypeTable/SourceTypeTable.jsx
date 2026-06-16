@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
@@ -126,7 +126,7 @@ function AiGradientBar() {
 
 // ─── Content areas per table type ────────────────────────────────────────────
 
-function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCount = 5, sourcePopup, onViewMore, onVerify, onDeny, onPending, onUpClick, onDownClick, onCommentsClick }) {
+function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCount = 5, sourcePopup, forcedRowStatus, onViewMore, onVerify, onDeny, onPending, onUpClick, onDownClick, onCommentsClick }) {
   const [expanded, setExpanded] = useState(false)
   const toggle = useCallback(() => setExpanded(e => !e), [])
 
@@ -168,6 +168,8 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             key={i}
             purpose={purpose}
             type={row.type ?? 'Default'}
+            forcedStatus={forcedRowStatus}
+            indicator={row.indicator}
             name={row.name}
             volume={row.volume ?? row.amount}
             dosage={row.dosage ?? row.frequency}
@@ -200,15 +202,31 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
   )
 }
 
-function TextContent({ text, isQuote, sourcePopup = false }) {
+function TextContent({ text, isQuote, sourcePopup = false, onClick }) {
+  const [hover,   setHover]   = useState(false)
+  const [pressed, setPressed] = useState(false)
+
+  const bg = pressed ? colors.surfaceActive : hover ? colors.surfaceHover : 'transparent'
+
   return (
-    <div style={{ padding: `0 ${spacing.gap24}` }}>
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => { setHover(false); setPressed(false) }}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      style={{
+        padding: `${spacing.gap12} ${spacing.gap24}`,
+        backgroundColor: bg,
+        cursor: onClick ? 'pointer' : 'default',
+        transition: 'background-color 0.1s',
+      }}
+    >
       <p style={{
         ...reg12,
         color: colors.primary,
         fontStyle: isQuote ? 'italic' : 'normal',
         margin: 0,
-        // In prescrub mode clamp to 5 lines; in source popup show everything
         ...(!sourcePopup ? {
           display:           '-webkit-box',
           WebkitLineClamp:   5,
@@ -293,6 +311,7 @@ export function SourceTypeTable({
   commentsCount,
   // Callbacks
   onHeaderClick,  // called when the uploaded-date header row is clicked
+  onTextClick,    // called when the text/quote body is clicked
   onToggle,
   onViewDoc,
   onViewMore,
@@ -303,12 +322,19 @@ export function SourceTypeTable({
   onVerify,
   onDeny,
   onPending,
+  forcedRowStatus,
 }) {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed,   setCollapsed]   = useState(false)
+  const [cardDenied,  setCardDenied]  = useState(false)
 
   const isTabular  = TABULAR_TYPES.has(tableType)
   const isText     = !isTabular && tableType !== 'ai-summary'
   const isAi       = tableType === 'ai-summary'
+
+  useEffect(() => {
+    if (forcedRowStatus === 'denied')  setCardDenied(true)
+    if (forcedRowStatus === 'Default') setCardDenied(false)
+  }, [forcedRowStatus])
 
   function handleToggle() {
     setCollapsed(c => !c)
@@ -368,7 +394,10 @@ export function SourceTypeTable({
             sourceType={sourceType}
             uploadedDate={uploadedDate}
             tabs={tabs}
+            forcedStatus={forcedRowStatus}
             onTabClick={onTabClick}
+            onDeny={() => setCardDenied(true)}
+            onVerify={() => setCardDenied(false)}
             onClick={onHeaderClick}
           />
 
@@ -380,7 +409,6 @@ export function SourceTypeTable({
             display: 'flex',
             flexDirection: 'column',
             gap: isTabular ? 0 : spacing.gap12,
-            paddingTop: isTabular ? 0 : spacing.gap12,
           }}>
             {isTabular && (
               <TabularContent
@@ -390,6 +418,7 @@ export function SourceTypeTable({
                 viewMoreCount={viewMoreCount}
                 initialRowCount={initialRowCount}
                 sourcePopup={sourcePopup}
+                forcedRowStatus={forcedRowStatus}
                 onViewMore={onViewMore}
                 onVerify={onVerify}
                 onDeny={onDeny}
@@ -402,11 +431,13 @@ export function SourceTypeTable({
 
             {isText && (
               <>
-                {(tableType === 'doc-strings' || tableType === 'doc-string') ? (
-                  <DocStringsContent texts={texts?.length ? texts : [text]} />
-                ) : (
-                  <TextContent text={text} isQuote={isQuote} sourcePopup={sourcePopup} />
-                )}
+                <div style={{ opacity: cardDenied ? 0.5 : 1, transition: 'opacity 0.15s' }}>
+                  {(tableType === 'doc-strings' || tableType === 'doc-string') ? (
+                    <DocStringsContent texts={texts?.length ? texts : [text]} />
+                  ) : (
+                    <TextContent text={text} isQuote={isQuote} sourcePopup={sourcePopup} onClick={onTextClick} />
+                  )}
+                </div>
                 <CardFooter
                   upCount={upCount}
                   downCount={downCount}

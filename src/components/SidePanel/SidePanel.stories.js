@@ -1,3 +1,4 @@
+import React from 'react'
 import { SidePanel } from './SidePanel'
 
 const TABLES = [
@@ -33,11 +34,7 @@ export default {
     style:                { control: false },
     className:            { control: false },
   },
-  decorators: [(Story) => (
-    <div style={{ width: 636, height: 900, background: '#f5f5f5' }}>
-      <Story />
-    </div>
-  )],
+  decorators: [(Story) => React.createElement('div', { style: { width: 636, height: 900, background: '#f5f5f5' } }, React.createElement(Story))],
 }
 
 export const Default = {

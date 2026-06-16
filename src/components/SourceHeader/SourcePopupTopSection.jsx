@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react'
 import { colors, radii, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { IconButton } from '../Icon/IconButton.jsx'
@@ -18,13 +19,16 @@ function Divider() {
 // Must be a *direct child* of the scroll container for position:sticky to work.
 
 export function SourceTabsBar({
-  sourceTabs  = [],
-  selectedTab = null,
+  sourceTabs      = [],
+  selectedTab     = null,
   onTabSelect,
   onVerifyAll,
   onComments,
-  sticky      = false,
+  commentsActive  = false,
+  denyAllActive   = false,
+  sticky          = false,
 }) {
+
   return (
     <>
       <div style={{
@@ -51,10 +55,21 @@ export function SourceTabsBar({
           size="small"
         />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, flexShrink: 0 }}>
         <Divider />
-        <IconButton name="deny-all-circle" size={24} onClick={onVerifyAll} />
-        <IconButton name="reaction-comment" size={24} onClick={onComments} />
+        <IconButton
+          name="deny-all-circle"
+          size={24}
+          color="secondary"
+          active={denyAllActive}
+          onClick={() => onVerifyAll?.()}
+        />
+        <IconButton
+          name="reaction-comment"
+          size={24}
+          active={commentsActive}
+          onClick={() => onComments?.()}
+        />
       </div>
     </div>
     </>

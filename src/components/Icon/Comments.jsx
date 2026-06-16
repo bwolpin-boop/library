@@ -3,14 +3,17 @@ import { colors, textStyles, radii, spacing } from '../../tokens.js'
 import { NavIcon } from './NavIcon.jsx'
 import { WithTooltip } from '../Tooltip/WithTooltip.jsx'
 
-export function Comments({ count, onClick, disabled, className }) {
-  const [selected, setSelected] = useState(false)
+export function Comments({ count, onClick, disabled, className, selected: selectedProp }) {
+  const [internalSelected, setInternalSelected] = useState(false)
   const [hover, setHover]       = useState(false)
   const [pressing, setPressing] = useState(false)
 
+  const isControlled = selectedProp !== undefined
+  const selected = isControlled ? selectedProp : internalSelected
+
   const handleClick = () => {
     if (disabled) return
-    setSelected(s => !s)
+    if (!isControlled) setInternalSelected(s => !s)
     onClick?.()
   }
 

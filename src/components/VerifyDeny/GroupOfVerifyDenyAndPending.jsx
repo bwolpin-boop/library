@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { VerifyAndDeny } from './VerifyAndDeny.jsx'
 
 export function GroupOfVerifyDenyAndPending({
   hasPending = true,
   // Seed the initial selection — used when the component remounts (e.g. hover overlay)
   initialActiveType = null,
+  // External forced status: 'denied' | 'verified' | 'pending' | null
+  forcedStatus,
   // Story/display overrides — take priority over internal selection
   denyState,
   verifyState,
@@ -15,6 +17,14 @@ export function GroupOfVerifyDenyAndPending({
   onPending,
 }) {
   const [activeType, setActiveType] = useState(initialActiveType)
+
+  useEffect(() => {
+    if (forcedStatus === undefined) return
+    if (forcedStatus === 'denied')   setActiveType('deny')
+    else if (forcedStatus === 'verified') setActiveType('verify')
+    else if (forcedStatus === 'pending')  setActiveType('pending')
+    else setActiveType(null)
+  }, [forcedStatus])
 
   function handleClick(type, externalHandler) {
     setActiveType(prev => prev === type ? null : type)

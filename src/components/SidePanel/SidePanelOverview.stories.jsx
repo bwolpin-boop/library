@@ -1,10 +1,5 @@
 import { SidePanel } from './SidePanel'
 
-export default {
-  title: '🟠   📁 sources/Side Panel/Overview',
-  parameters: { controls: { disable: true }, actions: { disable: true } },
-}
-
 const TABLES = [
   {
     sourceType:   'Progress Notes',
@@ -23,17 +18,36 @@ const TABLES = [
   },
 ]
 
-export const Overview = {
-  render: () => (
+export default {
+  title: '🟠   📁 sources/Side Panel/Overview',
+  component: SidePanel,
+  argTypes: {
+    docTitle:             { control: 'text' },
+    sourceCount:          { control: { type: 'number', min: 0 } },
+    sourceSelected:       { control: 'boolean' },
+    commentCount:         { control: { type: 'number', min: 0 } },
+    showPrimaryDiagnosis: { control: 'boolean' },
+    showAiSummary:        { control: 'boolean' },
+    aiSummaryText:        { control: 'text' },
+    tables:               { control: false },
+    style:                { control: false },
+    className:            { control: false },
+  },
+  decorators: [(Story) => (
     <div style={{ width: 636, height: 900 }}>
-      <SidePanel
-        docTitle="HOW Bridgeview.pdf"
-        sourceCount={23}
-        commentCount={4}
-        showPrimaryDiagnosis
-        showAiSummary
-        tables={TABLES}
-      />
+      <Story />
     </div>
-  ),
+  )],
+}
+
+export const Overview = {
+  args: {
+    docTitle:             'HOW Bridgeview.pdf',
+    sourceCount:          23,
+    sourceSelected:       true,
+    commentCount:         4,
+    showPrimaryDiagnosis: true,
+    showAiSummary:        true,
+    tables:               TABLES,
+  },
 }

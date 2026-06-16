@@ -1,3 +1,4 @@
+import React from 'react'
 import { ScrollIndicator } from './ScrollIndicator'
 
 export default {
@@ -8,7 +9,7 @@ export default {
     count:       { control: { type: 'number', min: 1, max: 30 } },
     activeIndex: { control: { type: 'number', min: 0, max: 29 } },
   },
-  decorators: [(Story) => <div style={{ padding: 32 }}><Story /></div>],
+  decorators: [(Story) => React.createElement('div', { style: { padding: 32 } }, React.createElement(Story))],
 }
 
 export const Default      = {}

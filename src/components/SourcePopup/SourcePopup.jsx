@@ -206,12 +206,30 @@ export function SourcePopup({
 }) {
   const uniqueTypes = getUniqueSourceTypes(tables)
 
-  const [selectedTab, setSelectedTab] = useState(null)
-  const [sidePanel,   setSidePanel]   = useState(null)   // { table, mode }
+  const [selectedTab,   setSelectedTab]   = useState(null)
+  const [sidePanel,     setSidePanel]     = useState(null)   // { table, mode }
+  const [deniedByType, setDeniedByType] = useState({})  // sourceType → 'denied' | 'Default' | undefined
+  const [commentsOpen,  setCommentsOpen]  = useState(false)
   const [leftWidth,   setLeftWidth]   = useState(615)    // left panel px when both open
   const [divHovered,  setDivHovered]  = useState(false)
   const containerRef = useRef(null)
   const dragging     = useRef(false)
+
+  function handleCommentsToggle() {
+    if (commentsOpen) {
+      // Deselect — close panel if it was opened via comments
+      setCommentsOpen(false)
+      setSidePanel(prev => prev?.mode === 'comments' ? null : prev)
+    } else {
+      // Select — open panel in comments mode
+      setCommentsOpen(true)
+      setSidePanel({ table: null, mode: 'comments' })
+      if (!sidePanel && containerRef.current) {
+        const w = containerRef.current.getBoundingClientRect().width
+        setLeftWidth(Math.round(w * 0.5))
+      }
+    }
+  }
 
   function openPanel(table, mode = 'source') {
     setSidePanel(prev =>
@@ -249,6 +267,22 @@ export function SourcePopup({
     document.addEventListener('mousemove', onMove)
     document.addEventListener('mouseup',   onUp)
   }, [sidePanel])
+
+  function handleDenyAll() {
+    const isAll = !selectedTab || selectedTab === 'All'
+    const typesToToggle = isAll ? uniqueTypes : [selectedTab]
+    setDeniedByType(prev => {
+      const allDenied = typesToToggle.every(t => prev[t] === 'denied')
+      const next = { ...prev }
+      typesToToggle.forEach(type => { next[type] = allDenied ? 'Default' : 'denied' })
+      return next
+    })
+    onVerifyAll?.()
+  }
+
+  const isDenyAllActive = !selectedTab || selectedTab === 'All'
+    ? uniqueTypes.length > 0 && uniqueTypes.every(t => deniedByType[t] === 'denied')
+    : deniedByType[selectedTab] === 'denied'
 
   const visibleTables = !selectedTab || selectedTab === 'All'
     ? dedupeBySourceType(tables)
@@ -293,7 +327,7 @@ export function SourcePopup({
       }}>
 
         {/* Top section */}
-        <div style={{ padding: `${spacing.gap24} ${spacing.gap24} ${spacing.gap16}` }}>
+        <div style={{ padding: `${spacing.gap16} ${spacing.gap24} ${spacing.gap16}` }}>
           <SourcePopupTopSection
             qCode={qCode}
             questionTitle={questionTitle}
@@ -305,7 +339,7 @@ export function SourcePopup({
             hideTabsRow
             onClose={onClose}
             onTabSelect={setSelectedTab}
-            onVerifyAll={onVerifyAll}
+            onVerifyAll={handleDenyAll}
             onComments={onComments}
           />
         </div>
@@ -315,8 +349,10 @@ export function SourcePopup({
           sourceTabs={uniqueTypes}
           selectedTab={selectedTab}
           onTabSelect={setSelectedTab}
-          onVerifyAll={onVerifyAll}
-          onComments={onComments}
+          onVerifyAll={handleDenyAll}
+          onComments={handleCommentsToggle}
+          commentsActive={commentsOpen}
+          denyAllActive={isDenyAllActive}
           sticky
         />
 
@@ -342,7 +378,9 @@ export function SourcePopup({
               isQuote={table.isQuote}
               aiTitle={table.aiTitle}
               hasTitle={false}
+              forcedRowStatus={deniedByType[table.sourceType]}
               onHeaderClick={() => openPanel(table, 'source')}
+              onTextClick={() => openPanel(table, 'source')}
               onCommentsClick={() => openPanel(table, 'comments')}
             />
           ))}
@@ -385,10 +423,13 @@ export function SourcePopup({
         <div style={{ flex: 1, minWidth: 0, height: '100%', overflow: 'hidden' }}>
           <SidePanel
             docTitle={sidePanel.table?.docName}
-            tables={[sidePanel.table]}
+            tables={sidePanel.table ? [sidePanel.table] : []}
             showPrimaryDiagnosis={false}
             showAiSummary={false}
+            initialActiveTab={sidePanel.mode === 'comments' ? 'comments' : 'sources'}
             onClose={() => setSidePanel(null)}
+            onSourceClick={() => setSidePanel(prev => prev ? { ...prev, mode: 'source' } : prev)}
+            onCommentsClick={() => setSidePanel(prev => prev ? { ...prev, mode: 'comments' } : prev)}
             style={{ borderLeft: 'none' }}
           />
         </div>

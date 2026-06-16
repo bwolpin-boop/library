@@ -5,7 +5,9 @@ import { SourceAlsoAnswers } from '../SourceAlsoAnswers/SourceAlsoAnswers.jsx'
 
 const reg12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.regular, lineHeight: lineHeights.sm }
 
-const MIN_GAP = 16  // minimum px gap required between left and right sections
+const MIN_GAP    = 16   // minimum px between left and right sections
+const TEXT_WIDTH = 155  // approx width of "This source also answers:" label + gap
+const VD_WIDTH   = 76   // divider(24) + deny(24) + verify(24) + gap(4)
 
 export function SourceHeader({
   type          = 'sources',  // 'sources' | 'ipa' | 'prescrub'
@@ -16,18 +18,19 @@ export function SourceHeader({
   tabs          = ['M1200B', 'M1201A', 'M1202C'],
   activeTabIndex = 0,
   strengthLabel = 'Strong',
+  forcedStatus,
   onTabClick,
   onDeny,
   onVerify,
   onClick,
 }) {
-  const [hovered,   setHovered]   = useState(false)
-  const [showRight, setShowRight] = useState(true)
+  const [hovered,     setHovered]     = useState(false)
+  const [displayMode, setDisplayMode] = useState('full')  // 'full'|'compact'|'minimal'|'hidden'
 
   const containerRef  = useRef(null)
   const leftRef       = useRef(null)
   const rightRef      = useRef(null)
-  const rightWidthRef = useRef(0)   // cache last measured right width
+  const rightWidthRef = useRef(0)
 
   const isSources = type === 'sources'
   const isIpa     = type === 'ipa'
@@ -39,13 +42,20 @@ export function SourceHeader({
     if (!container) return
 
     const check = () => {
-      if (rightRef.current) {
-        rightWidthRef.current = rightRef.current.offsetWidth
-      }
+      if (rightRef.current) rightWidthRef.current = rightRef.current.offsetWidth
       const leftWidth  = leftRef.current?.offsetWidth ?? 0
       const rightWidth = rightWidthRef.current
       const available  = container.offsetWidth - leftWidth
-      setShowRight(available >= rightWidth + MIN_GAP)
+
+      if (available >= rightWidth + MIN_GAP) {
+        setDisplayMode('full')
+      } else if (available >= (rightWidth - TEXT_WIDTH) + MIN_GAP) {
+        setDisplayMode('compact')   // hide label text, keep tabs + VD
+      } else if (available >= VD_WIDTH + MIN_GAP) {
+        setDisplayMode('minimal')   // hide label + tabs, keep VD only
+      } else {
+        setDisplayMode('hidden')
+      }
     }
 
     const obs = new ResizeObserver(check)
@@ -53,6 +63,10 @@ export function SourceHeader({
     check()
     return () => obs.disconnect()
   }, [hasRight])
+
+  const isHidden  = displayMode === 'hidden'
+  const isMinimal = displayMode === 'minimal'
+  const isCompact = displayMode === 'compact'
 
   return (
     <div
@@ -98,19 +112,22 @@ export function SourceHeader({
       {hasRight && (
         <div
           ref={rightRef}
+          onClick={e => e.stopPropagation()}
           style={{
-            flexShrink:  0,
-            visibility:  showRight ? 'visible' : 'hidden',
-            pointerEvents: showRight ? 'auto' : 'none',
+            flexShrink:    0,
+            visibility:    isHidden ? 'hidden' : 'visible',
+            pointerEvents: isHidden ? 'none' : 'auto',
           }}
         >
           <SourceAlsoAnswers
             type={isIpa ? 'IPA' : 'Source popup'}
-            hasText={isSources}
-            hasVerifyAndDeny={isIpa}
+            hasText={isSources && !isCompact && !isMinimal}
+            hasVerifyAndDeny={isSources || isIpa}
+            hasTabs={!isMinimal}
             tabs={tabs}
             activeTabIndex={activeTabIndex}
             strengthLabel={strengthLabel}
+            forcedStatus={forcedStatus}
             onTabClick={onTabClick}
             onDeny={onDeny}
             onVerify={onVerify}

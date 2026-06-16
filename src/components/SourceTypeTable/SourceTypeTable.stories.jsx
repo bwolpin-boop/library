@@ -38,6 +38,7 @@ const ROWS = FLUID_NAMES.map((name, i) => ({
   dosage:    i % 3 === 0 ? '80 mL/3x a day' : '120 mL/2x a day',
   date:      i % 2 === 0 ? '15/04/2025' : '20/04/2025',
   pages:     i % 5 === 0 ? [12, 24, 35, 47] : i % 3 === 0 ? [5, 13, 52] : i % 2 === 0 ? [12, 24] : [12],
+  indicator: i === 1 || i === 4,   // rows 2 and 5 show the source indicator icon
   ...OTHER_VOTES[i],
 }))
 

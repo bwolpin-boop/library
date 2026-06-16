@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 import { VerifyAndDeny } from '../VerifyDeny/VerifyAndDeny.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
@@ -21,7 +21,7 @@ const textStyle = {
   whiteSpace: 'nowrap',
 }
 
-function Cell({ width, flex, children }) {
+function Cell({ width, flex, children, style: extraStyle }) {
   return (
     <div
       style={{
@@ -35,6 +35,7 @@ function Cell({ width, flex, children }) {
         flex: flex ?? undefined,
         minWidth: flex ? '1px' : undefined,
         position: 'relative',
+        ...extraStyle,
       }}
     >
       {children}
@@ -156,6 +157,7 @@ export function IvFluidsRow({
   showVolume = true,        // set false for surgery/diagnosis (no Dose column)
   showDosage = true,        // set false for tube-feeding/surgery/diagnosis (no Rate column)
   showDate   = true,        // set false for diagnosis (no Given on column)
+  indicator = false,        // shows the yellow source indicator icon next to the name
   lineNumber,               // shown instead of verify/deny when purpose='source popup'
   count,                    // number shown in 'view more' e.g. 234
   upVotes   = 0,            // existing votes from others — thumbs up
@@ -169,12 +171,17 @@ export function IvFluidsRow({
   onCommentsClick,
   onUpClick,
   onDownClick,
+  forcedStatus,  // 'Default' | 'verified' | 'pending' | 'denied' — overrides internal state when set
   style,
   className,
 }) {
   const [hovered, setHovered]     = useState(false)
   const [vote, setVote]           = useState(null)     // null | 'up' | 'down'
   const [verifyStatus, setVerify] = useState(type)     // tracks the left-side dot
+
+  useEffect(() => {
+    if (forcedStatus !== undefined) setVerify(forcedStatus)
+  }, [forcedStatus])
 
   if (purpose === 'view more' || purpose === 'view less') {
     return <ViewToggleRow purpose={purpose} count={count} onClick={onClick} style={style} />
@@ -188,12 +195,13 @@ export function IvFluidsRow({
   const STATUS_HOVER = { verified: '#ebf8e9',        denied: colors.error200, pending: '#fff9e5'        }
   const STATUS_GRAD  = { verified: 'rgba(246,255,246,0.5)', denied: 'rgba(255,242,242,0.5)', pending: 'rgba(255,249,228,0.5)' }
 
-  const isStatusSet   = verifyStatus !== 'Default'
+  const isStatusSet   = !isSourcePopup && verifyStatus !== 'Default'
   const baseBg        = isStatusSet ? (STATUS_BASE[verifyStatus]  ?? colors.white)   : colors.white
   const hoverBg       = isStatusSet ? (STATUS_HOVER[verifyStatus] ?? colors.surface)  : colors.surface
   const gradientStart = isStatusSet ? (STATUS_GRAD[verifyStatus]  ?? 'rgba(247,247,248,0)') : 'rgba(247,247,248,0)'
   const gradientEnd   = isStatusSet ? (STATUS_HOVER[verifyStatus] ?? colors.surface)  : colors.surface
   const bgColor       = hovered ? hoverBg : baseBg
+  const dimStyle      = verifyStatus === 'denied' ? { opacity: 0.5, transition: 'opacity 0.15s' } : {}
 
   function handleUpClick()    { setVote(v => v === 'up'   ? null : 'up');   onUpClick?.()   }
   function handleDownClick()  { setVote(v => v === 'down' ? null : 'down'); onDownClick?.() }
@@ -222,67 +230,64 @@ export function IvFluidsRow({
     >
       {/* Name cell: status dot (or line number) + name text */}
       <Cell flex="1 0 0">
-        {isSourcePopup ? (
-          lineNumber != null && (
-            <span style={{ ...textStyle, width: '12px', flexShrink: 0, textAlign: 'left' }}>
-              {lineNumber}
-            </span>
-          )
-        ) : (
-          <VerifyAndDeny
-            type={vdTypeMap[verifyStatus] ?? 'empty'}
-            size="small"
-            tooltipLabel={`Status: ${{ Default: 'Empty', verified: 'Verified', denied: 'Denied', pending: 'Pending' }[verifyStatus] ?? 'Empty'}`}
-            onClick={() => setVerify('Default')}
-          />
-        )}
+        <VerifyAndDeny
+          type={vdTypeMap[verifyStatus] ?? 'empty'}
+          size="small"
+          tooltipLabel={`Status: ${{ Default: 'Empty', verified: 'Verified', denied: 'Denied', pending: 'Pending' }[verifyStatus] ?? 'Empty'}`}
+          onClick={() => setVerify('Default')}
+        />
         <span
           title={name}
-          style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}
+          style={{ ...textStyle, ...dimStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}
         >
           {name}
         </span>
+        {indicator && <NavIcon name="indicator-yellow" size={16} style={dimStyle} />}
         {(upVotes > 0 || vote === 'up') && (
-          <VoteBadge
-            direction="up"
-            count={upVotes + (vote === 'up' ? 1 : 0)}
-            isSelected={vote === 'up'}
-            onClick={handleUpClick}
-          />
+          <div style={dimStyle}>
+            <VoteBadge
+              direction="up"
+              count={upVotes + (vote === 'up' ? 1 : 0)}
+              isSelected={vote === 'up'}
+              onClick={handleUpClick}
+            />
+          </div>
         )}
         {(downVotes > 0 || vote === 'down') && (
-          <VoteBadge
-            direction="down"
-            count={downVotes + (vote === 'down' ? 1 : 0)}
-            isSelected={vote === 'down'}
-            onClick={handleDownClick}
-          />
+          <div style={dimStyle}>
+            <VoteBadge
+              direction="down"
+              count={downVotes + (vote === 'down' ? 1 : 0)}
+              isSelected={vote === 'down'}
+              onClick={handleDownClick}
+            />
+          </div>
         )}
       </Cell>
 
       {/* Volume / Dose — hidden for surgery & diagnosis */}
       {showVolume && (
-        <Cell width={`${TABLE_COL_WIDTHS.vol}px`}>
+        <Cell width={`${TABLE_COL_WIDTHS.vol}px`} style={dimStyle}>
           <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={volume}>{volume}</span>
         </Cell>
       )}
 
       {/* Dosage / Rate — hidden for tube-feeding, surgery & diagnosis */}
       {showDosage && (
-        <Cell width={`${TABLE_COL_WIDTHS.dosage}px`}>
+        <Cell width={`${TABLE_COL_WIDTHS.dosage}px`} style={dimStyle}>
           <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }} title={dosage}>{dosage}</span>
         </Cell>
       )}
 
       {/* Date / Given on / Category — hidden for diagnosis */}
       {showDate && (
-        <Cell width={`${TABLE_COL_WIDTHS.date}px`}>
+        <Cell width={`${TABLE_COL_WIDTHS.date}px`} style={dimStyle}>
           <span style={{ ...textStyle, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>{date}</span>
         </Cell>
       )}
 
       {/* Page ref */}
-      <Cell width={`${TABLE_COL_WIDTHS.page}px`}>
+      <Cell width={`${TABLE_COL_WIDTHS.page}px`} style={dimStyle}>
         {pages != null ? (
           <>
             <span style={{ ...textStyle, flexShrink: 0 }}>
