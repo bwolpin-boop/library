@@ -217,10 +217,10 @@ export function SourcePopup({
     setSidePanel(prev =>
       prev?.table === table && prev?.mode === mode ? null : { table, mode }
     )
-    // Reset split to 60% of container when opening
+    // Reset split to 50/50 when opening
     if (!sidePanel && containerRef.current) {
       const w = containerRef.current.getBoundingClientRect().width
-      setLeftWidth(Math.round(w * 0.6))
+      setLeftWidth(Math.round(w * 0.5))
     }
   }
 
