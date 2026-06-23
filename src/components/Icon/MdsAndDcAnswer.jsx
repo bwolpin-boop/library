@@ -1,4 +1,4 @@
-import { colors, fonts, fontSizes, fontWeights, radii, strokeWidths } from '../../tokens.js'
+import { colors, strokeWidths } from '../../tokens.js'
 
 const typeConfig = {
   mds: {
@@ -24,27 +24,11 @@ const typeConfig = {
   },
 }
 
-const baseTextStyle = {
-  fontFamily:  fonts.inter,
-  fontSize:    fontSizes.xs,
-  fontWeight:  fontWeights.medium,
-  whiteSpace:  'nowrap',
-  lineHeight:  'normal',
-  margin:      0,
-}
-
 export function MdsAndDcAnswer({ type = 'mds' }) {
   if (type === 'no-answer') {
     return (
-      <div style={{
-        display:        'inline-flex',
-        alignItems:     'center',
-        justifyContent: 'center',
-        height:         '24px',
-        paddingLeft:    '4px',
-        paddingRight:   '8px',
-      }}>
-        <p style={{ ...baseTextStyle, color: colors.muted }}>No chosen answer yet</p>
+      <div className="dc:inline-flex dc:items-center dc:justify-center dc:h-[24px] dc:[padding-left:4px] dc:[padding-right:8px]">
+        <p className="dc:font-inter dc:text-xs dc:font-medium dc:whitespace-nowrap dc:[line-height:normal] dc:m-0 dc:text-muted">No chosen answer yet</p>
       </div>
     )
   }
@@ -52,23 +36,19 @@ export function MdsAndDcAnswer({ type = 'mds' }) {
   const config = typeConfig[type] ?? typeConfig.mds
 
   return (
-    <div style={{
-      display:         'inline-flex',
-      alignItems:      'center',
-      justifyContent:  'center',
-      height:          '24px',
-      padding:         '5px 8px',
-      borderRadius:    radii.boxSm,
-      backgroundColor: config.background,
-      border:          `${strokeWidths.icon}px solid ${config.borderColor}`,
-      opacity:         config.opacity ?? 1,
-    }}>
-      <ol style={{
-        ...baseTextStyle,
-        listStyleType: 'decimal',
-        padding:       0,
-        color:         config.textColor,
-      }}>
+    <div
+      className="dc:inline-flex dc:items-center dc:justify-center dc:h-[24px] dc:rounded-box-sm"
+      style={{
+        padding: '5px 8px',
+        backgroundColor: config.background,
+        border: `${strokeWidths.icon}px solid ${config.borderColor}`,
+        opacity: config.opacity ?? 1,
+      }}
+    >
+      <ol
+        className="dc:font-inter dc:text-xs dc:font-medium dc:whitespace-nowrap dc:[line-height:normal] dc:m-0 dc:p-0 dc:list-decimal"
+        style={{ color: config.textColor }}
+      >
         <li style={{ marginLeft: '18px' }}>Yes</li>
       </ol>
     </div>

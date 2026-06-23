@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
+import { colors } from '../../tokens.js'
 import { SourceTypeTab } from './SourceTypeTab.jsx'
 
 function RightChevron({ size = 16 }) {
@@ -57,7 +57,6 @@ export function SourceTypeTabs({
   const scrollLeft  = () => scrollRef.current?.scrollBy({ left: -120, behavior: 'smooth' })
 
   const isBig = size === 'big'
-  const fontSize = isBig ? fontSizes.sm : fontSizes.xs
   const borderWidth = isBig ? '1px' : '0.5px'
   const tabGap = isBig ? '8px' : '4px'
   const allPadX = isBig ? '12px' : '8px'
@@ -70,15 +69,14 @@ export function SourceTypeTabs({
   const isAllSelected = !activeTab || activeTab === 'All'
   const allBorderColor = isAllSelected ? colors.primary : colors.dividerSubtle
   const allBgColor = !isAllSelected && allHovered ? colors.surfaceHover : colors.white
-  const allFontWeight = isBig ? fontWeights.medium : fontWeights.regular
+  const allFontWeight = isBig ? '500' : '400'
 
   return (
-    <div style={{ position: 'relative', overflow: 'hidden' }}>
+    <div className="dc:relative dc:overflow-hidden">
       <div
         ref={scrollRef}
+        className="dc:flex dc:items-center"
         style={{
-          display: 'flex',
-          alignItems: 'center',
           gap: tabGap,
           overflowX: 'auto',
           paddingBottom: '20px',
@@ -89,42 +87,36 @@ export function SourceTypeTabs({
       >
         {/* All tab */}
         <div
+          className="dc:inline-flex dc:items-center dc:justify-center dc:rounded-box-sm dc:cursor-pointer dc:whitespace-nowrap dc:shrink-0 dc:box-border"
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             height: tabHeight,
             paddingLeft: allPadX,
             paddingRight: allPadX,
             paddingTop: allPadY,
             paddingBottom: allPadY,
-            borderRadius: radii.boxSm,
             border: `${borderWidth} solid ${allBorderColor}`,
             backgroundColor: allBgColor,
-            cursor: 'pointer',
-            whiteSpace: 'nowrap',
-            flexShrink: 0,
-            boxSizing: 'border-box',
             transition: 'background-color 0.15s, border-color 0.15s',
           }}
           onMouseEnter={() => !isAllSelected && setAllHovered(true)}
           onMouseLeave={() => setAllHovered(false)}
           onClick={() => handleTabSelect('All')}
         >
-          <span style={{
-            fontFamily: fonts.montserrat,
-            fontSize,
-            fontWeight: allFontWeight,
-            color: colors.primary,
-            lineHeight: isBig ? '21px' : '18px',
-          }}>
+          <span
+            className="dc:font-montserrat dc:text-primary"
+            style={{
+              fontSize: isBig ? '14px' : '12px',
+              fontWeight: allFontWeight,
+              lineHeight: isBig ? '21px' : '18px',
+            }}
+          >
             All
           </span>
         </div>
 
         {/* Source type tabs — display:flex on wrapper removes inline strut height */}
         {tabs.map((type) => (
-          <div key={type} style={{ flexShrink: 0, display: 'flex' }} onClick={() => handleTabSelect(type)}>
+          <div key={type} className="dc:shrink-0 dc:flex" onClick={() => handleTabSelect(type)}>
             <SourceTypeTab
               type={type}
               size={size}
@@ -138,30 +130,19 @@ export function SourceTypeTabs({
       {canScrollLeft && (
         <>
           <div
+            className="dc:absolute dc:left-0 dc:top-0 dc:bottom-0 dc:pointer-events-none"
             style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              bottom: 0,
               width: `${gradientWidth}px`,
               background: 'linear-gradient(to left, rgba(255,255,255,0) 11%, #ffffff 41%)',
-              pointerEvents: 'none',
             }}
           />
           <button
             onClick={scrollLeft}
             aria-label="Scroll tabs left"
+            className="dc:absolute dc:bg-transparent dc:border-none dc:cursor-pointer dc:p-0 dc:flex dc:items-center dc:justify-center"
             style={{
-              position: 'absolute',
               left: `${arrowRight}px`,
               top: `${arrowTop}px`,
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               width: '16px',
               height: '16px',
             }}
@@ -174,30 +155,19 @@ export function SourceTypeTabs({
       {canScroll && (
         <>
           <div
+            className="dc:absolute dc:right-0 dc:top-0 dc:bottom-0 dc:pointer-events-none"
             style={{
-              position: 'absolute',
-              right: 0,
-              top: 0,
-              bottom: 0,
               width: `${gradientWidth}px`,
               background: 'linear-gradient(to right, rgba(255,255,255,0) 11%, #ffffff 41%)',
-              pointerEvents: 'none',
             }}
           />
           <button
             onClick={scrollRight}
             aria-label="Scroll tabs right"
+            className="dc:absolute dc:bg-transparent dc:border-none dc:cursor-pointer dc:p-0 dc:flex dc:items-center dc:justify-center"
             style={{
-              position: 'absolute',
               right: `${arrowRight}px`,
               top: `${arrowTop}px`,
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               width: '16px',
               height: '16px',
             }}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { SourceTypeTable } from './SourceTypeTable'
+import { SidePanel } from '../SidePanel/SidePanel'
 import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
 
 export default {
@@ -65,7 +66,10 @@ const AI_TXT = 'The patient has a Stage 3 pressure wound of the left buttock coc
 // ─── Toggle wrapper ───────────────────────────────────────────────────────────
 
 function ToggleTable({ tableType, title, sourceType, rows, text, aiTitle, isQuote }) {
-  const [mode, setMode] = useState('source popup')  // default: source popup
+  const [mode,      setMode]      = useState('source popup')
+  const [panelOpen, setPanelOpen] = useState(false)
+
+  const isSourcePopup = mode === 'source popup'
 
   const btn = (label) => ({
     fontFamily:      fonts.montserrat,
@@ -80,29 +84,51 @@ function ToggleTable({ tableType, title, sourceType, rows, text, aiTitle, isQuot
     transition:      'all 0.1s',
   })
 
+  function handleModeChange(newMode) {
+    setMode(newMode)
+    setPanelOpen(false)
+  }
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 692 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Toggle */}
       <div style={{ display: 'flex', gap: 8 }}>
-        <button style={btn('source popup')} onClick={() => setMode('source popup')}>Source Popup</button>
-        <button style={btn('prescrub')}     onClick={() => setMode('prescrub')}>Prescrub</button>
+        <button style={btn('source popup')} onClick={() => handleModeChange('source popup')}>Source Popup</button>
+        <button style={btn('prescrub')}     onClick={() => handleModeChange('prescrub')}>Prescrub</button>
       </div>
-      {/* Table */}
-      <SourceTypeTable
-        tableType={tableType}
-        title={title}
-        sourceType={sourceType ?? 'IV Fluids'}
-        uploadedDate="15/12/2025"
-        docName="Diagnosis hospital_records file hypervention .pdf"
-        rows={rows}
-        text={text}
-        aiTitle={aiTitle}
-        isQuote={isQuote}
-        sourcePopup={mode === 'source popup'}
-        upCount={123}
-        downCount={0}
-        commentsCount={4}
-      />
+
+      {/* Table + optional side panel */}
+      <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+        <div style={{ width: 692, flexShrink: 0 }}>
+          <SourceTypeTable
+            tableType={tableType}
+            title={title}
+            sourceType={sourceType ?? 'IV Fluids'}
+            uploadedDate="15/12/2025"
+            docName="Diagnosis hospital_records file hypervention .pdf"
+            rows={rows}
+            text={text}
+            aiTitle={aiTitle}
+            isQuote={isQuote}
+            sourcePopup={isSourcePopup}
+            active={isSourcePopup && panelOpen}
+            onRowClick={isSourcePopup ? () => setPanelOpen(true) : undefined}
+            upCount={123}
+            downCount={0}
+            commentsCount={4}
+          />
+        </div>
+
+        {isSourcePopup && panelOpen && (
+          <div style={{ width: 400, height: 600, border: `1px solid ${colors.dividerSubtle}`, borderRadius: radii.box, overflow: 'hidden', flexShrink: 0 }}>
+            <SidePanel
+              docTitle="iv_fluids_chart_dec2025.pdf"
+              onClose={() => setPanelOpen(false)}
+              style={{ height: '100%', border: 'none' }}
+            />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

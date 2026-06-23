@@ -1,137 +1,140 @@
-import { useState, useRef, useEffect } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii } from '../../tokens.js'
-import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
-import { SourceAlsoAnswers } from '../SourceAlsoAnswers/SourceAlsoAnswers.jsx'
+import { useState } from 'react'
+import { colors } from '../../tokens.js'
+import { SourceTypeIcon }              from '../Icon/SourceTypeIcon.jsx'
+import { QkNumberTabs }               from '../QkNumberTabs/QkNumberTabs.jsx'
+import { GroupOfVerifyDenyAndPending } from '../VerifyDeny/GroupOfVerifyDenyAndPending.jsx'
 
-const reg12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.regular, lineHeight: lineHeights.sm }
+function Strength({ label = 'Strong' }) {
+  return (
+    <div className="dc:inline-flex dc:items-center dc:gap-gap4 dc:shrink-0">
+      <div className="dc:w-1.5 dc:h-1.5 dc:rounded-full dc:bg-green dc:shrink-0" />
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{label}</span>
+    </div>
+  )
+}
 
-const MIN_GAP    = 16   // minimum px between left and right sections
-const TEXT_WIDTH = 155  // approx width of "This source also answers:" label + gap
-const VD_WIDTH   = 76   // divider(24) + deny(24) + verify(24) + gap(4)
+function Divider() {
+  return (
+    <div className="dc:w-gap24 dc:h-gap24 dc:flex dc:items-center dc:justify-center dc:shrink-0">
+      <div className="dc:w-px dc:h-full dc:bg-divider-subtle" />
+    </div>
+  )
+}
 
 export function SourceHeader({
   type          = 'sources',  // 'sources' | 'ipa' | 'prescrub'
   sourceType    = 'IV Fluids',
   uploadedDate  = '15/12/2025',
   docName,
-  // SourceAlsoAnswers props
   tabs          = ['M1200B', 'M1201A', 'M1202C'],
   activeTabIndex = 0,
   strengthLabel = 'Strong',
   forcedStatus,
+  active = false,
   onTabClick,
   onDeny,
   onVerify,
   onClick,
 }) {
-  const [hovered,     setHovered]     = useState(false)
-  const [displayMode, setDisplayMode] = useState('full')  // 'full'|'compact'|'minimal'|'hidden'
-
-  const containerRef  = useRef(null)
-  const leftRef       = useRef(null)
-  const rightRef      = useRef(null)
-  const rightWidthRef = useRef(0)
+  const [hovered,       setHovered]       = useState(false)
+  const [pressed,       setPressed]       = useState(false)
+  const [selectedIndex, setSelectedIndex] = useState(activeTabIndex)
 
   const isSources = type === 'sources'
   const isIpa     = type === 'ipa'
   const hasRight  = isSources || isIpa
 
-  useEffect(() => {
-    if (!hasRight) return
-    const container = containerRef.current
-    if (!container) return
-
-    const check = () => {
-      if (rightRef.current) rightWidthRef.current = rightRef.current.offsetWidth
-      const leftWidth  = leftRef.current?.offsetWidth ?? 0
-      const rightWidth = rightWidthRef.current
-      const available  = container.offsetWidth - leftWidth
-
-      if (available >= rightWidth + MIN_GAP) {
-        setDisplayMode('full')
-      } else if (available >= (rightWidth - TEXT_WIDTH) + MIN_GAP) {
-        setDisplayMode('compact')   // hide label text, keep tabs + VD
-      } else if (available >= VD_WIDTH + MIN_GAP) {
-        setDisplayMode('minimal')   // hide label + tabs, keep VD only
-      } else {
-        setDisplayMode('hidden')
-      }
-    }
-
-    const obs = new ResizeObserver(check)
-    obs.observe(container)
-    check()
-    return () => obs.disconnect()
-  }, [hasRight])
-
-  const isHidden  = displayMode === 'hidden'
-  const isMinimal = displayMode === 'minimal'
-  const isCompact = displayMode === 'compact'
+  function handleTabClick(i) {
+    setSelectedIndex(i)
+    onTabClick?.(i)
+  }
 
   return (
     <div
-      ref={containerRef}
       onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="dc:flex dc:items-center dc:border-b dc:border-divider-subtle dc:box-border dc:overflow-hidden dc:gap-gap8"
       style={{
-        display:              'flex',
-        alignItems:           'center',
-        justifyContent:       'space-between',
-        padding:              isIpa ? '4px 24px' : '6.5px 24px',
-        height:               isIpa ? 32 : 34,
-        borderBottom:         `1px solid ${colors.dividerSubtle}`,
-        boxSizing:            'border-box',
-        backgroundColor:      (onClick && hovered) ? colors.surface : 'transparent',
-        borderTopLeftRadius:  radii.box,
-        borderTopRightRadius: radii.box,
-        cursor:               onClick ? 'pointer' : 'default',
-        transition:           'background-color 0.1s',
-        overflow:             'hidden',
+        padding:         isIpa ? '4px 24px' : '6.5px 24px',
+        height:          isIpa ? 32 : 34,
+        backgroundColor: onClick && pressed ? colors.surfaceActive : 'transparent',
+        cursor:          onClick ? 'pointer' : 'default',
+        transition:      'background-color 0.1s',
+        borderTopLeftRadius: 'inherit',
+        borderTopRightRadius: 'inherit',
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
       }}
     >
-      {/* Left: icon + date + optional doc name */}
-      <div ref={leftRef} style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+      {/* Left: always visible — icon + date + optional doc name */}
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => { setHovered(false); setPressed(false) }}
+        onMouseDown={() => onClick && setPressed(true)}
+        onMouseUp={() => setPressed(false)}
+        className="dc:flex dc:items-center dc:gap-gap8 dc:shrink-0"
+      >
         <SourceTypeIcon type={sourceType} size={16} />
-        <span style={{
-          ...reg12,
-          color:           colors.primary,
-          whiteSpace:      'nowrap',
-          textDecoration:  (onClick && hovered) ? 'underline' : 'none',
-        }}>
+        <span
+          className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap"
+          style={{ textDecoration: (onClick && hovered) ? 'underline' : 'none' }}
+        >
           Uploaded date: {uploadedDate}
         </span>
         {isSources && docName && (
-          <span style={{ ...reg12, color: colors.secondary, whiteSpace: 'nowrap' }}>
+          <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-secondary dc:whitespace-nowrap">
             {docName}
           </span>
         )}
       </div>
 
-      {/* Right: tabs (sources) | strength+verify (ipa) | nothing (prescrub) */}
+      {/* Right: tabs clip from the left, icons always visible at the edge */}
       {hasRight && (
         <div
-          ref={rightRef}
+          className="dc:flex dc:items-center dc:flex-1 dc:overflow-hidden"
+          style={{ minWidth: 0 }}
           onClick={e => e.stopPropagation()}
-          style={{
-            flexShrink:    0,
-            visibility:    isHidden ? 'hidden' : 'visible',
-            pointerEvents: isHidden ? 'none' : 'auto',
-          }}
+          onMouseDown={e => e.stopPropagation()}
         >
-          <SourceAlsoAnswers
-            type={isIpa ? 'IPA' : 'Source popup'}
-            hasText={isSources && !isCompact && !isMinimal}
-            hasVerifyAndDeny={isSources || isIpa}
-            hasTabs={!isMinimal}
-            tabs={tabs}
-            activeTabIndex={activeTabIndex}
-            strengthLabel={strengthLabel}
-            forcedStatus={forcedStatus}
-            onTabClick={onTabClick}
-            onDeny={onDeny}
-            onVerify={onVerify}
-          />
+          {/* IPA: strength label + icons */}
+          {isIpa && (
+            <>
+              <Strength label={strengthLabel} />
+              <Divider />
+              <GroupOfVerifyDenyAndPending hasPending={false} forcedStatus={forcedStatus} onDeny={onDeny} onVerify={onVerify} />
+            </>
+          )}
+
+          {/* Sources: label + tabs clip from left, icons pinned right */}
+          {isSources && (
+            <>
+              {/* Tabs + label section — justify-end makes leftmost items clip first */}
+              <div className="dc:flex dc:flex-1 dc:items-center dc:justify-end dc:gap-1.5 dc:relative dc:overflow-hidden" style={{ minWidth: 0 }}>
+                <div
+                  className="dc:absolute dc:left-0 dc:top-0 dc:bottom-0 dc:pointer-events-none dc:z-10"
+                  style={{ width: '48px', background: 'linear-gradient(to right, white, rgba(255,255,255,0))' }}
+                />
+                <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:italic dc:text-secondary dc:whitespace-nowrap dc:shrink-0">
+                  This source also answers:
+                </span>
+                {tabs.map((tab, i) => (
+                  <div key={i} className="dc:shrink-0">
+                    <QkNumberTabs
+                      label={tab}
+                      size="small"
+                      state={i === selectedIndex ? 'clicked' : 'default'}
+                      onClick={() => handleTabClick(i)}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Icons — always visible, never clipped */}
+              <div className="dc:flex dc:items-center dc:shrink-0">
+                <Divider />
+                <GroupOfVerifyDenyAndPending hasPending={false} forcedStatus={forcedStatus} onDeny={onDeny} onVerify={onVerify} />
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

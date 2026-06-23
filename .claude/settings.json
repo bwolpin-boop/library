@@ -1,4 +1,18 @@
 {
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /Users/batshevamandel/Documents/component-library-dolphincare && git status --porcelain -- src/components src/index.js .storybook | grep -q . && { lsof -ti:6006 -sTCP:LISTEN | xargs -r kill -9 2>/dev/null; sleep 2; osascript -e 'tell application \"Terminal\" to do script \"cd /Users/batshevamandel/Documents/component-library-dolphincare && npm run storybook\"'; } || true",
+            "async": true,
+            "statusMessage": "Launching Storybook..."
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(git *)",

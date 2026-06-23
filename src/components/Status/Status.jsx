@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 
 const DOT_COLOR = {
-  pending:  colors.muted,
-  verified: colors.green,
-  dismissed: colors.error,
-  complete: colors.purple,
+  pending:  'dc:bg-muted',
+  verified: 'dc:bg-green',
+  dismissed: 'dc:bg-error',
+  complete: 'dc:bg-purple',
 }
 
 const LABEL = {
@@ -19,29 +18,26 @@ const LABEL = {
 }
 
 const COMBI_COLORS = {
-  'combi-pending':   [colors.muted,  colors.muted],
-  'combi-verified':  [colors.green,  colors.green],
-  'combi-dismissed': [colors.muted,  colors.error],
+  'combi-pending':   ['dc:bg-muted',  'dc:bg-muted'],
+  'combi-verified':  ['dc:bg-green',  'dc:bg-green'],
+  'combi-dismissed': ['dc:bg-muted',  'dc:bg-error'],
 }
 
-function SingleDot({ color, size }) {
+function SingleDot({ colorClass, size }) {
   return (
-    <div style={{
-      width: size,
-      height: size,
-      borderRadius: '50%',
-      backgroundColor: color,
-      flexShrink: 0,
-    }} />
+    <div
+      className={`dc:rounded-full dc:shrink-0 ${colorClass}`}
+      style={{ width: size, height: size }}
+    />
   )
 }
 
-function CombiDot({ colors: [c1, c2], size }) {
+function CombiDot({ colorClasses: [c1, c2], size }) {
   const gap = size <= 8 ? 1 : 2
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: `${gap}px`, flexShrink: 0 }}>
-      <div style={{ width: size, height: size, borderRadius: '50%', backgroundColor: c1, flexShrink: 0 }} />
-      <div style={{ width: size, height: size, borderRadius: '50%', backgroundColor: c2, flexShrink: 0 }} />
+    <div className="dc:flex dc:items-center dc:shrink-0" style={{ gap: `${gap}px` }}>
+      <div className={`dc:rounded-full dc:shrink-0 ${c1}`} style={{ width: size, height: size }} />
+      <div className={`dc:rounded-full dc:shrink-0 ${c2}`} style={{ width: size, height: size }} />
     </div>
   )
 }
@@ -58,29 +54,10 @@ export function Status({
   const isCombi = status.startsWith('combi')
 
   const dotSize  = isSmall ? 8 : 12
-  const gap      = isSmall ? spacing.gap4 : spacing.gap8
-  const paddingV = isSmall ? spacing.gap0 : spacing.gap4
-  const paddingH = spacing.gap8
 
-  const bg = pressed ? colors.surfaceActive
-    : hover   ? colors.surfaceHover
-    : 'transparent'
-
-  const textStyle = isSmall ? {
-    fontFamily: fonts.montserrat,
-    fontSize: fontSizes.xs,
-    fontWeight: fontWeights.regular,
-    lineHeight: lineHeights.sm,
-    color: colors.primary,
-    whiteSpace: 'nowrap',
-  } : {
-    fontFamily: fonts.montserrat,
-    fontSize: fontSizes.sm,
-    fontWeight: fontWeights.regular,
-    lineHeight: lineHeights.base,
-    color: colors.primary,
-    whiteSpace: 'nowrap',
-  }
+  const bgClass = pressed ? 'dc:bg-surface-active'
+    : hover   ? 'dc:bg-surface-hover'
+    : 'dc:bg-transparent'
 
   return (
     <button
@@ -89,24 +66,17 @@ export function Status({
       onMouseLeave={() => { setHover(false); setPressed(false) }}
       onMouseDown={() => setPressed(true)}
       onMouseUp={() => setPressed(false)}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: `${paddingV} ${paddingH}`,
-        borderRadius: radii.boxSm,
-        backgroundColor: bg,
-        border: 'none',
-        cursor: onClick ? 'pointer' : 'default',
-        transition: 'background-color 0.1s',
-      }}
+      className={`dc:inline-flex dc:items-center dc:justify-center dc:rounded-box-sm dc:border-none dc:transition-[background-color] dc:duration-100 ${bgClass} ${isSmall ? 'dc:py-0 dc:px-gap8' : 'dc:py-gap4 dc:px-gap8'}`}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap }}>
+      <div className={`dc:flex dc:items-center ${isSmall ? 'dc:gap-gap4' : 'dc:gap-gap8'}`}>
         {isCombi
-          ? <CombiDot colors={COMBI_COLORS[status]} size={dotSize} />
-          : <SingleDot color={DOT_COLOR[status]} size={dotSize} />
+          ? <CombiDot colorClasses={COMBI_COLORS[status]} size={dotSize} />
+          : <SingleDot colorClass={DOT_COLOR[status]} size={dotSize} />
         }
-        <span style={textStyle}>{LABEL[status]}</span>
+        <span className={`dc:font-montserrat dc:font-regular dc:text-primary dc:whitespace-nowrap ${isSmall ? 'dc:text-xs dc:leading-sm' : 'dc:text-sm dc:leading-base'}`}>
+          {LABEL[status]}
+        </span>
       </div>
     </button>
   )

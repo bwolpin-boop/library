@@ -1,4 +1,3 @@
-import { colors, fonts, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 
 const LABELS = {
@@ -13,20 +12,9 @@ export function MedicaidLabel({
   const label = `${LABELS[type]} - ${state}`
 
   return (
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: spacing.gap4,
-    }}>
+    <div className="dc:inline-flex dc:items-center dc:gap-gap4">
       <NavIcon name="medicaid-icon" size={12} />
-      <span style={{
-        fontFamily: fonts.inter,
-        fontWeight: 400,
-        fontSize: '7.762px',
-        lineHeight: 'normal',
-        color: colors.dividerDisabled,
-        whiteSpace: 'nowrap',
-      }}>
+      <span className="dc:font-inter dc:text-divider-disabled dc:whitespace-nowrap" style={{ fontWeight: 400, fontSize: '7.762px', lineHeight: 'normal' }}>
         {label}
       </span>
     </div>

@@ -1,43 +1,8 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, radii, spacing, strokeWidths } from '../../tokens.js'
-
-const styles = {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.gap4,
-    fontFamily: fonts.montserrat,
-    cursor: 'pointer',
-    border: 'none',
-    transition: 'background-color 0.15s, border-color 0.15s',
-  },
-  primary: {
-    default: { backgroundColor: colors.purple, color: colors.white, borderRadius: radii.rounded, border: 'none' },
-    hover:   { backgroundColor: colors.purpleHover },
-    pressed: { backgroundColor: colors.purplePressed },
-    disabled:{ backgroundColor: colors.disabled, color: colors.muted, cursor: 'not-allowed', borderRadius: radii.rounded },
-  },
-  secondary: {
-    default: { backgroundColor: colors.white, color: colors.purple, borderRadius: radii.rounded, border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}` },
-    hover:   { backgroundColor: colors.purpleTint },
-    disabled:{ backgroundColor: colors.disabled, color: colors.muted, border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}`, cursor: 'not-allowed', borderRadius: radii.rounded },
-  },
-  tertiary: {
-    default: { backgroundColor: colors.white, color: colors.primary, borderRadius: radii.box, border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}` },
-    hover:   { border: `${strokeWidths.thin}px solid ${colors.dividerDisabled}` },
-    pressed: { backgroundColor: colors.surfaceHover, border: `${strokeWidths.thin}px solid ${colors.primary}` },
-    disabled:{ backgroundColor: colors.disabled, color: colors.secondary, border: `${strokeWidths.thin}px solid ${colors.dividerDisabled}`, cursor: 'not-allowed', borderRadius: radii.box },
-  },
-  sizeDefault:         { height: '52px', padding: `0 ${spacing.gap24}`, fontSize: fontSizes.base, fontWeight: fontWeights.medium },
-  sizeSmall:           { height: '32px', padding: `0 ${spacing.gap12}`, fontSize: fontSizes.xs, fontWeight: fontWeights.semibold },
-  sizeTertiaryDefault: { height: '48px', padding: `0 ${spacing.gap24}`, fontSize: fontSizes.base, fontWeight: fontWeights.medium, color: colors.primary },
-  sizeTertiarySmall:   { padding: `${spacing.gap8} ${spacing.gap12}`, fontSize: fontSizes.xs, fontWeight: fontWeights.semibold, color: colors.primary },
-}
 
 function PlaceholderIcon() {
   return (
-    <svg width={24} height={24} viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0, opacity: 0.6 }}>
+    <svg width={24} height={24} viewBox="0 0 24 24" fill="currentColor" className="dc:shrink-0 dc:opacity-60">
       <rect x="4" y="4" width="16" height="16" rx="3" />
     </svg>
   )
@@ -48,37 +13,59 @@ export function Button({
   type = 'primary',
   size = 'default',
   disabled = false,
+  selected = false,
   iconLeft = false,
   iconRight = false,
   onClick,
 }) {
-  const [hovered, setHovered] = useState(false)
   const [pressed, setPressed] = useState(false)
 
-  const variant = styles[type] ?? styles.primary
+  const baseClasses = 'dc:inline-flex dc:items-center dc:justify-center dc:gap-gap4 dc:font-montserrat dc:cursor-pointer dc:[transition:background-color_0.15s,border-color_0.15s]'
 
-  const sizeStyle =
-    type === 'tertiary'
-      ? size === 'small' ? styles.sizeTertiarySmall : styles.sizeTertiaryDefault
-      : size === 'small' ? styles.sizeSmall : styles.sizeDefault
+  // Size classes
+  const sizeClasses = (() => {
+    if (type === 'tertiary') {
+      return size === 'small'
+        ? 'dc:py-gap8 dc:px-gap12 dc:text-xs dc:font-semibold dc:text-primary'
+        : 'dc:h-[48px] dc:px-gap24 dc:text-base dc:font-medium dc:text-primary'
+    }
+    return size === 'small'
+      ? 'dc:h-[32px] dc:px-gap12 dc:text-xs dc:font-semibold'
+      : 'dc:h-[52px] dc:px-gap24 dc:text-base dc:font-medium'
+  })()
 
-  const variantStyle = disabled
-    ? variant.disabled
-    : pressed && variant.pressed
-    ? { ...variant.default, ...variant.pressed }
-    : hovered && variant.hover
-    ? { ...variant.default, ...variant.hover }
-    : variant.default
+  // Variant + state classes
+  const variantClasses = (() => {
+    if (type === 'primary') {
+      if (disabled) return 'dc:bg-disabled dc:text-muted dc:cursor-not-allowed dc:rounded-rounded dc:border-0'
+      if (pressed) return 'dc:bg-purple-pressed dc:text-white dc:rounded-rounded dc:border-0'
+      return 'dc:bg-purple dc:text-white dc:rounded-rounded dc:hover:bg-purple-hover dc:border-0'
+    }
+    if (type === 'secondary') {
+      if (disabled) return 'dc:bg-disabled dc:text-muted dc:border dc:border-divider-subtle dc:cursor-not-allowed dc:rounded-rounded'
+      if (selected) return 'dc:bg-purple-tint dc:text-purple dc:rounded-rounded dc:border dc:border-purple'
+      if (pressed) return 'dc:bg-surface-hover dc:text-purple dc:rounded-rounded dc:border dc:border-divider-subtle'
+      return 'dc:bg-white dc:text-purple dc:rounded-rounded dc:border dc:border-divider-subtle dc:hover:bg-surface-hover'
+    }
+    if (type === 'tertiary') {
+      if (disabled) return 'dc:bg-disabled dc:text-secondary dc:border dc:border-divider-disabled dc:cursor-not-allowed dc:rounded-box'
+      if (pressed) return 'dc:bg-surface-hover dc:border dc:border-primary dc:rounded-box'
+      return 'dc:bg-white dc:text-primary dc:rounded-box dc:border dc:border-divider-subtle dc:hover:bg-surface-hover dc:hover:border-divider-disabled'
+    }
+    // fallback to primary
+    if (disabled) return 'dc:bg-disabled dc:text-muted dc:cursor-not-allowed dc:rounded-rounded dc:border-0'
+    if (pressed) return 'dc:bg-purple-pressed dc:text-white dc:rounded-rounded dc:border-0'
+    return 'dc:bg-purple dc:text-white dc:rounded-rounded dc:hover:bg-purple-hover dc:border-0'
+  })()
 
   return (
     <button
-      style={{ ...styles.base, ...sizeStyle, ...variantStyle }}
+      className={`${baseClasses} ${sizeClasses} ${variantClasses}`}
       disabled={disabled}
       onClick={onClick}
-      onMouseEnter={() => !disabled && setHovered(true)}
-      onMouseLeave={() => { setHovered(false); setPressed(false) }}
       onMouseDown={() => !disabled && setPressed(true)}
       onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
     >
       {iconLeft && <PlaceholderIcon />}
       {label}

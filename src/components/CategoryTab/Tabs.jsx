@@ -1,33 +1,20 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { CategoryTab } from './CategoryTab.jsx'
 
 function LockedLabel() {
   return (
     <div
+      className="dc:inline-flex dc:items-center dc:bg-surface dc:shrink-0"
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: spacing.gap4,
+        gap: 'var(--dc-spacing-gap4)',
         height: '24px',
-        padding: `0 ${spacing.gap8}`,
+        padding: '0 var(--dc-spacing-gap8)',
         borderRadius: '34px',
-        backgroundColor: colors.surface,
-        flexShrink: 0,
       }}
     >
       <NavIcon name="lock" size={16} />
-      <span
-        style={{
-          fontFamily: fonts.montserrat,
-          fontSize: fontSizes.xs,
-          fontWeight: fontWeights.regular,
-          lineHeight: lineHeights.sm,
-          color: colors.secondary,
-          whiteSpace: 'nowrap',
-        }}
-      >
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-secondary dc:whitespace-nowrap">
         This is in read-only view
       </span>
     </div>
@@ -56,10 +43,9 @@ export function Tabs({
 
   return (
     <div
+      className="dc:inline-flex dc:items-center"
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: isSmall ? spacing.gap4 : spacing.gap8,
+        gap:     isSmall ? 'var(--dc-spacing-gap4)' : 'var(--dc-spacing-gap8)',
         padding: isSmall ? '0' : '6px 0',
       }}
     >

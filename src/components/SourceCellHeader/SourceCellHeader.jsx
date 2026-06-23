@@ -1,17 +1,7 @@
-import { colors, fonts, fontSizes, fontWeights } from '../../tokens.js'
-
 // Stub — pending full design implementation
 export function SourceCellHeader({ title }) {
   return (
-    <span style={{
-      fontFamily: fonts.montserrat,
-      fontSize: fontSizes.xs,
-      fontWeight: fontWeights.semibold,
-      color: colors.primary,
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    }}>
+    <span className="dc:font-montserrat dc:text-xs dc:font-semibold dc:text-primary dc:whitespace-nowrap dc:overflow-hidden dc:[text-overflow:ellipsis]">
       {title}
     </span>
   )

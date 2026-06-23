@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { colors, radii } from '../../tokens.js'
+import { colors } from '../../tokens.js'
 import { CmiCategoryToggle, DEFAULT_CATEGORIES } from './CmiCategoryToggle.jsx'
 import { H2YLetters } from './H2YLetters.jsx'
 import { MedicaidLabel } from './MedicaidLabel.jsx'
@@ -29,16 +29,17 @@ function H2YAfter({ phase, animKey }) {
 
   return (
     // Fixed width = 3 × 24 px H2YLetters so the layout never shifts
-    <div style={{ position: 'relative', width: '72px', height: '24px', flexShrink: 0 }}>
+    <div className="dc:relative dc:shrink-0" style={{ width: '72px', height: '24px' }}>
 
       {/* Bouncing dots */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
-        opacity: isCalculating ? 1 : 0,
-        transition: 'opacity 0.2s',
-        pointerEvents: 'none',
-      }}>
+      <div
+        className="dc:absolute dc:inset-0 dc:flex dc:items-center dc:justify-center dc:pointer-events-none"
+        style={{
+          gap: '4px',
+          opacity: isCalculating ? 1 : 0,
+          transition: 'opacity 0.2s',
+        }}
+      >
         {DOT_COLORS.map((bg, i) => (
           <div key={i} style={{
             width: '6px', height: '6px', borderRadius: '50%', backgroundColor: bg,
@@ -52,9 +53,8 @@ function H2YAfter({ phase, animKey }) {
       {/* H2Y letters — hidden while dots show, pop in when done */}
       <div
         key={animKey}
+        className="dc:absolute dc:inset-0 dc:flex dc:items-center"
         style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center',
           opacity: isCalculating ? 0 : 1,
           transition: isCalculating ? 'opacity 0.2s' : 'none',
         }}
@@ -75,7 +75,7 @@ function H2YAfter({ phase, animKey }) {
 
 function H2YChange({ phase, animKey }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div className="dc:flex dc:items-center">
       <H2YLetters type="H" before="before" />
       <H2YLetters type="2" before="before" />
       <H2YLetters type="Y" before="before" />
@@ -106,26 +106,16 @@ export function RibbonStates({ type = 'all', calcTrigger = 0 }) {
   }, [calcTrigger])
 
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+    <div className="dc:inline-flex dc:items-center" style={{ gap: '8px' }}>
       <style>{ANIM_STYLES}</style>
 
-      <div style={{
-        display: 'flex', alignItems: 'stretch',
-        border: `1px solid ${colors.dividerSubtle}`,
-        borderRadius: radii.boxSm,
-        overflow: 'hidden',
-      }}>
+      <div className="dc:flex dc:items-stretch dc:border dc:border-divider-subtle dc:rounded-box-sm dc:overflow-hidden">
         <CmiCategoryToggle
           categories={DEFAULT_CATEGORIES}
           defaultIndex={defaultIndex}
         />
         {/* Glow is inset so it's visible even inside overflow:hidden */}
-        <div style={{
-          display: 'flex', alignItems: 'center',
-          gap: '4px', padding: '0 4px',
-          borderLeft: `1px solid ${colors.dividerSubtle}`,
-          minHeight: '34px', flexShrink: 0,
-        }}>
+        <div className="dc:flex dc:items-center dc:border-l dc:border-divider-subtle dc:shrink-0" style={{ gap: '4px', padding: '0 4px', minHeight: '34px' }}>
           <H2YChange phase={phase} animKey={animKey} />
         </div>
       </div>

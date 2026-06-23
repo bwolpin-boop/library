@@ -1,95 +1,52 @@
-import { colors, fonts, fontSizes, fontWeights, radii, spacing, strokeWidths, lineHeights } from '../../tokens.js'
-
 function TooltipArrow({ arrow, mode }) {
   const isDark = mode === 'dark'
-  const fill = isDark ? colors.primary : colors.white
-  const stroke = colors.dividerSubtle
+  const fill = isDark ? 'var(--color-primary)' : '#ffffff'
+  const strokeColor = 'var(--color-divider-subtle)'
 
-  if (arrow === 'left') {
-    return (
-      <svg
-        width="5" height="8" viewBox="0 0 5 8" fill="none"
-        style={{
-          position: 'absolute',
-          left: `-${spacing.gap4}`,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          overflow: 'visible',
-          flexShrink: 0,
-        }}
-      >
-        <path d="M5 0L0 4L5 8Z" fill={fill} />
-        {!isDark && (
-          <path d="M5 0L0 4L5 8" stroke={stroke} strokeWidth={strokeWidths.thin} strokeLinejoin="round" fill="none" />
-        )}
-      </svg>
-    )
+  // Rounded tip via quadratic bezier at the point vertex
+  const ARROWS = {
+    left: {
+      fillD:   'M5 0 L1.2 3.1 Q0 4 1.2 4.9 L5 8 Z',
+      strokeD: 'M5 0 L1.2 3.1 Q0 4 1.2 4.9 L5 8',
+      w: 5, h: 8, viewBox: '0 0 5 8',
+      className: 'dc:absolute dc:top-1/2 dc:overflow-visible dc:shrink-0',
+      style: { left: '-4px', transform: 'translateY(-50%)' },
+    },
+    right: {
+      fillD:   'M0 0 L3.8 3.1 Q5 4 3.8 4.9 L0 8 Z',
+      strokeD: 'M0 0 L3.8 3.1 Q5 4 3.8 4.9 L0 8',
+      w: 5, h: 8, viewBox: '0 0 5 8',
+      className: 'dc:absolute dc:top-1/2 dc:overflow-visible dc:shrink-0',
+      style: { right: '-4px', transform: 'translateY(-50%)' },
+    },
+    down: {
+      fillD:   'M0 0 L3.1 3.8 Q4 5 4.9 3.8 L8 0 Z',
+      strokeD: 'M0 0 L3.1 3.8 Q4 5 4.9 3.8 L8 0',
+      w: 8, h: 5, viewBox: '0 0 8 5',
+      className: 'dc:absolute dc:left-1/2 dc:overflow-visible dc:shrink-0',
+      style: { bottom: '-4px', transform: 'translateX(-50%)' },
+    },
+    up: {
+      fillD:   'M0 5 L3.1 1.2 Q4 0 4.9 1.2 L8 5 Z',
+      strokeD: 'M0 5 L3.1 1.2 Q4 0 4.9 1.2 L8 5',
+      w: 8, h: 5, viewBox: '0 0 8 5',
+      className: 'dc:absolute dc:left-1/2 dc:overflow-visible dc:shrink-0',
+      style: { top: '-4px', transform: 'translateX(-50%)' },
+    },
   }
 
-  if (arrow === 'right') {
-    return (
-      <svg
-        width="5" height="8" viewBox="0 0 5 8" fill="none"
-        style={{
-          position: 'absolute',
-          right: `-${spacing.gap4}`,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          overflow: 'visible',
-          flexShrink: 0,
-        }}
-      >
-        <path d="M0 0L5 4L0 8Z" fill={fill} />
-        {!isDark && (
-          <path d="M0 0L5 4L0 8" stroke={stroke} strokeWidth={strokeWidths.thin} strokeLinejoin="round" fill="none" />
-        )}
-      </svg>
-    )
-  }
+  const cfg = ARROWS[arrow]
+  if (!cfg) return null
 
-  if (arrow === 'down') {
-    return (
-      <svg
-        width="8" height="5" viewBox="0 0 8 5" fill="none"
-        style={{
-          position: 'absolute',
-          bottom: `-${spacing.gap4}`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          overflow: 'visible',
-          flexShrink: 0,
-        }}
-      >
-        <path d="M0 0L4 5L8 0Z" fill={fill} />
-        {!isDark && (
-          <path d="M0 0L4 5L8 0" stroke={stroke} strokeWidth={strokeWidths.thin} strokeLinejoin="round" fill="none" />
-        )}
-      </svg>
-    )
-  }
-
-  if (arrow === 'up') {
-    return (
-      <svg
-        width="8" height="5" viewBox="0 0 8 5" fill="none"
-        style={{
-          position: 'absolute',
-          top: `-${spacing.gap4}`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          overflow: 'visible',
-          flexShrink: 0,
-        }}
-      >
-        <path d="M0 5L4 0L8 5Z" fill={fill} />
-        {!isDark && (
-          <path d="M0 5L4 0L8 5" stroke={stroke} strokeWidth={strokeWidths.thin} strokeLinejoin="round" fill="none" />
-        )}
-      </svg>
-    )
-  }
-
-  return null
+  return (
+    <svg width={cfg.w} height={cfg.h} viewBox={cfg.viewBox} fill="none"
+      className={cfg.className} style={cfg.style}>
+      <path d={cfg.fillD} fill={fill} />
+      {!isDark && (
+        <path d={cfg.strokeD} stroke={strokeColor} strokeWidth="1" strokeLinejoin="round" fill="none" />
+      )}
+    </svg>
+  )
 }
 
 export function Tooltip({
@@ -103,23 +60,14 @@ export function Tooltip({
   const isSmall = size === 'small'
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block', maxWidth }}>
-      <div style={{
-        backgroundColor: isDark ? colors.primary : colors.white,
-        border: isDark ? 'none' : `${strokeWidths.thin}px solid ${colors.dividerSubtle}`,
-        borderRadius: radii.boxSm,
-        padding: `${spacing.gap8} ${spacing.gap12}`,
-        boxSizing: 'border-box',
-      }}>
-        <span style={{
-          display: 'block',
-          fontFamily: fonts.montserrat,
-          fontSize: isSmall ? fontSizes.xxxs : fontSizes.xs,
-          fontWeight: fontWeights.regular,
-          color: isDark ? colors.white : colors.primary,
-          lineHeight: isSmall ? 'normal' : lineHeights.sm,
-          wordBreak: 'break-word',
-        }}>
+    <div className="dc:relative dc:inline-block" style={{ maxWidth }}>
+      <div
+        className={`dc:px-gap12 dc:py-gap8 dc:rounded-box-sm dc:box-border ${isDark ? 'dc:bg-primary' : 'dc:bg-white dc:border dc:border-divider-subtle'}`}
+      >
+        <span
+          className={`dc:block dc:font-montserrat dc:font-regular dc:break-words ${isDark ? 'dc:text-white' : 'dc:text-primary'} ${isSmall ? 'dc:text-xxxs' : 'dc:text-xs dc:leading-sm'}`}
+          style={isSmall ? { lineHeight: 'normal' } : {}}
+        >
           {children}
         </span>
       </div>

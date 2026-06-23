@@ -1,18 +1,19 @@
 import { useState } from 'react'
-import { colors, radii } from '../../tokens.js'
 import { NavIcon } from './NavIcon.jsx'
 
 export function IconButton({ name, size = 24, onClick, disabled, active = false, className, color, onMouseEnter, onMouseLeave, onMouseDown, onMouseUp }) {
   const [hover, setHover] = useState(false)
   const [pressed, setPressed] = useState(false)
 
-  const bg = disabled       ? 'transparent'
-    : pressed               ? colors.dividerSubtle
-    : active                ? colors.surfacePressed
-    : hover                 ? colors.surfacePressed
-    : 'transparent'
-
   const btnSize = Math.max(size, 24)
+
+  const bgClass = disabled
+    ? 'dc:bg-transparent'
+    : pressed
+    ? 'dc:bg-divider-subtle'
+    : active || hover
+    ? 'dc:bg-surface-pressed'
+    : 'dc:bg-transparent'
 
   return (
     <button
@@ -21,22 +22,8 @@ export function IconButton({ name, size = 24, onClick, disabled, active = false,
       onMouseLeave={(e) => { setHover(false); setPressed(false); onMouseLeave?.(e) }}
       onMouseDown={(e) => { if (!disabled) setPressed(true); onMouseDown?.(e) }}
       onMouseUp={(e) => { setPressed(false); onMouseUp?.(e) }}
-      style={{
-        background: 'none',
-        border: 'none',
-        padding: 0,
-        cursor: disabled ? 'default' : 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: radii.boxSm,
-        backgroundColor: bg,
-        width: btnSize,
-        height: btnSize,
-        flexShrink: 0,
-        transition: 'background-color 0.1s',
-      }}
-      className={className}
+      style={{ width: btnSize, height: btnSize }}
+      className={`dc:border-none dc:p-0 ${disabled ? 'dc:cursor-default' : 'dc:cursor-pointer'} dc:flex dc:items-center dc:justify-center dc:rounded-box-sm dc:shrink-0 dc:[transition:background-color_0.1s] ${bgClass}${className ? ` ${className}` : ''}`}
     >
       <NavIcon name={name} size={size} color={color} />
     </button>

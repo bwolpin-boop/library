@@ -1,39 +1,9 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, spacing } from '../../tokens.js'
-
-const styles = {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.gap4,
-    fontFamily: fonts.montserrat,
-    fontWeight: fontWeights.regular,
-    cursor: 'pointer',
-    border: 'none',
-    background: 'transparent',
-    padding: 0,
-    textDecoration: 'none',
-  },
-  default: {
-    fontSize: fontSizes.base,
-    lineHeight: '1.428',
-    color: colors.primary,
-  },
-  small: {
-    fontSize: fontSizes.xs,
-    lineHeight: lineHeights.sm,
-    color: colors.primary,
-  },
-  hover:    { textDecoration: 'underline', textUnderlineOffset: spacing.gap4 },
-  pressed:  { color: colors.purple, textDecoration: 'underline', textUnderlineOffset: spacing.gap4 },
-  disabled: { color: colors.muted, cursor: 'not-allowed' },
-}
 
 function PlaceholderIcon({ size }) {
   const dim = size === 'small' ? 16 : 24
   return (
-    <svg width={dim} height={dim} viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0, opacity: 0.6 }}>
+    <svg width={dim} height={dim} viewBox="0 0 24 24" fill="currentColor" className="dc:shrink-0 dc:opacity-60">
       <rect x="4" y="4" width="16" height="16" rx="3" />
     </svg>
   )
@@ -51,22 +21,26 @@ export function LinkButton({
   const [hovered, setHovered] = useState(false)
   const [pressed, setPressed] = useState(false)
 
-  const sizeStyle = size === 'small' ? styles.small : styles.default
-
   const isHovered = state === 'hover' || hovered
   const isPressed = state === 'pressed' || pressed
 
-  const stateStyle = disabled
-    ? styles.disabled
+  const baseClasses = 'dc:inline-flex dc:items-center dc:justify-center dc:gap-gap4 dc:font-montserrat dc:font-regular dc:border-none dc:bg-transparent dc:p-0 dc:no-underline'
+
+  const sizeClasses = size === 'small'
+    ? 'dc:text-xs dc:leading-sm dc:text-primary'
+    : 'dc:text-base dc:[line-height:1.428] dc:text-primary'
+
+  const stateClasses = disabled
+    ? 'dc:text-muted dc:cursor-not-allowed'
     : isPressed
-    ? { ...styles.pressed }
+    ? 'dc:text-purple dc:underline dc:[text-underline-offset:4px] dc:cursor-pointer'
     : isHovered
-    ? { ...styles.hover }
-    : {}
+    ? 'dc:underline dc:[text-underline-offset:4px] dc:cursor-pointer'
+    : 'dc:cursor-pointer'
 
   return (
     <button
-      style={{ ...styles.base, ...sizeStyle, ...stateStyle }}
+      className={`${baseClasses} ${sizeClasses} ${stateClasses}`}
       disabled={disabled}
       onClick={onClick}
       onMouseEnter={() => !disabled && setHovered(true)}

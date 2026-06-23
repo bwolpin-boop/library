@@ -1,29 +1,12 @@
-import { colors, fonts, fontSizes, fontWeights, lineHeights, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 
 function MdsAnswer({ answer = '1. Yes' }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.gap4, flexShrink: 0 }}>
-      <span style={{
-        fontFamily: fonts.montserrat,
-        fontWeight: fontWeights.regular,
-        fontStyle: 'italic',
-        fontSize: fontSizes.xs,
-        lineHeight: lineHeights.base,
-        color: colors.secondary,
-        whiteSpace: 'pre',
-      }}>
+    <div className="dc:flex dc:items-start dc:gap-gap4 dc:shrink-0">
+      <span className="dc:font-montserrat dc:font-regular dc:italic dc:text-xs dc:leading-base dc:text-secondary" style={{ whiteSpace: 'pre' }}>
         {'Previous MDS Answer:  '}
       </span>
-      <span style={{
-        fontFamily: fonts.montserrat,
-        fontWeight: fontWeights.semibold,
-        fontStyle: 'italic',
-        fontSize: fontSizes.xs,
-        lineHeight: lineHeights.base,
-        color: colors.secondary,
-        whiteSpace: 'nowrap',
-      }}>
+      <span className="dc:font-montserrat dc:font-semibold dc:italic dc:text-xs dc:leading-base dc:text-secondary dc:whitespace-nowrap">
         {answer}
       </span>
     </div>
@@ -32,16 +15,9 @@ function MdsAnswer({ answer = '1. Yes' }) {
 
 function InfoRow({ icon, text }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap4, flexShrink: 0 }}>
+    <div className="dc:flex dc:items-center dc:gap-gap4 dc:shrink-0">
       <NavIcon name={icon} size={24} />
-      <span style={{
-        fontFamily: fonts.montserrat,
-        fontWeight: fontWeights.regular,
-        fontSize: fontSizes.xs,
-        lineHeight: lineHeights.sm,
-        color: colors.primary,
-        whiteSpace: 'nowrap',
-      }}>
+      <span className="dc:font-montserrat dc:font-regular dc:text-xs dc:leading-sm dc:text-primary dc:whitespace-nowrap">
         {text}
       </span>
     </div>
@@ -60,55 +36,36 @@ export function SourceTitle({
   const isBrowserExtension = whichProduct === 'browser extension'
 
   return (
-    <div style={{
-      display:        'flex',
-      flexDirection:  'column',
-      gap:            spacing.gap4,
-      alignItems:     'flex-start',
-      wordBreak:      isBrowserExtension ? 'break-word' : undefined,
-    }}>
+    <div
+      className="dc:flex dc:flex-col dc:gap-gap4 dc:items-start"
+      style={{ wordBreak: isBrowserExtension ? 'break-word' : undefined }}
+    >
       {/* Title row: ID + source name */}
-      <div style={{
-        display:    'flex',
-        alignItems: 'flex-end',
-        gap:        spacing.gap8,
-        minWidth:   0,
-        color:      colors.primary,
-        wordBreak:  isBrowserExtension ? 'break-word' : undefined,
-      }}>
-        <span style={{
-          fontFamily:  fonts.montserrat,
-          fontWeight:  fontWeights.semibold,
-          fontSize:    fontSizes.xl2,
-          lineHeight:  'normal',
-          flexShrink:  0,
-          whiteSpace:  'nowrap',
-        }}>
+      <div
+        className="dc:flex dc:items-end dc:gap-gap8 dc:text-primary"
+        style={{
+          minWidth:  0,
+          wordBreak: isBrowserExtension ? 'break-word' : undefined,
+        }}
+      >
+        <span className="dc:font-montserrat dc:font-semibold dc:text-xl2 dc:shrink-0 dc:whitespace-nowrap" style={{ lineHeight: 'normal' }}>
           {id}
         </span>
-        <span style={{
-          fontFamily:   fonts.montserrat,
-          fontWeight:   fontWeights.regular,
-          fontSize:     fontSizes.base,
-          lineHeight:   '1.428',
-          whiteSpace:   'nowrap',
-          overflow:     'hidden',
-          textOverflow: 'ellipsis',
-          minWidth:     0,
-          flexShrink:   1,
-        }}>
+        <span
+          className="dc:font-montserrat dc:font-regular dc:text-base dc:whitespace-nowrap dc:overflow-hidden dc:[text-overflow:ellipsis] dc:shrink"
+          style={{ lineHeight: '1.428', minWidth: 0 }}
+        >
           {sourceName}
         </span>
       </div>
 
       {/* Subtitle row */}
-      <div style={{
-        display:       'flex',
-        alignItems:    'flex-start',
-        flexDirection: isBrowserExtension ? 'column' : 'row',
-        gap:           isBrowserExtension ? 0 : spacing.gap4,
-        flexShrink:    0,
-      }}>
+      <div
+        className={[
+          'dc:flex dc:items-start dc:shrink-0',
+          isBrowserExtension ? 'dc:flex-col dc:gap-0' : 'dc:flex-row dc:gap-gap4',
+        ].join(' ')}
+      >
         {whichProduct === 'dashboard' && (
           <MdsAnswer answer={mdsAnswer} />
         )}

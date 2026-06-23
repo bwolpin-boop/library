@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { spacing } from '../../tokens.js'
 import { Up } from './Up.jsx'
 import { Down } from './Down.jsx'
 
@@ -8,8 +7,7 @@ export function Thumbs({ upCount, downCount, className }) {
 
   return (
     <div
-      style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8 }}
-      className={className}
+      className={`dc:flex dc:items-center dc:gap-gap8${className ? ` ${className}` : ''}`}
     >
       <Up
         count={upCount}

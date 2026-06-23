@@ -3,7 +3,7 @@ import { mergeConfig } from 'vite'
 
 export default {
   stories: ['../src/**/*.stories.@(js|jsx)'],
-  addons: ['@storybook/addon-essentials'],
+  addons: ['@storybook/addon-essentials', '@storybook/addon-storysource'],
   framework: {
     name: '@storybook/react-vite',
     options: {},

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { VerifyAndDeny } from '../VerifyDeny/VerifyAndDeny.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
@@ -16,18 +15,17 @@ function VoteBadge({ direction, count, isSelected, onClick }) {
       onClick={e => { e.stopPropagation(); onClick() }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
+      className={[
+        'dc:inline-flex dc:items-center dc:border-none dc:cursor-pointer dc:shrink-0',
+        isSelected ? 'dc:bg-surface-pressed' : hov ? 'dc:bg-surface-hover' : 'dc:bg-transparent',
+      ].join(' ')}
       style={{
-        display:         'inline-flex',
-        alignItems:      'center',
-        gap:             '2px',
-        background:      'none',
-        border:          'none',
-        cursor:          'pointer',
-        padding:         '1px 3px',
-        borderRadius:    '3px',
-        backgroundColor: isSelected ? colors.surfacePressed : (hov ? colors.surfaceHover : 'transparent'),
-        flexShrink:      0,
-        transition:      'background-color 0.1s',
+        gap: '2px',
+        background: 'none',
+        padding: '1px 3px',
+        borderRadius: '3px',
+        backgroundColor: isSelected ? 'var(--dc-color-surface-pressed)' : (hov ? 'var(--dc-color-surface-hover)' : 'transparent'),
+        transition: 'background-color 0.1s',
       }}
     >
       <NavIcon
@@ -36,14 +34,10 @@ function VoteBadge({ direction, count, isSelected, onClick }) {
           : (isSelected ? 'thumbs-down-pressed' : 'thumbs-down')}
         size={12}
       />
-      <span style={{
-        fontFamily: fonts.montserrat,
-        fontSize:   fontSizes.xxxs,
-        fontWeight: fontWeights.medium,
-        lineHeight: 'normal',
-        color:      isSelected ? colors.primary : colors.secondary,
-        whiteSpace: 'nowrap',
-      }}>
+      <span
+        className={`dc:font-montserrat dc:text-xxxs dc:font-medium dc:whitespace-nowrap ${isSelected ? 'dc:text-primary' : 'dc:text-secondary'}`}
+        style={{ lineHeight: 'normal' }}
+      >
         {count}
       </span>
     </button>
@@ -52,16 +46,6 @@ function VoteBadge({ direction, count, isSelected, onClick }) {
 
 // ─── vdTypeMap (same as IvFluidsRow) ─────────────────────────────────────────
 const vdTypeMap = { verified: 'verify', pending: 'pending', denied: 'deny', none: 'empty' }
-
-// ─── Shared text style ───────────────────────────────────────────────────────
-const textSm = {
-  fontFamily: fonts.montserrat,
-  fontSize:   fontSizes.xs,
-  fontWeight: fontWeights.regular,
-  lineHeight: lineHeights.sm,
-  color:      colors.primary,
-  whiteSpace: 'nowrap',
-}
 
 // ─── DiagnosisTableRow ───────────────────────────────────────────────────────
 
@@ -91,14 +75,14 @@ export function DiagnosisTableRow({
   const [status, setStatus]       = useState(verifyStatus)  // interactive verify dot
 
   // ── Background (same logic as IvFluidsRow status colors) ──────────────────
-  const STATUS_BASE  = { verified: colors.green100, denied: colors.error100, pending: colors.yellow100 }
-  const STATUS_HOVER = { verified: '#ebf8e9',        denied: colors.error200, pending: '#fff9e5' }
+  const STATUS_BASE  = { verified: 'var(--dc-color-green-100)', denied: 'var(--dc-color-error-100)', pending: 'var(--dc-color-yellow-100)' }
+  const STATUS_HOVER = { verified: '#ebf8e9',                   denied: 'var(--dc-color-error-200)', pending: '#fff9e5' }
   const STATUS_GRAD  = { verified: 'rgba(246,255,246,0.5)', denied: 'rgba(255,242,242,0.5)', pending: 'rgba(255,249,228,0.5)' }
 
   const isStatusSet   = status !== 'none'
-  const baseBg        = isStatusSet ? (STATUS_BASE[status]  ?? (rowVariant === 'dark' ? colors.surface : colors.white))
-                                    : (rowVariant === 'dark' ? colors.surface : colors.white)
-  const hoverBg       = isStatusSet ? (STATUS_HOVER[status] ?? colors.surface) : colors.surface
+  const baseBg        = isStatusSet ? (STATUS_BASE[status]  ?? (rowVariant === 'dark' ? 'var(--dc-color-surface)' : 'var(--dc-color-white)'))
+                                    : (rowVariant === 'dark' ? 'var(--dc-color-surface)' : 'var(--dc-color-white)')
+  const hoverBg       = isStatusSet ? (STATUS_HOVER[status] ?? 'var(--dc-color-surface)') : 'var(--dc-color-surface)'
   const gradientStart = isStatusSet ? (STATUS_GRAD[status]  ?? 'rgba(247,247,248,0)') : 'rgba(247,247,248,0)'
   const bgColor       = hovered ? hoverBg : baseBg
 
@@ -111,29 +95,23 @@ export function DiagnosisTableRow({
 
   return (
     <div
-      className={className}
+      className={`dc:relative dc:flex dc:items-center dc:border-b dc:border-divider-subtle dc:box-border ${onClick ? 'dc:cursor-pointer' : 'dc:cursor-default'} ${className ?? ''}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={onClick}
       style={{
-        position:        'relative',
-        display:         'flex',
-        alignItems:      'center',
         gap:             TABLE_COL_GAP,
         height:          '32px',
-        padding:         `0 ${spacing.gap24}`,
+        padding:         '0 var(--dc-spacing-gap24)',
         backgroundColor: bgColor,
-        borderBottom:    `1px solid ${colors.dividerSubtle}`,
-        cursor:          onClick ? 'pointer' : 'default',
-        boxSizing:       'border-box',
         transition:      'background-color 0.1s',
         ...style,
       }}
     >
       {/* Column 1 — Diagnosis (flex): verify dot + name + vote badges */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: '1 0 0', minWidth: '1px', height: '32px', overflow: 'hidden' }}>
+      <div className="dc:flex dc:items-center dc:flex-1 dc:overflow-hidden" style={{ gap: '8px', minWidth: '1px', height: '32px' }}>
         <VerifyAndDeny type={vdTypeMap[status] ?? 'empty'} size="small" />
-        <span style={{ ...textSm, overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0, flexShrink: 1 }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap dc:overflow-hidden dc:shrink" style={{ textOverflow: 'ellipsis', minWidth: 0 }}>
           {diagnosis}
         </span>
         {(upVotes > 0 || vote === 'up') && (
@@ -145,29 +123,26 @@ export function DiagnosisTableRow({
       </div>
 
       {/* Column 2 — Clinical Category (165px): TypeTag label */}
-      <div style={{ display: 'flex', alignItems: 'center', width: '165px', height: '32px', flexShrink: 0 }}>
+      <div className="dc:flex dc:items-center dc:shrink-0" style={{ width: '165px', height: '32px' }}>
         <TypeTag label={clinicalCategory} />
       </div>
 
       {/* Column 3 — MDS Mapping (80px) */}
-      <div style={{ display: 'flex', alignItems: 'center', width: '80px', height: '32px', flexShrink: 0 }}>
-        <span style={textSm}>{mdsMapping}</span>
+      <div className="dc:flex dc:items-center dc:shrink-0" style={{ width: '80px', height: '32px' }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{mdsMapping}</span>
       </div>
 
       {/* Hover overlay — same pattern as IvFluidsRow */}
       {hovered && (
-        <div style={{
-          position:    'absolute',
-          right:       spacing.gap24,
-          top:         0,
-          bottom:      0,
-          width:       '359px',
-          display:     'flex',
-          alignItems:  'center',
-          justifyContent: 'flex-end',
-          background:  `linear-gradient(to right, ${gradientStart} 0%, ${hoverBg} 25%)`,
-          gap:         spacing.gap24,
-        }}>
+        <div
+          className="dc:absolute dc:top-0 dc:bottom-0 dc:flex dc:items-center dc:justify-end"
+          style={{
+            right:      'var(--dc-spacing-gap24)',
+            width:      '359px',
+            background: `linear-gradient(to right, ${gradientStart} 0%, ${hoverBg} 25%)`,
+            gap:        'var(--dc-spacing-gap24)',
+          }}
+        >
           <RowHoverActions
             hasVerifyAndDeny
             hasPending={hasPending}

@@ -1,4 +1,3 @@
-import { colors, fonts, fontSizes, fontWeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { IconButton } from '../Icon/IconButton.jsx'
 
@@ -17,29 +16,21 @@ function ToastIcon({ variant }) {
 
 function LoadingSpinner() {
   return (
-    <div style={{
-      width: '52px',
-      height: '52px',
-      flexShrink: 0,
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
+    <div className="dc:w-[52px] dc:h-[52px] dc:shrink-0 dc:relative dc:flex dc:items-center dc:justify-center">
       <style>{`
         @keyframes toast-spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
       `}</style>
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        borderRadius: '50%',
-        border: `${strokeWidths.thick}px solid ${colors.purple100}`,
-        borderTopColor: colors.purple,
-        animation: 'toast-spin 1s linear infinite',
-      }} />
+      <div
+        className="dc:absolute dc:inset-0 dc:rounded-full"
+        style={{
+          border: '2px solid #e9d5ff',
+          borderTopColor: '#a852ff',
+          animation: 'toast-spin 1s linear infinite',
+        }}
+      />
       <NavIcon name="dolphincare-logo" size={28} />
     </div>
   )
@@ -53,53 +44,20 @@ export function Toast({
   onClose,
 }) {
   const isLoading = variant === 'loading'
-  const isAi = variant === 'ai'
 
   return (
-    <div style={{
-      backgroundColor: colors.white,
-      border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}`,
-      borderRadius: radii.box,
-      padding: spacing.gap24,
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: spacing.gap16,
-      width: '377px',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: isLoading ? 'flex-start' : 'center',
-        gap: spacing.gap16,
-        flex: 1,
-      }}>
+    <div className="dc:bg-white dc:border dc:border-divider-subtle dc:rounded-box dc:p-gap24 dc:inline-flex dc:items-center dc:gap-gap16 dc:w-[377px]">
+      <div className={`dc:flex dc:gap-gap16 dc:flex-1 ${isLoading ? 'dc:items-start' : 'dc:items-center'}`}>
         {hasIcon && (
           isLoading
             ? <LoadingSpinner />
             : <ToastIcon variant={variant} />
         )}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: spacing.gap4,
-          flex: 1,
-        }}>
-          <span style={{
-            fontFamily: fonts.montserrat,
-            fontSize: fontSizes.base,
-            fontWeight: fontWeights.semibold,
-            color: colors.primary,
-            lineHeight: 'normal',
-            whiteSpace: 'nowrap',
-          }}>
+        <div className="dc:flex dc:flex-col dc:gap-gap4 dc:flex-1">
+          <span className="dc:font-montserrat dc:text-base dc:font-semibold dc:text-primary dc:whitespace-nowrap" style={{ lineHeight: 'normal' }}>
             {title}
           </span>
-          <span style={{
-            fontFamily: fonts.montserrat,
-            fontSize: fontSizes.sm,
-            fontWeight: fontWeights.medium,
-            color: colors.secondary,
-            lineHeight: 'normal',
-          }}>
+          <span className="dc:font-montserrat dc:text-sm dc:font-medium dc:text-secondary" style={{ lineHeight: 'normal' }}>
             {message}
           </span>
         </div>

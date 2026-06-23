@@ -1,26 +1,12 @@
-import { colors, fonts, fontSizes, fontWeights, radii, spacing } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
-
-const labelStyle = {
-  fontFamily: fonts.montserrat,
-  fontWeight: fontWeights.medium,
-  fontSize: fontSizes.xxxs,
-  lineHeight: 'normal',
-  color: colors.primary,
-  whiteSpace: 'nowrap',
-  flexShrink: 0,
-}
 
 function HeaderCell({ label, style }) {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: spacing.gap4,
-      padding: `${spacing.gap8} 0`,
-      ...style,
-    }}>
-      <span style={labelStyle}>{label}</span>
+    <div
+      className="dc:flex dc:items-center dc:gap-gap4 dc:py-gap8"
+      style={style}
+    >
+      <span className="dc:font-montserrat dc:font-medium dc:text-xxxs dc:text-primary dc:whitespace-nowrap dc:shrink-0" style={{ lineHeight: 'normal' }}>{label}</span>
       <NavIcon name="sort-arrows" size={12} />
     </div>
   )
@@ -31,16 +17,13 @@ export function SourcesHeaders({ variant = 'medication', hasDescription = true, 
 
   return (
     <div
-      className={className}
+      className={[
+        'dc:flex dc:items-center dc:gap-gap24 dc:px-gap24 dc:bg-white dc:border-b dc:border-divider-subtle',
+        className,
+      ].filter(Boolean).join(' ')}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: spacing.gap24,
         height: '32px',
-        padding: `0 ${spacing.gap24}`,
-        backgroundColor: colors.white,
-        borderBottom: `1px solid ${colors.dividerSubtle}`,
-        borderRadius: `${radii.box} ${radii.box} 0 0`,
+        borderRadius: '8px 8px 0 0',
         ...style,
       }}
     >

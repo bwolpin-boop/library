@@ -1,4 +1,3 @@
-import { colors, fonts, fontSizes, fontWeights } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 
 export function HeaderCells({
@@ -8,23 +7,23 @@ export function HeaderCells({
   const isEmpty = variant === 'empty'
 
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: isEmpty ? 0 : 4,
-      padding: isEmpty ? '12px 24px' : '8px 0',
-    }}>
-      <span style={{
-        fontFamily: fonts.montserrat,
-        fontSize: isEmpty ? fontSizes.xs : fontSizes.xxxs,
-        fontWeight: isEmpty ? fontWeights.semibold : fontWeights.medium,
-        lineHeight: 'normal',
-        color: colors.secondary,
-        whiteSpace: 'nowrap',
-        opacity: isEmpty ? 0 : 1,
-        textTransform: isEmpty ? 'capitalize' : 'none',
-        flexShrink: 0,
-      }}>
+    <div
+      className="dc:flex dc:items-center"
+      style={{
+        gap:     isEmpty ? 0 : 4,
+        padding: isEmpty ? '12px 24px' : '8px 0',
+      }}
+    >
+      <span
+        className={[
+          'dc:font-montserrat dc:font-medium dc:text-secondary dc:whitespace-nowrap dc:shrink-0',
+          isEmpty ? 'dc:text-xs dc:font-semibold dc:opacity-0' : 'dc:text-xxxs dc:font-medium dc:opacity-100',
+        ].join(' ')}
+        style={{
+          lineHeight:    'normal',
+          textTransform: isEmpty ? 'capitalize' : 'none',
+        }}
+      >
         {label}
       </span>
       {!isEmpty && <NavIcon name="sort-arrows" size={12} />}

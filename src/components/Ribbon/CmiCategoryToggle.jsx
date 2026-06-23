@@ -1,5 +1,4 @@
 import { useState, useRef, useLayoutEffect, useEffect } from 'react'
-import { colors, fonts, fontWeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { Section } from './Section.jsx'
 
 export const DEFAULT_CATEGORIES = [
@@ -53,9 +52,12 @@ export function CmiCategoryToggle({
   const containerRef = useRef(null)
   const [pill, setPill] = useState({ left: 0, width: 0 })
 
-  // Width of each tab's sections zone (needed for maxWidth animation)
   const sectionZoneWidth = (sections) =>
     sections.length > 0 ? sections.length * 16 + (sections.length - 1) * 6 : 0
+
+  const maxSectionsWidth   = Math.max(...categories.map(c => sectionZoneWidth(c.sections ?? [])))
+  const activeSectionsWidth = sectionZoneWidth(categories[activeIndex]?.sections ?? [])
+  const trailingPad        = Math.max(0, maxSectionsWidth - activeSectionsWidth)
 
   useEffect(() => { setSelectedSection(null) }, [activeIndex])
 
@@ -79,32 +81,17 @@ export function CmiCategoryToggle({
   return (
     <div
       ref={containerRef}
-      style={{
-        position: 'relative',
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: spacing.gap4,
-        paddingTop: spacing.gap4,
-        paddingBottom: spacing.gap4,
-        paddingLeft: spacing.gap4,
-        paddingRight: spacing.gap4,
-        backgroundColor: colors.surfacePressed,
-        borderRadius: `${radii.boxSm} 0 0 ${radii.boxSm}`,
-      }}
+      className="dc:relative dc:inline-flex dc:items-center dc:gap-gap4 dc:pt-gap4 dc:pb-gap4 dc:pl-gap4 dc:pr-gap4 dc:bg-surface-pressed"
+      style={{ borderRadius: '4px 0 0 4px' }}
     >
-      <div style={{
-        position: 'absolute',
-        top: spacing.gap4,
-        bottom: spacing.gap4,
-        left: pill.left,
-        width: pill.width,
-        backgroundColor: colors.white,
-        border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}`,
-        borderRadius: radii.boxSm,
-        transition: 'left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-        pointerEvents: 'none',
-        zIndex: 0,
-      }} />
+      <div
+        className="dc:absolute dc:top-gap4 dc:bottom-gap4 dc:bg-white dc:border dc:border-divider-subtle dc:rounded-box-sm dc:pointer-events-none dc:z-0"
+        style={{
+          left: pill.left,
+          width: pill.width,
+          transition: 'left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      />
 
       {categories.map((cat, i) => {
         const isActive = i === activeIndex
@@ -114,40 +101,23 @@ export function CmiCategoryToggle({
             key={i}
             ref={el => { tabRefs.current[i] = el }}
             onClick={() => handleSelect(i)}
-            style={{
-              position: 'relative',
-              zIndex: 1,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: spacing.gap8,
-              background: 'none',
-              border: 'none',
-              borderRadius: radii.boxSm,
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}
+            className="dc:relative dc:z-10 dc:inline-flex dc:items-center dc:p-gap8 dc:bg-transparent dc:border-0 dc:rounded-box-sm dc:cursor-pointer dc:shrink-0"
+            style={{ gap: '6px' }}
           >
-              <span style={{
-                fontFamily: fonts.inter,
-                fontWeight: fontWeights.regular,
-                fontSize: '12px',
-                lineHeight: 'normal',
-                color: colors.primary,
-                whiteSpace: 'nowrap',
-                flexShrink: 0,
-              }}>
+              <span className="dc:font-inter dc:font-regular dc:text-primary dc:whitespace-nowrap dc:shrink-0" style={{ fontSize: '12px', lineHeight: 'normal' }}>
                 {cat.label}
               </span>
 
               {sections.length > 0 && (
-                <div style={{
-                  maxWidth:   isActive ? `${sectionZoneWidth(sections)}px` : '0px',
-                  overflow:   'hidden',
-                  flexShrink: 0,
-                  transition: 'max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '15px' }}>
+                <div
+                  className="dc:overflow-hidden dc:shrink-0"
+                  style={{
+                    maxWidth:   isActive ? `${sectionZoneWidth(sections)}px` : '0px',
+                    paddingTop: '3px',
+                    marginTop:  '-3px',
+                  }}
+                >
+                  <div className="dc:flex dc:items-center" style={{ gap: '6px', height: '15px' }}>
                     {sections.map((sec, j) => {
                       const type = sec.type ?? 'letter'
                       const baseState = sec.state ?? 'disabled'

@@ -1,47 +1,20 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, spacing } from '../../tokens.js'
 import { QkNumberTabs } from '../QkNumberTabs/QkNumberTabs.jsx'
 import { GroupOfVerifyDenyAndPending } from '../VerifyDeny/GroupOfVerifyDenyAndPending.jsx'
 
 function Divider() {
   return (
-    <div
-      style={{
-        width: '24px',
-        height: '24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-      }}
-    >
-      <div style={{ width: '1px', height: '100%', backgroundColor: colors.dividerSubtle }} />
+    <div className="dc:w-gap24 dc:h-gap24 dc:flex dc:items-center dc:justify-center dc:shrink-0">
+      <div className="dc:w-px dc:h-full dc:bg-divider-subtle" />
     </div>
   )
 }
 
 function Strength({ label = 'Strong' }) {
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
-      <div
-        style={{
-          width: '6px',
-          height: '6px',
-          borderRadius: '50%',
-          backgroundColor: colors.green,
-          flexShrink: 0,
-        }}
-      />
-      <span
-        style={{
-          fontFamily: fonts.montserrat,
-          fontSize: fontSizes.xs,
-          fontWeight: fontWeights.regular,
-          lineHeight: lineHeights.md,
-          color: colors.primary,
-          whiteSpace: 'nowrap',
-        }}
-      >
+    <div className="dc:inline-flex dc:items-center dc:gap-gap4 dc:shrink-0">
+      <div className="dc:w-1.5 dc:h-1.5 dc:rounded-full dc:bg-green dc:shrink-0" />
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-md dc:text-primary dc:whitespace-nowrap">
         {label}
       </span>
     </div>
@@ -73,7 +46,7 @@ export function SourceAlsoAnswers({
 
   if (isIPA) {
     return (
-      <div style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.gap16 }}>
+      <div className="dc:inline-flex dc:items-center dc:gap-gap16">
         <Strength label={strengthLabel} />
         {hasVerifyAndDeny && (
           <GroupOfVerifyDenyAndPending hasPending={false} forcedStatus={forcedStatus} onDeny={onDeny} onVerify={onVerify} />
@@ -85,17 +58,9 @@ export function SourceAlsoAnswers({
   // Source popup — scrollable variant
   if (qkScroll) {
     return (
-      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0' }}>
-        <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              overflow: 'hidden',
-              width: '313px',
-            }}
-          >
+      <div className="dc:inline-flex dc:items-center dc:gap-0">
+        <div className="dc:relative dc:inline-flex dc:items-center">
+          <div className="dc:inline-flex dc:items-center dc:gap-1.5 dc:overflow-hidden" style={{ width: '313px' }}>
             {tabs.map((tab, i) => (
               <QkNumberTabs
                 key={i}
@@ -107,15 +72,8 @@ export function SourceAlsoAnswers({
             ))}
           </div>
           <div
-            style={{
-              position: 'absolute',
-              right: 0,
-              top: 0,
-              bottom: 0,
-              width: '40px',
-              background: 'linear-gradient(to left, white 40%, rgba(255,255,255,0))',
-              pointerEvents: 'none',
-            }}
+            className="dc:absolute dc:right-0 dc:top-0 dc:bottom-0 dc:pointer-events-none"
+            style={{ width: '40px', background: 'linear-gradient(to left, white 40%, rgba(255,255,255,0))' }}
           />
         </div>
         {hasVerifyAndDeny && <Divider />}
@@ -128,26 +86,15 @@ export function SourceAlsoAnswers({
 
   // Source popup — standard variant
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+    <div className="dc:inline-flex dc:items-center dc:gap-1.5">
       {hasText && (
-        <span
-          style={{
-            fontFamily: fonts.montserrat,
-            fontSize: fontSizes.xs,
-            fontWeight: fontWeights.regular,
-            fontStyle: 'italic',
-            lineHeight: lineHeights.base,
-            color: colors.secondary,
-            whiteSpace: 'nowrap',
-            flexShrink: 0,
-          }}
-        >
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:italic dc:leading-base dc:text-secondary dc:whitespace-nowrap dc:shrink-0">
           This source also answers:
         </span>
       )}
-      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0' }}>
+      <div className="dc:inline-flex dc:items-center dc:gap-0">
         {hasTabs && (
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          <div className="dc:inline-flex dc:items-center dc:gap-1.5">
             {tabs.map((tab, i) => (
               <QkNumberTabs
                 key={i}

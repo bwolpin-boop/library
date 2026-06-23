@@ -59,3 +59,10 @@ export const TableTubeFeeding = { args: { name: 'table-tube-feeding', size: 16 }
 export const TableSurgery     = { args: { name: 'table-surgery',      size: 16 } }
 export const TableDiagnosis   = { args: { name: 'table-diagnosis',    size: 16 } }
 export const DenyAllCircle    = { args: { name: 'deny-all-circle',    size: 24 } }
+// Calendar
+export const Search2          = { args: { name: 'search2',            size: 24 } }
+export const ProfilePerson1   = { args: { name: 'profile-person-1',   size: 24 } }
+export const ProfilePerson2   = { args: { name: 'profile-person-2',   size: 24 } }
+export const ProfilePerson3   = { args: { name: 'profile-person-3',   size: 24 } }
+export const ChevronLeft      = { args: { name: 'chevron-left',       size: 16 } }
+export const ChevronRight     = { args: { name: 'chevron-right',      size: 16 } }

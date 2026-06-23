@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths } from '../../tokens.js'
+import { colors, radii, strokeWidths } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
 import { SourceHeader } from '../SourceHeader/SourceHeader.jsx'
@@ -8,11 +8,6 @@ import { HeaderCells } from '../HeaderCells/HeaderCells.jsx'
 import { IvFluidsRow, TABLE_COL_GAP, TABLE_COL_WIDTHS } from '../IvFluidsRow/IvFluidsRow.jsx'
 import { DiagnosisTableRow } from '../DiagnosisTableRow/DiagnosisTableRow.jsx'
 import { RowHoverActions } from '../RowHoverActions/RowHoverActions.jsx'
-
-// ─── Text styles ─────────────────────────────────────────────────────────────
-
-const sb12  = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.semibold, lineHeight: lineHeights.md }
-const reg12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.regular, lineHeight: lineHeights.sm }
 
 // ─── Default column definitions per tabular table type ────────────────────────
 
@@ -39,16 +34,14 @@ const TABULAR_TYPES = new Set(['iv-fluids', 'tube-feeding', 'surgery', 'diagnosi
 
 function TableHeaderRow({ columns }) {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: TABLE_COL_GAP,  // must always equal IvFluidsRow's TABLE_COL_GAP
-      height: 32,
-      padding: `0 ${spacing.gap24}`,
-      borderBottom: `1px solid ${colors.dividerSubtle}`,
-      backgroundColor: colors.white,
-      borderRadius: `${radii.box} ${radii.box} 0 0`,
-    }}>
+    <div
+      className="dc:flex dc:items-center dc:px-gap24 dc:border-b dc:border-divider-subtle dc:bg-white"
+      style={{
+        gap: TABLE_COL_GAP,
+        height: 32,
+        borderRadius: `${radii.box} ${radii.box} 0 0`,
+      }}
+    >
       {columns.map((col, i) => (
         <div
           key={i}
@@ -71,19 +64,10 @@ function ViewDocButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      style={{
-        background: 'none',
-        border: 'none',
-        padding: 0,
-        cursor: 'pointer',
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 4,
-        flexShrink: 0,
-      }}
+      className="dc:bg-transparent dc:border-none dc:p-0 dc:cursor-pointer dc:inline-flex dc:items-center dc:gap-gap4 dc:shrink-0"
     >
       <NavIcon name="export" size={24} />
-      <span style={{ ...reg12, fontSize: fontSizes.sm, color: colors.primary }}>View doc</span>
+      <span className="dc:font-montserrat dc:font-regular dc:text-sm dc:leading-sm dc:text-primary">View doc</span>
     </button>
   )
 }
@@ -91,12 +75,7 @@ function ViewDocButton({ onClick }) {
 // Card footer: reactions (thumbs + comments) on left, optional "View doc" on right
 function CardFooter({ upCount, downCount, commentsCount, onUpClick, onDownClick, onCommentsClick, onViewDoc }) {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: `0 ${spacing.gap24} ${spacing.gap12}`,
-    }}>
+    <div className="dc:flex dc:items-center dc:justify-between dc:px-gap24 dc:pb-gap12">
       <RowHoverActions
         hasVerifyAndDeny={false}
         upCount={upCount}
@@ -114,21 +93,25 @@ function CardFooter({ upCount, downCount, commentsCount, onUpClick, onDownClick,
 // Gradient color bar for AI summary
 function AiGradientBar() {
   return (
-    <div style={{
-      width: 11,
-      alignSelf: 'stretch',
-      borderRadius: 30,
-      flexShrink: 0,
-      background: 'linear-gradient(180deg, #F3FFF2 0%, #F3F2FF 32.5%, #FFF2FA 62.5%, #FFF2F2 100%)',
-    }} />
+    <div
+      className="dc:self-stretch dc:shrink-0"
+      style={{
+        width: 11,
+        borderRadius: 30,
+        background: 'linear-gradient(180deg, #F3FFF2 0%, #F3F2FF 32.5%, #FFF2FA 62.5%, #FFF2F2 100%)',
+      }}
+    />
   )
 }
 
 // ─── Content areas per table type ────────────────────────────────────────────
 
-function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCount = 5, sourcePopup, forcedRowStatus, onViewMore, onVerify, onDeny, onPending, onUpClick, onDownClick, onCommentsClick }) {
-  const [expanded, setExpanded] = useState(false)
+function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCount = 5, sourcePopup, forcedRowStatus, active, onRowClick, onViewMore, onVerify, onDeny, onPending, onUpClick, onDownClick, onCommentsClick }) {
+  const [expanded,  setExpanded]  = useState(false)
+  const [activeIdx, setActiveIdx] = useState(null)
   const toggle = useCallback(() => setExpanded(e => !e), [])
+
+  useEffect(() => { if (!active) setActiveIdx(null) }, [active])
 
   const cols    = columns ?? DEFAULT_COLUMNS[tableType] ?? DEFAULT_COLUMNS['iv-fluids']
   const purpose = sourcePopup ? 'source popup' : 'prescrub'
@@ -141,7 +124,7 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
       <TableHeaderRow columns={cols} />
       {visibleRows.map((row, i) => {
         const isLastDataRow = !hasMore && i === visibleRows.length - 1
-        const lastStyle = isLastDataRow ? { borderBottom: 'none', borderRadius: `0 0 ${radii.box} ${radii.box}` } : undefined
+        const lastStyle = isLastDataRow ? { borderBottomWidth: 0, borderRadius: `0 0 ${radii.box} ${radii.box}` } : undefined
 
         if (tableType === 'diagnosis') {
           return (
@@ -169,6 +152,8 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
             purpose={purpose}
             type={row.type ?? 'Default'}
             forcedStatus={forcedRowStatus}
+            selected={i === activeIdx}
+            onClick={onRowClick ? () => { setActiveIdx(i); onRowClick(row) } : undefined}
             indicator={row.indicator}
             name={row.name}
             volume={row.volume ?? row.amount}
@@ -202,38 +187,25 @@ function TabularContent({ tableType, columns, rows, viewMoreCount, initialRowCou
   )
 }
 
-function TextContent({ text, isQuote, sourcePopup = false, onClick }) {
-  const [hover,   setHover]   = useState(false)
-  const [pressed, setPressed] = useState(false)
-
-  const bg = pressed ? colors.surfaceActive : hover ? colors.surfaceHover : 'transparent'
-
+function TextContent({ text, isQuote, clampLines, onClick }) {
   return (
     <div
       onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => { setHover(false); setPressed(false) }}
-      onMouseDown={() => setPressed(true)}
-      onMouseUp={() => setPressed(false)}
-      style={{
-        padding: `${spacing.gap12} ${spacing.gap24}`,
-        backgroundColor: bg,
-        cursor: onClick ? 'pointer' : 'default',
-        transition: 'background-color 0.1s',
-      }}
+      className="dc:px-gap24 dc:py-gap12"
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
-      <p style={{
-        ...reg12,
-        color: colors.primary,
-        fontStyle: isQuote ? 'italic' : 'normal',
-        margin: 0,
-        ...(!sourcePopup ? {
-          display:           '-webkit-box',
-          WebkitLineClamp:   5,
-          WebkitBoxOrient:   'vertical',
-          overflow:          'hidden',
-        } : {}),
-      }}>
+      <p
+        className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:m-0"
+        style={{
+          fontStyle: isQuote ? 'italic' : 'normal',
+          ...(clampLines ? {
+            display:           '-webkit-box',
+            WebkitLineClamp:   clampLines,
+            WebkitBoxOrient:   'vertical',
+            overflow:          'hidden',
+          } : {}),
+        }}
+      >
         {isQuote ? `"${text}"` : text}
       </p>
     </div>
@@ -242,14 +214,14 @@ function TextContent({ text, isQuote, sourcePopup = false, onClick }) {
 
 function DocStringsContent({ texts }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap8, padding: `0 ${spacing.gap24}` }}>
+    <div className="dc:flex dc:flex-col dc:gap-gap8 dc:px-gap24">
       {texts.map((t, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.gap4 }}>
+        <div key={i} className="dc:flex dc:items-start dc:gap-gap4">
           {/* bullet dot */}
-          <div style={{ width: 16, height: 16, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: colors.secondary, flexShrink: 0 }} />
+          <div className="dc:w-gap16 dc:h-gap16 dc:shrink-0 dc:flex dc:items-center dc:justify-center">
+            <div className="dc:w-1 dc:h-1 dc:rounded-full dc:bg-secondary dc:shrink-0" />
           </div>
-          <p style={{ ...reg12, color: colors.primary, fontStyle: 'italic', margin: 0, flex: '1 0 0' }}>
+          <p className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:italic dc:m-0 dc:flex-1">
             {`"${t}"`}
           </p>
         </div>
@@ -260,20 +232,20 @@ function DocStringsContent({ texts }) {
 
 function AiContent({ aiTitle, text, onSeeMore }) {
   return (
-    <div style={{ display: 'flex', gap: 10, padding: `0 ${spacing.gap24}`, alignItems: 'stretch' }}>
+    <div className="dc:flex dc:px-gap24 dc:items-stretch" style={{ gap: 10 }}>
       <AiGradientBar />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4, flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      <div className="dc:flex dc:flex-col dc:gap-gap4 dc:flex-1">
+        <div className="dc:flex dc:items-center" style={{ gap: 4 }}>
           <NavIcon name="ai" size={24} />
-          <span style={{ ...reg12, color: colors.primary }}>{aiTitle}</span>
+          <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary">{aiTitle}</span>
         </div>
-        <p style={{ ...reg12, color: colors.primary, margin: 0 }}>{text}</p>
+        <p className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:m-0">{text}</p>
         {onSeeMore && (
           <button
             onClick={onSeeMore}
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}
+            className="dc:bg-transparent dc:border-none dc:p-0 dc:cursor-pointer dc:text-left"
           >
-            <span style={{ ...reg12, color: colors.primary, textDecoration: 'underline' }}>See more</span>
+            <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:underline">See more</span>
           </button>
         )}
       </div>
@@ -288,6 +260,8 @@ export function SourceTypeTable({
   sourcePopup   = true,
   hasTitle      = true,
   hasArrow      = true,
+  hoverable     = true,   // false → disables the content-area hover (use in side panel)
+  clampLines,             // number → clamp text to N lines; undefined → no clamp
   title,
   sourceType    = 'IV Fluids',
   uploadedDate  = '15/12/2025',
@@ -311,6 +285,7 @@ export function SourceTypeTable({
   commentsCount,
   // Callbacks
   onHeaderClick,  // called when the uploaded-date header row is clicked
+  onRowClick,     // called when a tabular row is clicked (row data passed as argument)
   onTextClick,    // called when the text/quote body is clicked
   onToggle,
   onViewDoc,
@@ -323,9 +298,12 @@ export function SourceTypeTable({
   onDeny,
   onPending,
   forcedRowStatus,
+  active = false,  // true when the side panel is open for this table
 }) {
-  const [collapsed,   setCollapsed]   = useState(false)
-  const [cardDenied,  setCardDenied]  = useState(false)
+  const [collapsed,    setCollapsed]    = useState(false)
+  const [cardDenied,   setCardDenied]   = useState(false)
+  const [cardHovered,  setCardHovered]  = useState(false)
+  const [cardPressed,  setCardPressed]  = useState(false)
 
   const isTabular  = TABULAR_TYPES.has(tableType)
   const isText     = !isTabular && tableType !== 'ai-summary'
@@ -342,6 +320,9 @@ export function SourceTypeTable({
   }
 
   // Default title from tableType if not provided
+  // Prescrub mode (sourcePopup=false) always clamps to 5 lines unless explicitly overridden
+  const effectiveClampLines = clampLines ?? (!sourcePopup ? 5 : undefined)
+
   const displayTitle = title ?? {
     'iv-fluids':          'IV Fluids',
     'tube-feeding':       'Tube Feeding',
@@ -353,17 +334,27 @@ export function SourceTypeTable({
     'ai-summary':         'AI Summary',
   }[tableType] ?? tableType
 
+  // Compute text content area background color
+  const textBgColor = active
+    ? colors.surface
+    : hoverable
+      ? (cardPressed ? colors.surfaceActive : cardHovered ? colors.surface : 'transparent')
+      : 'transparent'
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4 }}>
+    <div className="dc:flex dc:flex-col dc:gap-gap4">
 
       {/* Title row — entire row is clickable when arrow is shown */}
       {hasTitle && (
         <div
           onClick={hasArrow ? handleToggle : undefined}
-          style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, cursor: hasArrow ? 'pointer' : 'default', userSelect: 'none' }}
+          className={[
+            'dc:flex dc:items-center dc:gap-gap8 dc:select-none',
+            hasArrow ? 'dc:cursor-pointer' : 'dc:cursor-default',
+          ].join(' ')}
         >
           {hasArrow && (
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="dc:shrink-0">
               <path
                 d={collapsed ? 'M4 6L8 10L12 6' : 'M4 10L8 6L12 10'}
                 stroke={colors.primary}
@@ -376,18 +367,13 @@ export function SourceTypeTable({
           {TABLE_TITLE_ICON[tableType] && (
             <NavIcon name={TABLE_TITLE_ICON[tableType]} size={16} />
           )}
-          <span style={{ ...sb12, color: '#323338', whiteSpace: 'nowrap' }}>{displayTitle}</span>
+          <span className="dc:font-montserrat dc:text-xs dc:font-semibold dc:leading-md dc:whitespace-nowrap" style={{ color: '#323338' }}>{displayTitle}</span>
         </div>
       )}
 
       {/* Card */}
       {!collapsed && (
-        <div style={{
-          border: `1px solid ${colors.dividerSubtle}`,
-          borderRadius: radii.box,
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
+        <div className="dc:border dc:border-divider-subtle dc:rounded-box dc:flex dc:flex-col">
           {/* Upload date row */}
           <SourceHeader
             type={sourcePopup ? 'sources' : 'prescrub'}
@@ -395,21 +381,21 @@ export function SourceTypeTable({
             uploadedDate={uploadedDate}
             tabs={tabs}
             forcedStatus={forcedRowStatus}
+            active={active}
             onTabClick={onTabClick}
-            onDeny={() => setCardDenied(true)}
-            onVerify={() => setCardDenied(false)}
+            onDeny={() => { setCardDenied(true); onDeny?.() }}
+            onVerify={() => { setCardDenied(false); onVerify?.() }}
             onClick={onHeaderClick}
           />
 
-          {/* PDF filename row */}
-          <PdfTitle title={docName} />
+          {/* PDF filename row — not shown for plain text notes */}
+          {!isText && <PdfTitle title={docName} />}
 
           {/* Content */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: isTabular ? 0 : spacing.gap12,
-          }}>
+          <div
+            className="dc:flex dc:flex-col"
+            style={{ gap: isTabular ? 0 : '12px' }}
+          >
             {isTabular && (
               <TabularContent
                 tableType={tableType}
@@ -419,6 +405,8 @@ export function SourceTypeTable({
                 initialRowCount={initialRowCount}
                 sourcePopup={sourcePopup}
                 forcedRowStatus={forcedRowStatus}
+                active={active}
+                onRowClick={onRowClick}
                 onViewMore={onViewMore}
                 onVerify={onVerify}
                 onDeny={onDeny}
@@ -430,12 +418,25 @@ export function SourceTypeTable({
             )}
 
             {isText && (
-              <>
+              // Wrapper covers the full content area including behind the actions.
+              // Background color is here (full opacity always) — denied opacity only
+              // affects the inner text div. Hover is disabled when hoverable=false.
+              <div
+                onMouseEnter={hoverable ? () => setCardHovered(true) : undefined}
+                onMouseLeave={hoverable ? () => { setCardHovered(false); setCardPressed(false) } : undefined}
+                onMouseDown={hoverable ? () => setCardPressed(true) : undefined}
+                onMouseUp={hoverable ? () => setCardPressed(false) : undefined}
+                className="dc:flex dc:flex-col dc:gap-gap12 dc:pt-gap12"
+                style={{
+                  backgroundColor: textBgColor,
+                  transition: 'background-color 0.1s',
+                }}
+              >
                 <div style={{ opacity: cardDenied ? 0.5 : 1, transition: 'opacity 0.15s' }}>
                   {(tableType === 'doc-strings' || tableType === 'doc-string') ? (
                     <DocStringsContent texts={texts?.length ? texts : [text]} />
                   ) : (
-                    <TextContent text={text} isQuote={isQuote} sourcePopup={sourcePopup} onClick={onTextClick} />
+                    <TextContent text={text} isQuote={isQuote} clampLines={effectiveClampLines} onClick={onTextClick} />
                   )}
                 </div>
                 <CardFooter
@@ -447,7 +448,7 @@ export function SourceTypeTable({
                   onCommentsClick={onCommentsClick}
                   onViewDoc={onViewDoc}
                 />
-              </>
+              </div>
             )}
 
             {isAi && (

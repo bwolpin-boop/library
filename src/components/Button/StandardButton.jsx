@@ -1,51 +1,9 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths } from '../../tokens.js'
-
-const styles = {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    fontFamily: fonts.montserrat,
-    cursor: 'pointer',
-    backgroundColor: colors.white,
-    border: `${strokeWidths.thin}px solid ${colors.dividerDisabled}`,
-    borderRadius: radii.boxSm,
-    gap: spacing.gap4,
-    transition: 'background-color 0.15s',
-    whiteSpace: 'nowrap',
-  },
-  default: {
-    height: '32px',
-    padding: `${spacing.gap8} ${spacing.gap12} ${spacing.gap8} ${spacing.gap8}`,
-    fontSize: fontSizes.xs,
-    fontWeight: fontWeights.semibold,
-    lineHeight: lineHeights.md,
-    color: colors.primary,
-  },
-  small: {
-    padding: `${spacing.gap4} ${spacing.gap8} ${spacing.gap4} ${spacing.gap4}`,
-    fontSize: fontSizes.xs,
-    fontWeight: fontWeights.regular,
-    lineHeight: lineHeights.sm,
-    color: colors.primary,
-  },
-  hover:    { backgroundColor: colors.surfaceHover },
-  pressed:  { backgroundColor: colors.surfacePressed },
-  disabled: { backgroundColor: colors.disabled, color: colors.muted, border: `1px solid ${colors.dividerDisabled}`, cursor: 'not-allowed' },
-}
+import { colors, strokeWidths } from '../../tokens.js'
 
 function TagIcon({ disabled }) {
   return (
-    <span style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: colors.purpleOverlay,
-      borderRadius: radii.boxSm,
-      width: '20px',
-      height: '20px',
-      flexShrink: 0,
-    }}>
+    <span className="dc:inline-flex dc:items-center dc:justify-center dc:bg-purple-overlay dc:rounded-box-sm dc:w-[20px] dc:h-[20px] dc:shrink-0">
       <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
         <path
           d="M1 5.5L4.5 9L9 1"
@@ -65,28 +23,28 @@ export function StandardButton({
   disabled = false,
   onClick,
 }) {
-  const [hovered, setHovered] = useState(false)
   const [pressed, setPressed] = useState(false)
 
-  const sizeStyle = size === 'small' ? styles.small : styles.default
+  const baseClasses = 'dc:inline-flex dc:items-center dc:font-montserrat dc:bg-white dc:border dc:border-divider-disabled dc:rounded-box-sm dc:gap-gap4 dc:[transition:background-color_0.15s] dc:whitespace-nowrap'
 
-  const stateStyle = disabled
-    ? styles.disabled
+  const sizeClasses = size === 'small'
+    ? 'dc:py-gap4 dc:pl-gap4 dc:pr-gap8 dc:text-xs dc:font-regular dc:leading-sm dc:text-primary'
+    : 'dc:h-[32px] dc:pt-gap8 dc:pb-gap8 dc:pl-gap8 dc:pr-gap12 dc:text-xs dc:font-semibold dc:leading-md dc:text-primary'
+
+  const stateClasses = disabled
+    ? 'dc:bg-disabled dc:text-muted dc:border dc:border-divider-disabled dc:cursor-not-allowed'
     : pressed
-    ? styles.pressed
-    : hovered
-    ? styles.hover
-    : {}
+    ? 'dc:bg-surface-pressed dc:cursor-pointer'
+    : 'dc:cursor-pointer dc:hover:bg-surface-hover'
 
   return (
     <button
-      style={{ ...styles.base, ...sizeStyle, ...stateStyle }}
+      className={`${baseClasses} ${sizeClasses} ${stateClasses}`}
       disabled={disabled}
       onClick={onClick}
-      onMouseEnter={() => !disabled && setHovered(true)}
-      onMouseLeave={() => { setHovered(false); setPressed(false) }}
       onMouseDown={() => !disabled && setPressed(true)}
       onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
     >
       <TagIcon disabled={disabled} />
       {label}

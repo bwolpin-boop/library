@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { colors, textStyles, radii, spacing } from '../../tokens.js'
 import { NavIcon } from './NavIcon.jsx'
 import { WithTooltip } from '../Tooltip/WithTooltip.jsx'
 
 export function Comments({ count, onClick, disabled, className, selected: selectedProp }) {
   const [internalSelected, setInternalSelected] = useState(false)
-  const [hover, setHover]       = useState(false)
   const [pressing, setPressing] = useState(false)
 
   const isControlled = selectedProp !== undefined
@@ -17,37 +15,24 @@ export function Comments({ count, onClick, disabled, className, selected: select
     onClick?.()
   }
 
-  const bg = disabled ? 'transparent'
-    : pressing || selected ? colors.surfacePressed
-    : hover                ? colors.surfaceHover
-    : 'transparent'
+  const bgClass = disabled
+    ? 'dc:bg-transparent'
+    : pressing || selected
+    ? 'dc:bg-surface-pressed'
+    : 'dc:bg-transparent dc:hover:bg-surface-hover'
 
   return (
     <WithTooltip label="Comments">
       <button
         onClick={handleClick}
-        onMouseEnter={() => { if (!disabled) setHover(true) }}
-        onMouseLeave={() => { setHover(false); setPressing(false) }}
+        onMouseLeave={() => setPressing(false)}
         onMouseDown={() => { if (!disabled) setPressing(true) }}
         onMouseUp={() => setPressing(false)}
-        style={{
-          background: 'none',
-          border: 'none',
-          padding: 0,
-          cursor: disabled ? 'default' : 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: spacing.gap4,
-          borderRadius: radii.icon,
-          backgroundColor: bg,
-          flexShrink: 0,
-          transition: 'background-color 0.1s',
-        }}
-        className={className}
+        className={`dc:bg-transparent dc:border-none dc:p-0 ${disabled ? 'dc:cursor-default' : 'dc:cursor-pointer'} dc:flex dc:items-center dc:gap-gap4 dc:rounded-icon dc:shrink-0 dc:[transition:background-color_0.1s] ${bgClass}${className ? ` ${className}` : ''}`}
       >
         <NavIcon name="reaction-comment" />
         {count !== undefined && (
-          <span style={{ ...textStyles.body14Medium, color: colors.secondary, whiteSpace: 'nowrap' }}>
+          <span className="dc:font-montserrat dc:text-sm dc:font-medium dc:text-secondary dc:whitespace-nowrap">
             {count}
           </span>
         )}

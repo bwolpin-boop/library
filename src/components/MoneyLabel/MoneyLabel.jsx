@@ -1,7 +1,3 @@
-import { colors, textStyles, radii } from '../../tokens.js'
-
-const GREEN_BG = '#EBF8E9'
-
 export function MoneyLabel({ value = 500 }) {
   const isNegative = value < 0
   const display = isNegative
@@ -10,24 +6,9 @@ export function MoneyLabel({ value = 500 }) {
 
   return (
     <div
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '24px',
-        padding: '0 8px',
-        borderRadius: radii.boxSm,
-        backgroundColor: isNegative ? colors.error200 : GREEN_BG,
-        flexShrink: 0,
-      }}
+      className={`dc:inline-flex dc:items-center dc:justify-center dc:h-[24px] dc:px-gap8 dc:rounded-box-sm dc:shrink-0 ${isNegative ? 'dc:bg-error-200' : 'dc:bg-green-100'}`}
     >
-      <span
-        style={{
-          ...textStyles.heading12SB,
-          color: isNegative ? colors.error : colors.green,
-          whiteSpace: 'nowrap',
-        }}
-      >
+      <span className={`dc:font-montserrat dc:text-xs dc:font-semibold dc:leading-md dc:whitespace-nowrap ${isNegative ? 'dc:text-error' : 'dc:text-green'}`}>
         {display}
       </span>
     </div>

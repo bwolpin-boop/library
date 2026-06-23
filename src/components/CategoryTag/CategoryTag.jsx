@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
 
 const typeConfig = {
-  'nursing':           { color: colors.purple,   rgb: '168,82,255'  },
-  'OT/PT':             { color: colors.darkBlue, rgb: '47,53,232'   },
-  'SLP':               { color: colors.green,    rgb: '17,190,104'  },
-  'NTA':               { color: colors.error,    rgb: '253,108,108' },
-  'Functional Scores': { color: '#0088FF',        rgb: '0,136,255'   },
+  'nursing':           { color: 'var(--dc-color-purple)',    rgb: '168,82,255'  },
+  'OT/PT':             { color: 'var(--dc-color-dark-blue)', rgb: '47,53,232'   },
+  'SLP':               { color: 'var(--dc-color-green)',     rgb: '17,190,104'  },
+  'NTA':               { color: 'var(--dc-color-error)',     rgb: '253,108,108' },
+  'Functional Scores': { color: '#0088FF',                   rgb: '0,136,255'   },
 }
 
 const stateOpacity = {
@@ -16,7 +15,7 @@ const stateOpacity = {
 
 function CloseIcon({ color }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, display: 'block' }}>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="dc:shrink-0 dc:block">
       <path d="M7 16.5L16.5 7M7 7L16.5 16.5" stroke={color} strokeWidth="1.2" strokeLinecap="round" />
     </svg>
   )
@@ -39,33 +38,27 @@ export function CategoryTag({ type = 'nursing', state: stateProp = 'Default', ha
       onMouseLeave={() => { if (!isForced) { setHovered(false); setPressed(false) } }}
       onMouseDown={() => { if (!isForced) setPressed(true) }}
       onMouseUp={() => { if (!isForced) setPressed(false) }}
+      className="dc:inline-flex dc:items-center dc:justify-center dc:rounded-box-sm dc:cursor-pointer dc:select-none"
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         gap: '4px',
         padding: '2px 4px',
-        borderRadius: radii.boxSm,
         backgroundColor: `rgba(${config.rgb},${opacity})`,
-        cursor: 'pointer',
-        userSelect: 'none',
         transition: 'background-color 0.1s ease',
-      }}>
-      <p style={{
-        fontFamily: fonts.montserrat,
-        fontSize: fontSizes.sm,
-        fontWeight: fontWeights.regular,
-        color: config.color,
-        whiteSpace: 'nowrap',
-        margin: 0,
-        textTransform: 'capitalize',
-        lineHeight: 'normal',
-        flexShrink: 0,
-      }}>
+      }}
+    >
+      <p
+        className="dc:font-montserrat dc:text-sm dc:font-regular dc:whitespace-nowrap dc:shrink-0"
+        style={{
+          color: config.color,
+          margin: 0,
+          textTransform: 'capitalize',
+          lineHeight: 'normal',
+        }}
+      >
         {type}
       </p>
       {hasClose && (
-        <div onClick={onClose} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+        <div onClick={onClose} className="dc:cursor-pointer dc:flex dc:items-center">
           <CloseIcon color={config.color} />
         </div>
       )}

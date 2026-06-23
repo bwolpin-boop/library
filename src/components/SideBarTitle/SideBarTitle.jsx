@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 
 export function SideBarTitle({
@@ -10,43 +9,26 @@ export function SideBarTitle({
 
   return (
     <div
-      style={{ display: 'flex', alignItems: 'center', gap: '4px', width: '100%', minWidth: 0 }}
+      className="dc:flex dc:items-center dc:gap-[4px] dc:w-full dc:min-w-0"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <span style={{
-        fontFamily:    fonts.montserrat,
-        fontSize:      fontSizes.lg,
-        fontWeight:    fontWeights.semibold,
-        lineHeight:    'normal',
-        color:         colors.primary,
-        whiteSpace:    'nowrap',
-        overflow:      'hidden',
-        textOverflow:  'ellipsis',
-        minWidth:      0,
-        flexShrink:    1,
-        boxShadow:     hovered ? `inset 0 -1px 0 0 ${colors.primary}` : 'none',
-      }}>
+      <span
+        className="dc:font-montserrat dc:text-lg dc:font-semibold dc:text-primary dc:whitespace-nowrap dc:overflow-hidden dc:text-ellipsis dc:shrink"
+        style={{
+          lineHeight: 'normal',
+          minWidth: 0,
+          flexShrink: 1,
+          boxShadow: hovered ? `inset 0 -1px 0 0 #323338` : 'none',
+        }}
+      >
         {label}
       </span>
 
       <button
         onClick={onClick}
-        style={{
-          display:         'inline-flex',
-          alignItems:      'center',
-          justifyContent:  'center',
-          width:           24,
-          height:          24,
-          flexShrink:      0,
-          backgroundColor: hovered ? colors.surface : 'transparent',
-          border:          'none',
-          borderRadius:    radii.boxSm,
-          cursor:          onClick ? 'pointer' : 'default',
-          padding:         0,
-          overflow:        'hidden',
-          transition:      'background-color 0.1s',
-        }}
+        className={`dc:inline-flex dc:items-center dc:justify-center dc:w-[24px] dc:h-[24px] dc:shrink-0 dc:border-none dc:rounded-box-sm dc:p-0 dc:overflow-hidden dc:transition-[background-color] dc:duration-100 ${hovered ? 'dc:bg-surface' : 'dc:bg-transparent'}`}
+        style={{ cursor: onClick ? 'pointer' : 'default' }}
       >
         <NavIcon name="export" size={24} />
       </button>

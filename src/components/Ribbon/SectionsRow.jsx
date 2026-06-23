@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { spacing } from '../../tokens.js'
 import { Section } from './Section.jsx'
 
 export const DEFAULT_SECTIONS = [
@@ -54,11 +53,12 @@ export function SectionsRow({
   const isSmall     = size === 'small'
   const isDashboard = location === 'dashboard'
   const height      = (isDashboard && !isSmall) ? '50px' : (!isSmall ? '24px' : undefined)
-  const gap         = isSmall ? spacing.gap4 : spacing.gap8
-  const padH        = isSmall ? spacing.gap0 : spacing.gap12
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap, paddingLeft: padH, paddingRight: padH, height, flexShrink: 0 }}>
+    <div
+      className={`dc:flex dc:items-center dc:shrink-0 ${isSmall ? 'dc:gap-gap4' : 'dc:gap-gap8 dc:px-gap12'}`}
+      style={{ height }}
+    >
       {showAll && (
         <Section
           letter="All"

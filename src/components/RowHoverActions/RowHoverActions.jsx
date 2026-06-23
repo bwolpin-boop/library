@@ -1,4 +1,3 @@
-import { spacing } from '../../tokens.js'
 import { ThumbsComponent } from '../Icon/ThumbsComponent.jsx'
 import { Comments } from '../Icon/Comments.jsx'
 import { GroupOfVerifyDenyAndPending } from '../VerifyDeny/GroupOfVerifyDenyAndPending.jsx'
@@ -20,8 +19,8 @@ export function RowHoverActions({
   onPending,
 }) {
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.gap24, justifyContent: 'flex-end', flexShrink: 0 }}>
-      <div style={{ display: 'inline-flex', alignItems: 'center', gap: spacing.gap16, flexShrink: 0 }}>
+    <div className="dc:inline-flex dc:items-center dc:gap-gap24 dc:justify-end dc:shrink-0">
+      <div className="dc:inline-flex dc:items-center dc:gap-gap16 dc:shrink-0">
         <ThumbsComponent
           upCount={upCount}
           downCount={downCount}

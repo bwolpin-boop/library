@@ -1,21 +1,5 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights } from '../../tokens.js'
 import { VerifyAndDeny } from '../VerifyDeny/VerifyAndDeny.jsx'
-
-const stateStyles = {
-  default: {
-    backgroundColor: 'transparent',
-    border: `1px solid ${colors.dividerSubtle}`,
-  },
-  hover: {
-    backgroundColor: colors.surface,
-    border: `1px solid ${colors.dividerSubtle}`,
-  },
-  clicked: {
-    backgroundColor: 'transparent',
-    border: `1px solid ${colors.primary}`,
-  },
-}
 
 export function QkNumberTabs({
   label = 'M1200B',
@@ -28,38 +12,27 @@ export function QkNumberTabs({
 
   const isInteractive = state === 'default'
   const effectiveState = isInteractive && hovered ? 'hover' : state
-  const stateStyle = stateStyles[effectiveState] ?? stateStyles.default
 
   const hasIndicator = verifiedDenied === 'verified' || verifiedDenied === 'denied'
   const isBig = size === 'big'
 
+  let stateClassName = ''
+  if (effectiveState === 'hover') {
+    stateClassName = 'dc:bg-surface dc:border dc:border-divider-subtle'
+  } else if (effectiveState === 'clicked') {
+    stateClassName = 'dc:bg-transparent dc:border dc:border-primary'
+  } else {
+    stateClassName = 'dc:bg-transparent dc:border dc:border-divider-subtle'
+  }
+
   return (
     <div
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: hasIndicator ? '4px' : undefined,
-        borderRadius: '6px',
-        cursor: 'pointer',
-        whiteSpace: 'nowrap',
-        padding: isBig ? '4px 8px' : '0 6px',
-        height: isBig ? undefined : '20px',
-        flexShrink: 0,
-        ...stateStyle,
-      }}
+      className={`dc:inline-flex dc:items-center dc:rounded-[6px] dc:cursor-pointer dc:whitespace-nowrap dc:shrink-0 ${stateClassName} ${isBig ? 'dc:py-[4px] dc:px-gap8' : 'dc:h-[20px] dc:px-[6px]'} ${hasIndicator ? 'dc:gap-[4px]' : ''}`}
       onClick={onClick}
       onMouseEnter={() => isInteractive && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <span
-        style={{
-          fontFamily: fonts.montserrat,
-          fontSize: fontSizes.xs,
-          fontWeight: fontWeights.regular,
-          lineHeight: lineHeights.sm,
-          color: colors.primary,
-        }}
-      >
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary">
         {label}
       </span>
       {hasIndicator && (

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
+import { colors }           from '../../tokens.js'
 import { NavIcon }          from '../Icon/NavIcon.jsx'
 import { ThumbsComponent }  from '../Icon/ThumbsComponent.jsx'
 import { Comments }         from '../Icon/Comments.jsx'
@@ -17,29 +17,17 @@ function PrimaryDiagnosisBanner({
   relatedDiagnoses = ['hypertension', 'anemia', 'bloodpressure'],
   onSetAsPrimary,
 }) {
-  const text12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.regular, lineHeight: lineHeights.md, color: colors.primary }
-
   return (
-    <div style={{
-      display:        'flex',
-      alignItems:     'center',
-      justifyContent: 'space-between',
-      gap:            spacing.gap16,
-      padding:        `${spacing.gap12} ${spacing.gap16}`,
-      border:         `1px solid ${colors.dividerSubtle}`,
-      borderRadius:   radii.box,
-      backgroundColor: colors.white,
-      flexShrink:     0,
-    }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 0, flex: '1 0 0', minWidth: 0 }}>
-        <span style={{ ...text12, fontWeight: fontWeights.semibold, lineHeight: lineHeights.md, whiteSpace: 'nowrap' }}>
+    <div className="dc:flex dc:items-center dc:justify-between dc:gap-gap16 dc:px-gap16 dc:py-gap12 dc:border dc:border-divider-subtle dc:rounded-box dc:bg-white dc:shrink-0">
+      <div className="dc:flex dc:flex-col dc:flex-1 dc:min-w-0" style={{ gap: 0 }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-semibold dc:leading-md dc:text-primary dc:whitespace-nowrap">
           {title}
         </span>
-        <span style={{ ...text12, lineHeight: lineHeights.md }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-md dc:text-primary">
           {description}
           {relatedDiagnoses.map((d, i) => (
             <span key={d}>
-              <span style={{ textDecoration: 'underline' }}>{d}</span>
+              <span className="dc:underline">{d}</span>
               {i < relatedDiagnoses.length - 1 ? ', ' : ''}
             </span>
           ))}
@@ -53,17 +41,15 @@ function PrimaryDiagnosisBanner({
 // ─── AI Summary Section ───────────────────────────────────────────────────────
 
 function AiSummary({ text }) {
-  const text12 = { fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.regular, lineHeight: lineHeights.sm, color: colors.primary }
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4, flexShrink: 0 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap4 }}>
+    <div className="dc:flex dc:flex-col dc:gap-gap4 dc:shrink-0">
+      <div className="dc:flex dc:items-center dc:gap-gap4">
         <NavIcon name="ai" size={24} />
-        <span style={{ ...text12, fontWeight: fontWeights.semibold, lineHeight: lineHeights.md, whiteSpace: 'nowrap' }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-semibold dc:leading-md dc:text-primary dc:whitespace-nowrap">
           Ai Summary:
         </span>
       </div>
-      <p style={{ ...text12, margin: 0 }}>{text}</p>
+      <p className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:m-0">{text}</p>
     </div>
   )
 }
@@ -137,6 +123,7 @@ export function SidePanel({
   aiSummaryText = LOREM,
   // Source tables (same shape as SourcePopup)
   tables        = DEFAULT_TABLES,
+  forcedRowStatus,   // synced from SourcePopup's deniedByType
   // Container
   style,
   className,
@@ -161,64 +148,44 @@ export function SidePanel({
 
   return (
     <div
-      className={[className, 'sp-scroll'].filter(Boolean).join(' ')}
+      className={[className, 'sp-scroll', 'dc:flex dc:flex-col dc:h-full dc:overflow-y-auto dc:border-l dc:border-divider-subtle dc:bg-white dc:box-border dc:gap-gap32'].filter(Boolean).join(' ')}
       style={{
-        display:         'flex',
-        flexDirection:   'column',
-        height:          '100%',
-        overflowY:       'auto',
-        borderLeft:      `1px solid ${colors.dividerSubtle}`,
-        padding:         spacing.gap24,
-        paddingTop:      spacing.gap16,
-        backgroundColor: colors.white,
-        boxSizing:       'border-box',
-        gap:             spacing.gap32,
+        padding: '16px 24px 24px',
         ...style,
       }}
     >
+      <style>{`
+        .sp-scroll::-webkit-scrollbar { width: 8px; }
+        .sp-scroll::-webkit-scrollbar-track { background: transparent; }
+        .sp-scroll::-webkit-scrollbar-thumb { background: ${colors.disabled}; border-radius: 2px; border-right: 4px solid transparent; background-clip: content-box; }
+        .sp-scroll::-webkit-scrollbar-thumb:hover { background: ${colors.dividerDisabled}; background-clip: content-box; }
+      `}</style>
       {/* ── Top section ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap16, flexShrink: 0 }}>
+      <div className="dc:flex dc:flex-col dc:gap-gap16 dc:shrink-0">
 
         {/* Row 1: title + close */}
-        <div style={{
-          display:         'flex',
-          alignItems:      'flex-start',
-          justifyContent:  'space-between',
-          position:        'sticky',
-          top:             0,
-          backgroundColor: colors.white,
-          zIndex:          10,
-          paddingBottom:   spacing.gap16,
-          marginBottom:    `-${spacing.gap16}`,
-        }}>
+        <div
+          className="dc:flex dc:items-start dc:justify-between dc:sticky dc:top-0 dc:bg-white dc:z-10"
+          style={{ paddingBottom: '16px', marginBottom: '-16px' }}
+        >
           <SideBarTitle label={docTitle} onClick={onExport} />
           <button
             onClick={onClose}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', flexShrink: 0 }}
+            className="dc:bg-transparent dc:border-none dc:cursor-pointer dc:p-0 dc:flex dc:shrink-0"
           >
             <NavIcon name="close" size={24} />
           </button>
         </div>
 
         {/* Row 2: source tab + comments tab + thumbs — sources/comments are mutually exclusive */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap16, flexShrink: 0 }}>
+        <div className="dc:flex dc:items-center dc:gap-gap16 dc:shrink-0">
           <WithTooltip label={`${sourceCount} sources found`}>
             <div
               onClick={handleSourceClick}
-              style={{
-                display: 'flex', alignItems: 'center', gap: spacing.gap4,
-                cursor: 'pointer', padding: '2px',
-                borderRadius: radii.icon,
-                backgroundColor: activeTab === 'sources' ? colors.surfacePressed : 'transparent',
-                transition: 'background-color 0.1s',
-              }}
+              className={`dc:flex dc:items-center dc:gap-gap4 dc:cursor-pointer dc:p-[2px] dc:rounded-icon dc:transition-[background-color] dc:duration-100 ${activeTab === 'sources' ? 'dc:bg-surface-pressed' : 'dc:bg-transparent'}`}
             >
               <NavIcon name="dolphincare-logo" size={20} />
-              <span style={{
-                fontFamily: fonts.montserrat, fontSize: fontSizes.sm,
-                fontWeight: fontWeights.medium, lineHeight: 'normal',
-                color: colors.secondary, whiteSpace: 'nowrap',
-              }}>
+              <span className="dc:font-montserrat dc:text-sm dc:font-medium dc:text-secondary dc:whitespace-nowrap" style={{ lineHeight: 'normal' }}>
                 {sourceCount}
               </span>
             </div>
@@ -240,17 +207,9 @@ export function SidePanel({
       </div>
 
       {/* ── Source tables section ── */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap8, flexShrink: 0 }}>
+      <div className="dc:flex dc:flex-col dc:gap-gap8 dc:shrink-0">
 
-        <span style={{
-          fontFamily:  fonts.montserrat,
-          fontSize:    fontSizes.xs,
-          fontWeight:  fontWeights.semibold,
-          lineHeight:  lineHeights.md,
-          color:       '#323338',
-          whiteSpace:  'nowrap',
-          flexShrink:  0,
-        }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-semibold dc:leading-md dc:whitespace-nowrap dc:shrink-0" style={{ color: '#323338' }}>
           {tables.length} Source{tables.length !== 1 ? 's' : ''}
         </span>
 
@@ -261,11 +220,13 @@ export function SidePanel({
           size="small"
         />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap12 }}>
+        <div className="dc:flex dc:flex-col dc:gap-gap12">
           {visibleTables.map((table, i) => (
             <SourceTypeTable
               key={`${table.sourceType}-${i}`}
               sourcePopup={true}
+              hoverable={false}
+              forcedRowStatus={forcedRowStatus}
               onHeaderClick={() => {/* TODO: open PCC side panel */}}
               tableType={table.tableType}
               sourceType={table.sourceType}

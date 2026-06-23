@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import { colors } from '../../tokens.js'
 import { Up } from './Up.jsx'
 import { Down } from './Down.jsx'
 
 function Divider() {
   return (
-    <div style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-      <div style={{ width: '1px', height: '100%', backgroundColor: colors.dividerSubtle }} />
+    <div className="dc:w-[24px] dc:h-[24px] dc:flex dc:items-center dc:justify-center dc:shrink-0">
+      <div className="dc:w-[1px] dc:h-full dc:bg-divider-subtle" />
     </div>
   )
 }
@@ -30,7 +29,7 @@ export function ThumbsComponent({ upCount, downCount, onUpClick, onDownClick, up
   }
 
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', flexShrink: 0 }}>
+    <div className="dc:inline-flex dc:items-center dc:shrink-0">
       <Up   count={upCount}   selected={selected === 'up'}   onClick={handleUp} />
       <Divider />
       <Down count={downCount} selected={selected === 'down'} onClick={handleDown} />

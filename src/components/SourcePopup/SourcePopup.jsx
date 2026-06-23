@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
+import { colors } from '../../tokens.js'
 import { NavIcon }                from '../Icon/NavIcon.jsx'
 import { SourceTypeIcon }         from '../Icon/SourceTypeIcon.jsx'
 import { ThumbsComponent }        from '../Icon/ThumbsComponent.jsx'
@@ -13,21 +13,9 @@ import { SidePanel }              from '../SidePanel/SidePanel.jsx'
 
 function Bullet({ text }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.gap4, padding: `0 ${spacing.gap24}` }}>
-      <div style={{
-        width: '6px', height: '6px', borderRadius: '50%',
-        backgroundColor: colors.primary,
-        flexShrink: 0, marginTop: '7px',
-      }} />
-      <span style={{
-        fontFamily: fonts.montserrat,
-        fontWeight: fontWeights.regular,
-        fontStyle:  'italic',
-        fontSize:   fontSizes.xs,
-        lineHeight: lineHeights.base,
-        color:      colors.primary,
-        flex: '1 0 0',
-      }}>
+    <div className="dc:flex dc:items-start dc:gap-gap4 dc:px-gap24">
+      <div className="dc:w-1.5 dc:h-1.5 dc:rounded-full dc:bg-primary dc:shrink-0 dc:mt-[7px]" />
+      <span className="dc:font-montserrat dc:font-regular dc:italic dc:text-xs dc:leading-base dc:text-primary dc:flex-1">
         {text}
       </span>
     </div>
@@ -38,16 +26,10 @@ function ViewDocButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      style={{
-        display: 'inline-flex', alignItems: 'center', gap: spacing.gap4,
-        background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0,
-      }}
+      className="dc:inline-flex dc:items-center dc:gap-gap4 dc:bg-transparent dc:border-none dc:cursor-pointer dc:p-0 dc:shrink-0"
     >
       <NavIcon name="export" size={24} />
-      <span style={{
-        fontFamily: fonts.montserrat, fontWeight: fontWeights.regular,
-        fontSize: fontSizes.base, lineHeight: '1.428', color: colors.primary,
-      }}>
+      <span className="dc:font-montserrat dc:font-regular dc:text-base dc:text-primary" style={{ lineHeight: '1.428' }}>
         View doc
       </span>
     </button>
@@ -71,33 +53,19 @@ export function SourceCard({
   onCommentsClick,
 }) {
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', gap: spacing.gap12,
-      border: `1px solid ${colors.dividerSubtle}`, borderRadius: radii.box,
-      width: '100%', overflow: 'hidden',
-    }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: spacing.gap8,
-        height: '34px', padding: `0 ${spacing.gap24}`,
-        borderBottom: `1px solid ${colors.dividerSubtle}`, flexShrink: 0,
-      }}>
+    <div className="dc:flex dc:flex-col dc:gap-gap12 dc:border dc:border-divider-subtle dc:rounded-box dc:w-full dc:overflow-hidden">
+      <div className="dc:flex dc:items-center dc:gap-gap8 dc:px-gap24 dc:border-b dc:border-divider-subtle dc:shrink-0" style={{ height: '34px' }}>
         <SourceTypeIcon type={sourceType} size={16} />
-        <span style={{
-          fontFamily: fonts.montserrat, fontWeight: fontWeights.regular,
-          fontSize: fontSizes.xs, lineHeight: lineHeights.sm, color: colors.primary, whiteSpace: 'nowrap',
-        }}>
+        <span className="dc:font-montserrat dc:font-regular dc:text-xs dc:leading-sm dc:text-primary dc:whitespace-nowrap">
           Uploaded date: {uploadDate}
         </span>
       </div>
       <PdfTitle title={pdfTitle} />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap8 }}>
+      <div className="dc:flex dc:flex-col dc:gap-gap8">
         {quotes.map((q, i) => <Bullet key={i} text={q} />)}
       </div>
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: `0 ${spacing.gap24} ${spacing.gap12}`, flexShrink: 0,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap16 }}>
+      <div className="dc:flex dc:items-center dc:justify-between dc:px-gap24 dc:pb-gap12 dc:shrink-0">
+        <div className="dc:flex dc:items-center dc:gap-gap16">
           <ThumbsComponent upCount={upCount} downCount={downCount} onUpClick={onUpClick} onDownClick={onDownClick} />
           <Comments count={commentCount} onClick={onCommentsClick} />
         </div>
@@ -232,11 +200,10 @@ export function SourcePopup({
   }
 
   function openPanel(table, mode = 'source') {
-    setSidePanel(prev =>
-      prev?.table === table && prev?.mode === mode ? null : { table, mode }
-    )
-    // Reset split to 50/50 when opening
-    if (!sidePanel && containerRef.current) {
+    const isNew = !sidePanel
+    setSidePanel({ table, mode })
+    // Reset split to 50/50 only when opening for the first time
+    if (isNew && containerRef.current) {
       const w = containerRef.current.getBoundingClientRect().width
       setLeftWidth(Math.round(w * 0.5))
     }
@@ -291,18 +258,13 @@ export function SourcePopup({
   return (
     <div
       ref={containerRef}
-      className={className}
+      className={[
+        'dc:flex dc:flex-row dc:rounded-box dc:overflow-hidden dc:border dc:border-divider dc:bg-white dc:box-border dc:max-w-full',
+        className,
+      ].filter(Boolean).join(' ')}
       style={{
-        display:         'flex',
-        flexDirection:   'row',
-        height:          '730px',
-        borderRadius:    radii.box,
-        overflow:        'hidden',
-        border:          `1px solid ${colors.divider}`,
-        backgroundColor: colors.white,
-        boxSizing:       'border-box',
-        width:           sidePanel ? '100%' : '922px',
-        maxWidth:        '100%',
+        height:    '730px',
+        width:     sidePanel ? '100%' : '922px',
         ...style,
       }}
     >
@@ -314,20 +276,17 @@ export function SourcePopup({
         .sp-scroll::-webkit-scrollbar-thumb:hover { background: ${colors.dividerDisabled}; background-clip: content-box; }
       `}</style>
       {/* ── Left: popup content ──────────────────────────────────────────────── */}
-      <div className="sp-scroll" style={{
-        width:          sidePanel ? `${leftWidth}px` : '100%',
-        flexShrink:     0,
-        overflowY:      'auto',
-        overflowX:      'hidden',
-        scrollbarGutter: 'stable',
-        display:        'flex',
-        flexDirection:  'column',
-        height:         '100%',
-        transition:     dragging.current ? 'none' : 'width 0.2s ease',
-      }}>
+      <div
+        className="sp-scroll dc:shrink-0 dc:overflow-y-auto dc:overflow-x-hidden dc:flex dc:flex-col dc:h-full"
+        style={{
+          width:          sidePanel ? `${leftWidth}px` : '100%',
+          scrollbarGutter: 'stable',
+          transition:     dragging.current ? 'none' : 'width 0.2s ease',
+        }}
+      >
 
         {/* Top section */}
-        <div style={{ padding: `${spacing.gap16} ${spacing.gap24} ${spacing.gap16}` }}>
+        <div className="dc:px-gap24 dc:py-gap16">
           <SourcePopupTopSection
             qCode={qCode}
             questionTitle={questionTitle}
@@ -357,18 +316,12 @@ export function SourcePopup({
         />
 
         {/* Source tables */}
-        <div style={{
-          display:       'flex',
-          flexDirection: 'column',
-          gap:           spacing.gap24,
-          padding:       spacing.gap24,
-          paddingTop:    spacing.gap16,
-          flex:          1,
-        }}>
+        <div className="dc:flex dc:flex-col dc:gap-gap24 dc:p-gap24 dc:pt-gap16 dc:flex-1">
           {visibleTables.map((table, i) => (
             <SourceTypeTable
               key={`${table.sourceType}-${i}`}
               sourcePopup={true}
+              clampLines={5}
               tableType={table.tableType}
               sourceType={table.sourceType}
               uploadedDate={table.uploadedDate}
@@ -378,8 +331,12 @@ export function SourcePopup({
               isQuote={table.isQuote}
               aiTitle={table.aiTitle}
               hasTitle={false}
+              active={sidePanel?.table === table}
               forcedRowStatus={deniedByType[table.sourceType]}
-              onHeaderClick={() => openPanel(table, 'source')}
+              onDeny={()    => setDeniedByType(prev => ({ ...prev, [table.sourceType]: 'denied' }))}
+              onVerify={()  => setDeniedByType(prev => ({ ...prev, [table.sourceType]: 'Default' }))}
+              onHeaderClick={() => {}}
+              onRowClick={() => openPanel(table, 'source')}
               onTextClick={() => openPanel(table, 'source')}
               onCommentsClick={() => openPanel(table, 'comments')}
             />
@@ -394,24 +351,15 @@ export function SourcePopup({
           onMouseDown={onDividerMouseDown}
           onMouseEnter={() => setDivHovered(true)}
           onMouseLeave={() => setDivHovered(false)}
+          className="dc:shrink-0 dc:h-full dc:cursor-col-resize dc:relative dc:flex dc:items-center dc:justify-center dc:z-10"
           style={{
-            width:          divHovered ? '10px' : '1px',
-            flexShrink:     0,
-            height:         '100%',
-            cursor:         'col-resize',
-            backgroundColor: divHovered
-              ? 'rgba(168,82,255,0.3)'
-              : colors.dividerSubtle,
-            position:       'relative',
-            transition:     'width 0.15s ease, background-color 0.15s ease',
-            display:        'flex',
-            alignItems:     'center',
-            justifyContent: 'center',
-            zIndex:         5,
+            width:           divHovered ? '10px' : '1px',
+            backgroundColor: divHovered ? 'rgba(168,82,255,0.3)' : colors.dividerSubtle,
+            transition:      'width 0.15s ease, background-color 0.15s ease',
           }}
         >
           {divHovered && (
-            <div style={{ position: 'absolute', pointerEvents: 'none' }}>
+            <div className="dc:absolute dc:pointer-events-none">
               <NavIcon name="resize-horizontal" size={24} />
             </div>
           )}
@@ -420,10 +368,11 @@ export function SourcePopup({
 
       {/* ── Right: side panel ────────────────────────────────────────────────── */}
       {sidePanel && (
-        <div style={{ flex: 1, minWidth: 0, height: '100%', overflow: 'hidden' }}>
+        <div className="dc:flex-1 dc:h-full dc:overflow-hidden" style={{ minWidth: 0 }}>
           <SidePanel
             docTitle={sidePanel.table?.docName}
             tables={sidePanel.table ? [sidePanel.table] : []}
+            forcedRowStatus={deniedByType[sidePanel.table?.sourceType]}
             showPrimaryDiagnosis={false}
             showAiSummary={false}
             initialActiveTab={sidePanel.mode === 'comments' ? 'comments' : 'sources'}

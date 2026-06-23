@@ -77,4 +77,19 @@
   --radius-box-sm: 4px;
   --radius-box: 10px;
   --radius-rounded: 100px;
+
+  /* ─── Spacing ─── */
+  --spacing-gap4: 4px;
+  --spacing-gap8: 8px;
+  --spacing-gap12: 12px;
+  --spacing-gap16: 16px;
+  --spacing-gap24: 24px;
+  --spacing-gap32: 32px;
+  --spacing-gap40: 40px;
+  --spacing-gap60: 60px;
+
+  /* ─── Stroke Widths ─── */
+  --border-thin: 1px;
+  --border-icon: 1.2px;
+  --border-thick: 2px;
 }

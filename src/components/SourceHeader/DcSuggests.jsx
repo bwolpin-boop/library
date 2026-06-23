@@ -1,5 +1,5 @@
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing } from '../../tokens.js'
 import { MdsAndDcAnswer } from '../Icon/MdsAndDcAnswer.jsx'
+import { DolphinMan } from './DolphinMan.jsx'
 
 export function DcSuggests({
   size        = 'big',    // 'big' | 'small'
@@ -9,44 +9,16 @@ export function DcSuggests({
 
   return (
     <div
-      style={{
-        position:        'relative',
-        display:         'inline-flex',
-        alignItems:      'center',
-        gap:             spacing.gap0,
-        padding:         `${spacing.gap8} ${spacing.gap16}`,
-        borderRadius:    radii.box,
-        backgroundColor: colors.white,
-        boxShadow:       '0px 0px 7.5px rgba(0,0,0,0.25)',
-        width:           isBig ? '283px' : '169px',
-        boxSizing:       'border-box',
-        overflow:        'hidden',
-      }}
+      className="dc:relative dc:inline-flex dc:items-end dc:justify-between dc:gap-0 dc:py-gap8 dc:px-gap16 dc:rounded-box dc:bg-white dc:[box-shadow:0px_0px_7.5px_rgba(0,0,0,0.25)] dc:box-border dc:overflow-hidden"
+      style={{ width: isBig ? '283px' : '169px' }}
     >
-      <div
-        style={{
-          display:        'flex',
-          flexDirection:  'column',
-          gap:            spacing.gap8,
-          alignItems:     'flex-start',
-          justifyContent: 'center',
-          flexShrink:     0,
-        }}
-      >
-        <span
-          style={{
-            fontFamily:  fonts.montserrat,
-            fontSize:    fontSizes.xs,
-            fontWeight:  fontWeights.regular,
-            lineHeight:  lineHeights.sm,
-            color:       colors.primary,
-            whiteSpace:  'nowrap',
-          }}
-        >
+      <div className="dc:flex dc:flex-col dc:gap-gap8 dc:items-start dc:justify-center dc:shrink-0">
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">
           DolphinCare Suggests:
         </span>
         <MdsAndDcAnswer type={answerType} />
       </div>
+      {isBig && <DolphinMan height={50} />}
     </div>
   )
 }

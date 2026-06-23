@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
+import { colors } from '../../tokens.js'
 import { SourceTypeIcon } from '../Icon/SourceTypeIcon.jsx'
 
 export const sourceTypes = [
@@ -14,29 +14,23 @@ export const sourceTypes = [
 function Arrows({ size }) {
   const arrowSize = size === 'small' ? 12 : 16
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+    <div className="dc:flex dc:items-center dc:gap-gap4 dc:shrink-0">
       <svg width={arrowSize} height={arrowSize} viewBox="0 0 16 16" fill="none">
         <path d="M10 4L6 8L10 12" stroke={colors.primary} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       <svg width={arrowSize} height={arrowSize} viewBox="0 0 16 16" fill="none">
         <path d="M6 4L10 8L6 12" stroke={colors.primary} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
-      <span style={{
-        fontFamily: fonts.montserrat,
-        fontSize: '8px',
-        fontWeight: fontWeights.regular,
-        color: colors.primary,
-        whiteSpace: 'nowrap',
-      }}>3/12</span>
+      <span className="dc:font-montserrat dc:font-regular dc:text-primary dc:whitespace-nowrap" style={{ fontSize: '8px' }}>3/12</span>
     </div>
   )
 }
 
 const stateStyles = {
-  default:        { backgroundColor: colors.white,       border: `1px solid ${colors.dividerSubtle}` },
-  hover:          { backgroundColor: colors.surfaceHover, border: `1px solid ${colors.dividerSubtle}` },
-  'while pressing': { backgroundColor: colors.surfaceHover, border: `1px solid ${colors.primary}` },
-  pressed:        { backgroundColor: colors.white,       border: `1px solid ${colors.primary}` },
+  default:          { backgroundColor: colors.white,        border: `1px solid ${colors.dividerSubtle}` },
+  hover:            { backgroundColor: colors.surfaceHover,  border: `1px solid ${colors.dividerSubtle}` },
+  'while pressing': { backgroundColor: colors.surfaceHover,  border: `1px solid ${colors.primary}` },
+  pressed:          { backgroundColor: colors.white,         border: `1px solid ${colors.primary}` },
 }
 
 export function SourceTypeTab({
@@ -55,28 +49,26 @@ export function SourceTypeTab({
 
   const isInteractive = state === 'default'
   const activeState = isInteractive ? currentState : state
-  const style = stateStyles[activeState] ?? stateStyles.default
+  const stateStyle = stateStyles[activeState] ?? stateStyles.default
 
   const isBig = size === 'big'
   const height = isBig ? '32px' : '22px'
-  const fontSize = isBig ? fontSizes.sm : fontSizes.xs
 
   return (
     <div
+      className={[
+        'dc:inline-flex dc:items-center dc:rounded-box-sm dc:whitespace-nowrap',
+        isInteractive ? 'dc:cursor-pointer' : 'dc:cursor-default',
+      ].join(' ')}
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
         gap: '10px',
         height,
         paddingLeft: '4px',
         paddingRight: '12px',
         paddingTop: '4px',
         paddingBottom: '4px',
-        borderRadius: radii.boxSm,
-        cursor: isInteractive ? 'pointer' : 'default',
-        whiteSpace: 'nowrap',
         transition: 'background-color 0.15s, border-color 0.15s',
-        ...style,
+        ...stateStyle,
       }}
       onMouseEnter={() => isInteractive && setCurrentState('hover')}
       onMouseLeave={() => isInteractive && setCurrentState('default')}
@@ -84,13 +76,10 @@ export function SourceTypeTab({
       onMouseUp={() => isInteractive && setCurrentState('pressed')}
     >
       <SourceTypeIcon type={type} size={size === 'big' ? 24 : 16} />
-      <span style={{
-        fontFamily: fonts.montserrat,
-        fontSize,
-        fontWeight: fontWeights.regular,
-        color: colors.primary,
-        lineHeight: '21px',
-      }}>
+      <span
+        className="dc:font-montserrat dc:font-regular dc:text-primary"
+        style={{ fontSize: isBig ? '14px' : '12px', lineHeight: '21px' }}
+      >
         {type}
       </span>
       {showArrows && <Arrows size={size} />}

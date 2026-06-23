@@ -1,18 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
-import { colors, textStyles, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon } from '../Icon/NavIcon.jsx'
 import { IconButton } from '../Icon/IconButton.jsx'
 
 function MicCloseButton({ onClick }) {
   const [hover, setHover] = useState(false)
   const [pressed, setPressed] = useState(false)
-  const bg = pressed ? colors.dividerSubtle : hover ? colors.surfacePressed : colors.surface
+  const bg = pressed ? '#e8e8ec' : hover ? '#d9d9d9' : '#f7f7f8'
   return (
     <button onClick={onClick} onMouseEnter={() => setHover(true)} onMouseLeave={() => { setHover(false); setPressed(false) }} onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)}
-      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', flexShrink: 0, display: 'flex' }}>
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      className="dc:bg-transparent dc:border-none dc:p-0 dc:cursor-pointer dc:shrink-0 dc:flex">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 3C0 1.34315 1.34315 0 3 0H21C22.6569 0 24 1.34315 24 3V21C24 22.6569 22.6569 24 21 24H3C1.34315 24 0 22.6569 0 21V3Z" fill={bg}/>
-        <path d="M9 16L16 9M9 9L16 16" stroke={colors.primary} strokeWidth="1.2" strokeLinecap="round"/>
+        <path d="M9 16L16 9M9 9L16 16" stroke="#323338" strokeWidth="1.2" strokeLinecap="round"/>
       </svg>
     </button>
   )
@@ -21,11 +20,11 @@ function MicCloseButton({ onClick }) {
 function MicCheckButton({ onClick }) {
   const [hover, setHover] = useState(false)
   const [pressed, setPressed] = useState(false)
-  const bg = pressed ? colors.purplePressed : hover ? colors.purpleHover : colors.purple
+  const bg = pressed ? '#8a00ff' : hover ? '#9b2aff' : '#a852ff'
   return (
     <button onClick={onClick} onMouseEnter={() => setHover(true)} onMouseLeave={() => { setHover(false); setPressed(false) }} onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)}
-      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', flexShrink: 0, display: 'flex' }}>
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      className="dc:bg-transparent dc:border-none dc:p-0 dc:cursor-pointer dc:shrink-0 dc:flex">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 3C0 1.34315 1.34315 0 3 0H21C22.6569 0 24 1.34315 24 3V21C24 22.6569 22.6569 24 21 24H3C1.34315 24 0 22.6569 0 21V3Z" fill={bg}/>
         <path d="M7.5 12.5L10.7692 16L17 9" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
@@ -36,7 +35,7 @@ function MicCheckButton({ onClick }) {
 function PlaceholderStyle() {
   return (
     <style>{`
-      .dc-tf textarea::placeholder { color: ${colors.muted}; }
+      .dc-tf textarea::placeholder { color: #8c8ca1; }
     `}</style>
   )
 }
@@ -137,36 +136,23 @@ function MicRecordingOverlay({ onCancel, onConfirm, onChange }) {
   }, [])
 
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      backgroundColor: colors.white,
-      borderRadius: radii.boxSm,
-      height: '24px',
-      width: '100%',
-      flexShrink: 0,
-    }}>
+    <div className="dc:flex dc:items-center dc:bg-white dc:rounded-box-sm dc:h-[24px] dc:w-full dc:shrink-0">
       {/* Overflow container clips the sliding inner row */}
-      <div style={{ flex: 1, overflow: 'hidden', height: '100%' }}>
+      <div className="dc:flex-1 dc:overflow-hidden dc:h-full">
         <div
           ref={innerRef}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            gap: `${BAR_GAP}px`,
-            height: '100%',
-          }}
+          className="dc:flex dc:items-center dc:justify-end dc:h-full"
+          style={{ gap: `${BAR_GAP}px` }}
         >
           {bars.map((h, i) => {
             const isBar = h > 0.06
             return (
               <div
                 key={i}
+                className="dc:bg-secondary"
                 style={{
                   flex: `0 0 ${BAR_WIDTH}px`,
                   height: isBar ? `${Math.max(BAR_WIDTH, Math.round(h * 20))}px` : `${BAR_WIDTH}px`,
-                  backgroundColor: colors.secondary,
                   borderRadius: isBar ? '1.5px' : '50%',
                 }}
               />
@@ -175,7 +161,7 @@ function MicRecordingOverlay({ onCancel, onConfirm, onChange }) {
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, marginLeft: spacing.gap12, flexShrink: 0 }}>
+      <div className="dc:flex dc:items-center dc:gap-gap8 dc:ml-gap12 dc:shrink-0">
         <MicCloseButton  onClick={onCancel} />
         <MicCheckButton  onClick={onConfirm} />
       </div>
@@ -208,9 +194,9 @@ export function TextField({
     if (promptEngineer) onPromptEngineerChange?.(false)
   }
 
-  const paddingTop    = isSmall ? spacing.gap12 : spacing.gap16
-  const paddingH      = isSmall ? spacing.gap16 : spacing.gap24
-  const paddingBottom = spacing.gap16
+  const paddingTop    = isSmall ? '12px' : '16px'
+  const paddingH      = isSmall ? '16px' : '24px'
+  const paddingBottom = '16px'
   const minTextareaH  = isSmall ? 47 : 43
   const maxTextareaH  = isSmall ? 94 : 90
   const defaultPlaceholder = type === 'feedback' ? 'Type your feedback here' : 'Add a Comment'
@@ -226,17 +212,9 @@ export function TextField({
   }, [value, minTextareaH, maxTextareaH])
 
   return (
-    <div className="dc-tf" style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4, width: '100%' }}>
+    <div className="dc-tf dc:flex dc:flex-col dc:gap-gap4 dc:w-full">
       <PlaceholderStyle />
-      <div style={{
-        backgroundColor: colors.white,
-        border: `${strokeWidths.thin}px solid ${colors.dividerSubtle}`,
-        borderRadius: radii.box,
-        boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.05)',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-      }}>
+      <div className="dc:bg-white dc:border dc:border-divider-subtle dc:rounded-box dc:[box-shadow:0px_0px_5px_rgba(0,0,0,0.05)] dc:flex dc:flex-col dc:overflow-hidden">
 
         <textarea
           ref={textareaRef}
@@ -244,17 +222,11 @@ export function TextField({
           onChange={onChange}
           placeholder={isRecording ? 'Listening...' : (placeholder || defaultPlaceholder)}
           onClick={isRecording ? () => setIsRecording(false) : undefined}
+          className="dc:resize-none dc:border-none dc:outline-none dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:bg-transparent dc:overflow-y-hidden dc:box-border dc:w-full"
           style={{
-            resize: 'none', border: 'none', outline: 'none',
             minHeight: minTextareaH,
-            ...textStyles.body12Regular,
-            color: colors.primary,
-            backgroundColor: 'transparent',
-            overflowY: 'hidden',
             cursor: isRecording ? 'text' : undefined,
             fontStyle: isRecording ? 'italic' : 'normal',
-            boxSizing: 'border-box',
-            width: '100%',
             paddingTop: paddingTop,
             paddingLeft: paddingH,
             paddingRight: paddingH,
@@ -262,7 +234,10 @@ export function TextField({
           }}
         />
 
-        <div style={{ flexShrink: 0, paddingLeft: paddingH, paddingRight: paddingH, paddingBottom: paddingBottom, marginTop: spacing.gap8 }}>
+        <div
+          className="dc:shrink-0 dc:mt-gap8"
+          style={{ paddingLeft: paddingH, paddingRight: paddingH, paddingBottom: paddingBottom }}
+        >
           {isRecording ? (
             <MicRecordingOverlay
               onCancel={() => setIsRecording(false)}
@@ -270,17 +245,14 @@ export function TextField({
               onChange={onChange}
             />
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className="dc:flex dc:items-center dc:justify-between">
               {type === 'comment' ? (
                 <button
                   onClick={() => onPromptEngineerChange?.(!promptEngineer)}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: spacing.gap12,
-                    background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-                  }}
+                  className="dc:flex dc:items-center dc:gap-gap12 dc:bg-transparent dc:border-none dc:cursor-pointer dc:p-0"
                 >
                   <NavIcon name={promptEngineer ? 'checkbox-filled-small' : 'checkbox-small'} size={16} />
-                  <span style={{ ...textStyles.body12Regular, color: colors.secondary }}>
+                  <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-secondary">
                     Also send to the prompt engineer
                   </span>
                 </button>
@@ -289,7 +261,7 @@ export function TextField({
               )}
 
               {isAi ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap16 }}>
+                <div className="dc:flex dc:items-center dc:gap-gap16">
                   <IconButton name="plus-small" size={16} />
                   {hasValue ? (
                     <IconButton name={sendIconName} size={16} onClick={handleSend} />
@@ -311,12 +283,7 @@ export function TextField({
       </div>
 
       {isAi && (
-        <p style={{
-          ...textStyles.body10Medium,
-          color: colors.secondary,
-          textAlign: 'center',
-          margin: 0,
-        }}>
+        <p className="dc:font-montserrat dc:text-xxs dc:font-medium dc:leading-tight dc:text-secondary dc:text-center dc:m-0">
           Claude is Ai and can make mistakes.<br />Please double check responses.
         </p>
       )}

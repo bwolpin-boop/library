@@ -58,6 +58,12 @@ import tableTubeFeedingIcon from '../../assets/icons/table-tube-feeding.svg'
 import tableSurgeryIcon     from '../../assets/icons/table-surgery.svg'
 import tableDiagnosisIcon   from '../../assets/icons/table-diagnosis.svg'
 import denyAllCircleIcon    from '../../assets/icons/deny-all-circle.svg'
+import search2Icon           from '../../assets/icons/search2.svg'
+import profilePerson1Icon    from '../../assets/icons/profile-person-1.svg'
+import profilePerson2Icon    from '../../assets/icons/profile-person-2.svg'
+import profilePerson3Icon    from '../../assets/icons/profile-person-3.svg'
+import chevronLeftIcon       from '../../assets/icons/chevron-left.svg'
+import chevronRightIcon      from '../../assets/icons/chevron-right.svg'
 
 const icons = {
   // General
@@ -132,6 +138,13 @@ const icons = {
   'table-surgery':         tableSurgeryIcon,
   'table-diagnosis':       tableDiagnosisIcon,
   'deny-all-circle':       denyAllCircleIcon,
+  // Calendar
+  'search2':               search2Icon,
+  'profile-person-1':      profilePerson1Icon,
+  'profile-person-2':      profilePerson2Icon,
+  'profile-person-3':      profilePerson3Icon,
+  'chevron-left':          chevronLeftIcon,
+  'chevron-right':         chevronRightIcon,
 }
 
 export const iconNames = Object.keys(icons)
@@ -209,6 +222,13 @@ export const iconNativeSizes = {
   'table-surgery':         16,
   'table-diagnosis':       16,
   'deny-all-circle':       24,
+  // Calendar
+  'search2':               24,
+  'profile-person-1':      24,
+  'profile-person-2':      24,
+  'profile-person-3':      24,
+  'chevron-left':          16,
+  'chevron-right':         16,
 }
 
 export function NavIcon({ name, size = 24, className, color }) {

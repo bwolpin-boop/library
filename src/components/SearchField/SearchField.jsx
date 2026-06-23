@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, radii } from '../../tokens.js'
 
 function PlaceholderStyle() {
   return (
     <style>{`
-      .dc-sf input::placeholder { color: ${colors.secondary}; }
+      .dc-sf input::placeholder { color: #8c8ca1; }
       .dc-sf input:disabled { cursor: not-allowed; }
     `}</style>
   )
@@ -12,9 +11,9 @@ function PlaceholderStyle() {
 
 function SearchIcon({ size }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-      <circle cx="11" cy="11" r="6.5" stroke={colors.secondary} strokeWidth="1.2"/>
-      <path d="M15.5 15.5L20 20" stroke={colors.secondary} strokeWidth="1.2" strokeLinecap="round"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="dc:shrink-0">
+      <circle cx="11" cy="11" r="6.5" stroke="#8c8ca1" strokeWidth="1.2"/>
+      <path d="M15.5 15.5L20 20" stroke="#8c8ca1" strokeWidth="1.2" strokeLinecap="round"/>
     </svg>
   )
 }
@@ -22,7 +21,6 @@ function SearchIcon({ size }) {
 function ClearButton({ size, onClick }) {
   const [hover, setHover] = useState(false)
   const [pressed, setPressed] = useState(false)
-  const bg = pressed ? colors.dividerSubtle : hover ? colors.surfacePressed : 'transparent'
   return (
     <button
       onClick={onClick}
@@ -30,22 +28,11 @@ function ClearButton({ size, onClick }) {
       onMouseLeave={() => { setHover(false); setPressed(false) }}
       onMouseDown={() => setPressed(true)}
       onMouseUp={() => setPressed(false)}
-      style={{
-        background: bg,
-        border: 'none',
-        padding: 0,
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-        borderRadius: radii.icon,
-        width: `${size}px`,
-        height: `${size}px`,
-      }}
+      className={`dc:border-none dc:p-0 dc:cursor-pointer dc:flex dc:items-center dc:justify-center dc:shrink-0 dc:rounded-icon ${pressed ? 'dc:bg-divider-subtle' : hover ? 'dc:bg-surface-pressed' : 'dc:bg-transparent'}`}
+      style={{ width: `${size}px`, height: `${size}px` }}
     >
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7 16.5L16.5 7M7 7L16.5 16.5" stroke={colors.secondary} strokeWidth="1.2" strokeLinecap="round"/>
+        <path d="M7 16.5L16.5 7M7 7L16.5 16.5" stroke="#8c8ca1" strokeWidth="1.2" strokeLinecap="round"/>
       </svg>
     </button>
   )
@@ -60,9 +47,9 @@ const sizeConfig = {
     gap: '8px',
     iconSize: 24,
     radius: '8px',
-    fontSize: fontSizes.base,
+    fontSize: '16px',
     lineHeight: '1.428',
-    errorFontSize: fontSizes.xs,
+    errorFontSize: '12px',
   },
   middle: {
     width: 220,
@@ -72,9 +59,9 @@ const sizeConfig = {
     gap: '8px',
     iconSize: 20,
     radius: '8px',
-    fontSize: fontSizes.xs,
+    fontSize: '12px',
     lineHeight: '18px',
-    errorFontSize: fontSizes.xxxs,
+    errorFontSize: '8px',
   },
   small: {
     width: 140,
@@ -83,8 +70,8 @@ const sizeConfig = {
     paddingV: '0px',
     gap: '4px',
     iconSize: 16,
-    radius: radii.boxSm,
-    fontSize: fontSizes.xs,
+    radius: '4px',
+    fontSize: '12px',
     lineHeight: '18px',
     errorFontSize: null,
   },
@@ -106,31 +93,30 @@ export function SearchField({
 
   let borderColor
   if (disabled) borderColor = 'transparent'
-  else if (error) borderColor = colors.error
-  else if (focused) borderColor = colors.purple
-  else borderColor = colors.dividerSubtle
+  else if (error) borderColor = '#e53e3e'
+  else if (focused) borderColor = '#a852ff'
+  else borderColor = '#e8e8ec'
 
-  const bg = disabled ? colors.dividerSubtle : colors.white
+  const bg = disabled ? '#e8e8ec' : '#ffffff'
 
   return (
-    <div className="dc-sf" style={{ display: 'inline-flex', flexDirection: 'column', gap: '4px' }}>
+    <div className="dc-sf dc:inline-flex dc:flex-col dc:gap-[4px]">
       <PlaceholderStyle />
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: config.gap,
-        width: `${config.width}px`,
-        height: `${config.height}px`,
-        paddingLeft: config.paddingH,
-        paddingRight: config.paddingH,
-        paddingTop: config.paddingV,
-        paddingBottom: config.paddingV,
-        backgroundColor: bg,
-        border: disabled ? 'none' : `1px solid ${borderColor}`,
-        borderRadius: config.radius,
-        boxSizing: 'border-box',
-        transition: 'border-color 0.15s',
-      }}>
+      <div
+        className="dc:flex dc:items-center dc:box-border dc:transition-[border-color] dc:duration-150"
+        style={{
+          gap: config.gap,
+          width: `${config.width}px`,
+          height: `${config.height}px`,
+          paddingLeft: config.paddingH,
+          paddingRight: config.paddingH,
+          paddingTop: config.paddingV,
+          paddingBottom: config.paddingV,
+          backgroundColor: bg,
+          border: disabled ? 'none' : `1px solid ${borderColor}`,
+          borderRadius: config.radius,
+        }}
+      >
         {iconLeft && <SearchIcon size={config.iconSize} />}
         <input
           value={value}
@@ -139,30 +125,21 @@ export function SearchField({
           disabled={disabled}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
+          className="dc:flex-1 dc:border-none dc:outline-none dc:bg-transparent dc:font-montserrat dc:font-regular dc:p-0"
           style={{
-            flex: 1,
             minWidth: 0,
-            border: 'none',
-            outline: 'none',
-            background: 'transparent',
-            fontFamily: fonts.montserrat,
             fontSize: config.fontSize,
-            fontWeight: fontWeights.regular,
             lineHeight: config.lineHeight,
-            color: value ? colors.primary : colors.secondary,
-            padding: 0,
+            color: value ? '#323338' : '#8c8ca1',
           }}
         />
-        {iconRight && <ClearButton size={config.iconSize} onClick={onClear} />}
+        {iconRight && value && <ClearButton size={config.iconSize} onClick={onClear} />}
       </div>
       {error && config.errorFontSize && (
-        <span style={{
-          fontFamily: fonts.montserrat,
-          fontSize: config.errorFontSize,
-          fontWeight: fontWeights.regular,
-          color: colors.error,
-          lineHeight: 'normal',
-        }}>
+        <span
+          className="dc:font-montserrat dc:font-regular dc:text-error"
+          style={{ fontSize: config.errorFontSize, lineHeight: 'normal' }}
+        >
           {error}
         </span>
       )}

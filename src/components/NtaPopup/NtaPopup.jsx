@@ -1,20 +1,9 @@
 import { useState } from 'react'
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths } from '../../tokens.js'
 import { NavIcon }              from '../Icon/NavIcon.jsx'
 import { VerifyAndDeny }        from '../VerifyDeny/VerifyAndDeny.jsx'
 import { TypeTag }              from '../TypeTag/TypeTag.jsx'
 import { PrimaryDiagnosisLabel } from '../PrimaryDiagnosisLabel/PrimaryDiagnosisLabel.jsx'
 import { SourceCellHeader }     from '../SourceCellHeader/SourceCellHeader.jsx'
-
-// ── Shared text style ────────────────────────────────────────────────────────
-const text12 = {
-  fontFamily:  fonts.montserrat,
-  fontSize:    fontSizes.xs,
-  fontWeight:  fontWeights.regular,
-  lineHeight:  lineHeights.sm,
-  color:       colors.primary,
-  whiteSpace:  'nowrap',
-}
 
 // ── Stacked source icons (decorative card-deck layout) ───────────────────────
 const STACK_ICONS = [
@@ -26,7 +15,7 @@ const STACK_ICONS = [
 
 function StackedSourceIcon() {
   return (
-    <div style={{ position: 'relative', width: 16, height: 16, flexShrink: 0 }}>
+    <div className="dc:relative dc:w-[16px] dc:h-[16px] dc:shrink-0">
       {STACK_ICONS.map((s, i) => (
         <div key={i} style={{
           position:        'absolute',
@@ -44,16 +33,9 @@ function StackedSourceIcon() {
 // ── Date range source header row ─────────────────────────────────────────────
 function DateRangeHeader({ dateRange }) {
   return (
-    <div style={{
-      display:      'flex',
-      alignItems:   'center',
-      gap:          spacing.gap8,
-      height:       '34px',
-      padding:      `${spacing.gap8} ${spacing.gap24}`,
-      borderBottom: `1px solid ${colors.dividerSubtle}`,
-    }}>
+    <div className="dc:flex dc:items-center dc:gap-gap8 dc:h-[34px] dc:px-gap24 dc:py-gap8 dc:border-b dc:border-divider-subtle">
       <StackedSourceIcon />
-      <span style={{ ...text12, color: colors.primary }}>
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">
         Date range: {dateRange}
       </span>
     </div>
@@ -63,23 +45,15 @@ function DateRangeHeader({ dateRange }) {
 // ── Column header row ─────────────────────────────────────────────────────────
 function ColumnHeaders() {
   const headerLabel = (text, style) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap4, padding: `${spacing.gap8} 0`, ...style }}>
-      <span style={{ fontFamily: fonts.montserrat, fontSize: fontSizes.xxxs, fontWeight: fontWeights.medium, lineHeight: 'normal', color: colors.primary, whiteSpace: 'nowrap' }}>
+    <div className="dc:flex dc:items-center dc:gap-gap4 dc:py-gap8" style={style}>
+      <span className="dc:font-montserrat dc:text-xxxs dc:font-medium dc:text-primary dc:whitespace-nowrap" style={{ lineHeight: 'normal' }}>
         {text}
       </span>
       <NavIcon name="sort-arrows" size={12} />
     </div>
   )
   return (
-    <div style={{
-      display:         'flex',
-      alignItems:      'center',
-      gap:             spacing.gap24,
-      height:          '32px',
-      padding:         `0 ${spacing.gap24}`,
-      backgroundColor: colors.white,
-      borderBottom:    `1px solid ${colors.dividerSubtle}`,
-    }}>
+    <div className="dc:flex dc:items-center dc:gap-gap24 dc:h-[32px] dc:px-gap24 dc:bg-white dc:border-b dc:border-divider-subtle">
       {headerLabel('Diagnosis',          { flex: '1 0 0', minWidth: 0 })}
       {headerLabel('Clinical Category',  { width: '154px', flexShrink: 0 })}
       {headerLabel('MDS Mapping',        { width: '130px', flexShrink: 0 })}
@@ -91,39 +65,29 @@ function ColumnHeaders() {
 function DiagnosisRow({ diagnosis, type, mdsMapping, diagnosisLabel, verifyType = 'empty', rowIndex = 0, style: styleProp }) {
   const [hovered, setHovered] = useState(false)
   const isEven  = rowIndex % 2 === 0
-  const bgBase  = isEven ? colors.white : colors.background
-  const bg      = hovered ? colors.surface : bgBase
+  const bgClass = hovered ? 'dc:bg-surface' : isEven ? 'dc:bg-white' : 'dc:bg-background'
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        display:         'flex',
-        alignItems:      'center',
-        gap:             spacing.gap24,
-        height:          '32px',
-        padding:         `0 ${spacing.gap24}`,
-        backgroundColor: bg,
-        borderBottom:    `1px solid ${colors.dividerSubtle}`,
-        transition:      'background-color 0.1s',
-        ...styleProp,
-      }}
+      className={`dc:flex dc:items-center dc:gap-gap24 dc:h-[32px] dc:px-gap24 dc:border-b dc:border-divider-subtle dc:transition-[background-color] dc:duration-100 ${bgClass}`}
+      style={styleProp}
     >
       {/* Diagnosis (flex-1): status dot + text */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, flex: '1 0 0', minWidth: 0, height: '32px', overflow: 'hidden' }}>
+      <div className="dc:flex dc:items-center dc:gap-gap8 dc:h-[32px] dc:overflow-hidden" style={{ flex: '1 0 0', minWidth: 0 }}>
         <VerifyAndDeny type={verifyType === 'empty' ? 'empty' : verifyType} size="small" />
-        <span style={{ ...text12, overflow: 'hidden', textOverflow: 'ellipsis' }}>{diagnosis}</span>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap dc:overflow-hidden dc:text-ellipsis">{diagnosis}</span>
       </div>
 
       {/* Clinical Category (154px): TypeTag */}
-      <div style={{ width: '154px', flexShrink: 0, display: 'flex', alignItems: 'center', height: '32px' }}>
+      <div className="dc:flex dc:items-center dc:h-[32px]" style={{ width: '154px', flexShrink: 0 }}>
         {type && <TypeTag label={type} />}
       </div>
 
       {/* MDS Mapping (130px): text + optional label */}
-      <div style={{ width: '130px', flexShrink: 0, display: 'flex', alignItems: 'center', gap: spacing.gap4, height: '32px' }}>
-        <span style={text12}>{mdsMapping}</span>
+      <div className="dc:flex dc:items-center dc:gap-gap4 dc:h-[32px]" style={{ width: '130px', flexShrink: 0 }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{mdsMapping}</span>
         {diagnosisLabel && <PrimaryDiagnosisLabel type={diagnosisLabel} />}
       </div>
     </div>
@@ -135,30 +99,30 @@ function DiagnosisSection({ title, dateRange, fileName, rows }) {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap4, width: '100%' }}>
+    <div className="dc:flex dc:flex-col dc:gap-gap4 dc:w-full">
       {/* Section header — full row is clickable */}
       <div
         onClick={() => setCollapsed(c => !c)}
-        style={{ display: 'flex', alignItems: 'center', gap: spacing.gap8, cursor: 'pointer', userSelect: 'none' }}
+        className="dc:flex dc:items-center dc:gap-gap8 dc:cursor-pointer dc:select-none"
       >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="dc:shrink-0">
             <path
               d={collapsed ? 'M6 4L10 8L6 12' : 'M4 6L8 10L12 6'}
-              stroke={colors.primary}
-              strokeWidth={strokeWidths.icon}
+              stroke="#323338"
+              strokeWidth="1.2"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
         <NavIcon name="primary-diagnosis" size={16} />
-        <span style={{ fontFamily: fonts.montserrat, fontSize: fontSizes.xs, fontWeight: fontWeights.semibold, lineHeight: lineHeights.md, color: '#323338', whiteSpace: 'nowrap' }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-semibold dc:leading-md dc:whitespace-nowrap" style={{ color: '#323338' }}>
           {title}
         </span>
       </div>
 
       {/* Table card */}
       {!collapsed && (
-        <div style={{ border: `1px solid ${colors.dividerSubtle}`, borderRadius: radii.box, overflow: 'hidden', width: '100%' }}>
+        <div className="dc:border dc:border-divider-subtle dc:rounded-box dc:overflow-hidden dc:w-full">
           <DateRangeHeader dateRange={dateRange} />
           <SourceCellHeader title={fileName} />
           <ColumnHeaders />
@@ -199,21 +163,12 @@ export function NtaPopup({
   sections = DEFAULT_SECTIONS,
 }) {
   return (
-    <div style={{
-      display:         'flex',
-      flexDirection:   'column',
-      gap:             spacing.gap16,
-      padding:         spacing.gap24,
-      backgroundColor: colors.white,
-      border:          `1px solid ${colors.divider}`,
-      borderRadius:    radii.box,
-      overflow:        'hidden',
-    }}>
-      <span style={{ fontFamily: fonts.montserrat, fontSize: fontSizes.xl2, fontWeight: fontWeights.semibold, lineHeight: 'normal', color: colors.primary }}>
+    <div className="dc:flex dc:flex-col dc:gap-gap16 dc:p-gap24 dc:bg-white dc:border dc:border-divider dc:rounded-box dc:overflow-hidden">
+      <span className="dc:font-montserrat dc:text-xl2 dc:font-semibold dc:text-primary" style={{ lineHeight: 'normal' }}>
         {title}
       </span>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.gap24, width: '100%' }}>
+      <div className="dc:flex dc:flex-col dc:gap-gap24 dc:w-full">
         {sections.map((section, i) => (
           <DiagnosisSection key={i} {...section} />
         ))}

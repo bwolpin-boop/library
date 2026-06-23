@@ -1,4 +1,3 @@
-import { colors, fonts, fontSizes, fontWeights, lineHeights, radii, spacing, strokeWidths, textStyles } from '../../tokens.js'
 import { NavIcon }                    from '../Icon/NavIcon.jsx'
 import { CategoryTag }                from '../CategoryTag/CategoryTag.jsx'
 import { VerifyAndDeny }              from '../VerifyDeny/VerifyAndDeny.jsx'
@@ -13,12 +12,9 @@ import { Indicator }                  from '../Icon/Indicator.jsx'
 function StrengthDot({ type = 'strong' }) {
   const isStrong = type === 'strong'
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
-      <div style={{
-        width: '6px', height: '6px', borderRadius: '50%', flexShrink: 0,
-        backgroundColor: isStrong ? colors.green : colors.secondary,
-      }} />
-      <span style={{ ...textStyles.body12Regular, color: colors.primary, whiteSpace: 'nowrap' }}>
+    <div className="dc:flex dc:items-center dc:gap-[4px] dc:shrink-0">
+      <div className={`dc:w-[6px] dc:h-[6px] dc:rounded-full dc:shrink-0 ${isStrong ? 'dc:bg-green' : 'dc:bg-secondary'}`} />
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">
         {isStrong ? 'Strong' : 'Moderate'}
       </span>
     </div>
@@ -27,14 +23,8 @@ function StrengthDot({ type = 'strong' }) {
 
 function AcuteBadge({ label = 'Acute' }) {
   return (
-    <div style={{
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      padding: '0 9px', borderRadius: radii.boxSm,
-      backgroundColor: 'rgba(0,0,0,0.04)',
-      border: '1px solid rgba(0,0,0,0.09)',
-      flexShrink: 0,
-    }}>
-      <span style={{ ...textStyles.body12Regular, color: colors.primary, whiteSpace: 'nowrap', lineHeight: '22px' }}>
+    <div className="dc:inline-flex dc:items-center dc:justify-center dc:px-[9px] dc:rounded-box-sm dc:shrink-0" style={{ backgroundColor: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.09)' }}>
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:text-primary dc:whitespace-nowrap" style={{ lineHeight: '22px' }}>
         {label}
       </span>
     </div>
@@ -44,16 +34,21 @@ function AcuteBadge({ label = 'Acute' }) {
 function PrimaryDiagLabel({ type = 'primary' }) {
   const isNta = type === 'nta'
   return (
-    <div style={{
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      padding: '2px 5px', borderRadius: '6.5px', height: '20px', flexShrink: 0,
-      backgroundColor: isNta ? 'rgba(125,217,232,0.1)' : 'rgba(168,82,255,0.1)',
-    }}>
-      <span style={{
-        fontFamily: fonts.montserrat, fontWeight: fontWeights.semibold,
-        fontSize: fontSizes.xxxs, lineHeight: 'normal',
-        color: isNta ? '#65b7c5' : colors.purple, whiteSpace: 'nowrap',
-      }}>
+    <div
+      className="dc:inline-flex dc:items-center dc:justify-center dc:h-[20px] dc:shrink-0"
+      style={{
+        padding: '2px 5px',
+        borderRadius: '6.5px',
+        backgroundColor: isNta ? 'rgba(125,217,232,0.1)' : 'rgba(168,82,255,0.1)',
+      }}
+    >
+      <span
+        className="dc:font-montserrat dc:font-semibold dc:text-xxxs dc:whitespace-nowrap"
+        style={{
+          lineHeight: 'normal',
+          color: isNta ? '#65b7c5' : '#a852ff',
+        }}
+      >
         {isNta ? 'NTA' : 'Primary'}
       </span>
     </div>
@@ -62,15 +57,8 @@ function PrimaryDiagLabel({ type = 'primary' }) {
 
 function NewBadge() {
   return (
-    <div style={{
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      height: '21px', padding: '4px', borderRadius: radii.rounded,
-      backgroundColor: colors.purple, width: '40px', flexShrink: 0,
-    }}>
-      <span style={{
-        fontFamily: fonts.montserrat, fontWeight: fontWeights.semibold,
-        fontSize: '7px', color: colors.white, whiteSpace: 'nowrap', lineHeight: 'normal',
-      }}>
+    <div className="dc:inline-flex dc:items-center dc:justify-center dc:h-[21px] dc:p-[4px] dc:rounded-rounded dc:bg-purple dc:w-[40px] dc:shrink-0">
+      <span className="dc:font-montserrat dc:font-semibold dc:text-white dc:whitespace-nowrap" style={{ fontSize: '7px', lineHeight: 'normal' }}>
         NEW
       </span>
     </div>
@@ -79,13 +67,9 @@ function NewBadge() {
 
 function DateBadge({ date = '12/04/26' }) {
   return (
-    <div style={{
-      display: 'inline-flex', alignItems: 'center', gap: spacing.gap4,
-      padding: '0 8px', borderRadius: '34px',
-      backgroundColor: colors.disabled, flexShrink: 0,
-    }}>
+    <div className="dc:inline-flex dc:items-center dc:gap-gap4 dc:px-gap8 dc:rounded-[34px] dc:bg-disabled dc:shrink-0">
       <NavIcon name="info-small" size={16} />
-      <span style={{ ...textStyles.body12Regular, color: colors.primary, whiteSpace: 'nowrap' }}>
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">
         {date}
       </span>
     </div>
@@ -146,23 +130,15 @@ export function RowCells({
   const isPccSmall         = location === 'PCC' && size === 'small'
 
   const cellH    = isDashboardDefault ? '50px' : '32px'
-  const textSm   = { ...textStyles.body12Regular, color: colors.primary, whiteSpace: 'nowrap' }
-  const textBase = { ...textStyles.body14Regular, color: colors.primary, whiteSpace: 'nowrap' }
 
-  const base = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    height: cellH,
-    position: 'relative',
-    flexShrink: 0,
-  }
+  const baseClass = 'dc:inline-flex dc:items-center dc:relative dc:shrink-0'
 
   // ── Dashboard / Default ──────────────────────────────────────────────────
 
   if (isDashboardDefault) {
     if (type === 'Icon') {
       return (
-        <div style={{ ...base, padding: '10px 0' }}>
+        <div className={`${baseClass} dc:py-[10px]`} style={{ height: cellH }}>
           <NavIcon name={navIconLeft || 'profile'} size={24} />
         </div>
       )
@@ -170,19 +146,19 @@ export function RowCells({
 
     if (type === 'verify') {
       return (
-        <div style={{ ...base, gap: spacing.gap8, padding: '10px 0' }}>
+        <div className={`${baseClass} dc:gap-gap8 dc:py-[10px]`} style={{ height: cellH }}>
           {deny    && <VerifyAndDeny type="deny"   size="small" />}
           {verify  && <VerifyAndDeny type="verify" size="small" />}
-          <span style={textBase}>{text}</span>
+          <span className="dc:font-montserrat dc:text-sm dc:font-regular dc:leading-base dc:text-primary dc:whitespace-nowrap">{text}</span>
         </div>
       )
     }
 
     // Primary Text (default)
     return (
-      <div style={{ ...base, gap: spacing.gap8, padding: '10px 0' }}>
+      <div className={`${baseClass} dc:gap-gap8 dc:py-[10px]`} style={{ height: cellH }}>
         {navIconLeft  && <NavIcon name={navIconLeft}  size={24} />}
-        <span style={textBase}>{text}</span>
+        <span className="dc:font-montserrat dc:text-sm dc:font-regular dc:leading-base dc:text-primary dc:whitespace-nowrap">{text}</span>
         {navIconRight && <NavIcon name={navIconRight} size={24} />}
       </div>
     )
@@ -192,7 +168,7 @@ export function RowCells({
 
   if (type === 'verify and deny and pending') {
     return (
-      <div style={{ ...base }}>
+      <div className={baseClass} style={{ height: cellH }}>
         <GroupOfVerifyDenyAndPending hasPending={hasPending} />
       </div>
     )
@@ -200,21 +176,18 @@ export function RowCells({
 
   if (type === 'verify') {
     return (
-      <div style={{ ...base, gap: spacing.gap8 }}>
+      <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
         {deny   && <VerifyAndDeny type="deny"   size="small" />}
         {verify && <VerifyAndDeny type="verify" size="small" />}
-        <span style={textSm}>{text}</span>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{text}</span>
       </div>
     )
   }
 
   if (type === 'source') {
     return (
-      <div style={{ ...base }}>
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', padding: '3px',
-          borderRadius: '2.25px', backgroundColor: 'rgba(160,40,255,0.1)', flexShrink: 0,
-        }}>
+      <div className={baseClass} style={{ height: cellH }}>
+        <div className="dc:inline-flex dc:items-center dc:shrink-0" style={{ padding: '3px', borderRadius: '2.25px', backgroundColor: 'rgba(160,40,255,0.1)' }}>
           <SourceTypeIcon type={sourceType} size={18} />
         </div>
       </div>
@@ -223,7 +196,7 @@ export function RowCells({
 
   if (type === 'indicator') {
     return (
-      <div style={{ ...base }}>
+      <div className={baseClass} style={{ height: cellH }}>
         <Indicator count={indicatorCount} state={indicatorState} tooltip={false} />
       </div>
     )
@@ -231,7 +204,7 @@ export function RowCells({
 
   if (type === 'status') {
     return (
-      <div style={{ ...base }}>
+      <div className={baseClass} style={{ height: cellH }}>
         <Status status={status} size="small" />
       </div>
     )
@@ -239,7 +212,7 @@ export function RowCells({
 
   if (type === 'ipa state') {
     return (
-      <div style={{ ...base, gap: spacing.gap0 }}>
+      <div className={baseClass} style={{ height: cellH, gap: 0 }}>
         <Status status={ipaStatus} size="small" />
         <NavIcon name="info-small" size={16} />
       </div>
@@ -248,7 +221,7 @@ export function RowCells({
 
   if (type === 'MDS answer') {
     return (
-      <div style={{ ...base }}>
+      <div className={baseClass} style={{ height: cellH }}>
         <MdsAndDcAnswer type={mdsType} />
       </div>
     )
@@ -256,7 +229,7 @@ export function RowCells({
 
   if (type === 'MDS answer to answer') {
     return (
-      <div style={{ ...base, gap: spacing.gap8 }}>
+      <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
         <MdsAndDcAnswer type={mdsFromType} />
         <NavIcon name="arrow-right" size={12} />
         <MdsAndDcAnswer type={mdsType} />
@@ -266,7 +239,7 @@ export function RowCells({
 
   if (type === 'categories') {
     return (
-      <div style={{ ...base, gap: spacing.gap4, cursor: 'pointer' }}>
+      <div className={`${baseClass} dc:gap-gap4 dc:cursor-pointer`} style={{ height: cellH }}>
         {categories.map((cat, i) => (
           <CategoryTag key={i} type={cat} />
         ))}
@@ -276,7 +249,7 @@ export function RowCells({
 
   if (type === 'strength') {
     return (
-      <div style={{ ...base }}>
+      <div className={baseClass} style={{ height: cellH }}>
         <StrengthDot type={strengthType} />
       </div>
     )
@@ -284,7 +257,7 @@ export function RowCells({
 
   if (type === 'strength 2') {
     return (
-      <div style={{ ...base, gap: spacing.gap8 }}>
+      <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
         <StrengthDot type={strengthType} />
         {navIconRight && <NavIcon name={navIconRight} size={16} />}
       </div>
@@ -293,7 +266,7 @@ export function RowCells({
 
   if (type === 'medical label') {
     return (
-      <div style={{ ...base }}>
+      <div className={baseClass} style={{ height: cellH }}>
         <AcuteBadge label={medicalLabel} />
       </div>
     )
@@ -301,8 +274,8 @@ export function RowCells({
 
   if (type === 'NTA') {
     return (
-      <div style={{ ...base, gap: spacing.gap4 }}>
-        <span style={textSm}>#{diagText}</span>
+      <div className={`${baseClass} dc:gap-gap4`} style={{ height: cellH }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">#{diagText}</span>
         <PrimaryDiagLabel type="nta" />
       </div>
     )
@@ -310,8 +283,8 @@ export function RowCells({
 
   if (type === 'Primary diag') {
     return (
-      <div style={{ ...base, gap: spacing.gap4 }}>
-        <span style={textSm}>{diagText}</span>
+      <div className={`${baseClass} dc:gap-gap4`} style={{ height: cellH }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{diagText}</span>
         <PrimaryDiagLabel type="primary" />
       </div>
     )
@@ -319,17 +292,17 @@ export function RowCells({
 
   if (type === 'number and text') {
     return (
-      <div style={{ ...base, gap: spacing.gap8 }}>
-        <span style={textSm}>{number}</span>
-        <span style={textSm}>{text}</span>
+      <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{number}</span>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{text}</span>
       </div>
     )
   }
 
   if (type === 'patient name') {
     return (
-      <div style={{ ...base, gap: spacing.gap8 }}>
-        <span style={textSm}>{text}</span>
+      <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{text}</span>
         {hasNewTag && <NewBadge />}
       </div>
     )
@@ -337,25 +310,25 @@ export function RowCells({
 
   if (type === '2 lines paragraph') {
     return (
-      <div style={{ ...base, width: '71px' }}>
-        <span style={{ ...textSm, whiteSpace: 'normal' }}>{text}</span>
+      <div className={baseClass} style={{ height: cellH, width: '71px' }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:flex-wrap">{text}</span>
       </div>
     )
   }
 
   if (type === '1 lines $') {
     return (
-      <div style={{ ...base, gap: spacing.gap8 }}>
-        <span style={{ ...textSm, color: colors.secondary }}>{fromAmount}</span>
+      <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-secondary dc:whitespace-nowrap">{fromAmount}</span>
         <NavIcon name="arrow-right" size={12} />
-        <span style={{ ...textSm, fontWeight: fontWeights.semibold }}>{toAmount}</span>
+        <span className="dc:font-montserrat dc:text-xs dc:font-semibold dc:leading-sm dc:text-primary dc:whitespace-nowrap">{toAmount}</span>
       </div>
     )
   }
 
   if (type === 'date filter') {
     return (
-      <div style={{ ...base }}>
+      <div className={baseClass} style={{ height: cellH }}>
         <DateBadge date={date} />
       </div>
     )
@@ -363,7 +336,7 @@ export function RowCells({
 
   if (type === 'checkbox') {
     return (
-      <div style={{ ...base }}>
+      <div className={baseClass} style={{ height: cellH }}>
         <NavIcon name="checkbox-filled-small" size={16} />
       </div>
     )
@@ -371,8 +344,8 @@ export function RowCells({
 
   if (type === 'IV fluids +') {
     return (
-      <div style={{ ...base, gap: spacing.gap8 }}>
-        <span style={textSm}>{ivText}</span>
+      <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{ivText}</span>
         <NavIcon name="more" size={16} />
       </div>
     )
@@ -380,8 +353,8 @@ export function RowCells({
 
   if (type === 'IV fluids -') {
     return (
-      <div style={{ ...base, gap: spacing.gap8 }}>
-        <span style={textSm}>{ivText}</span>
+      <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
+        <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{ivText}</span>
         <NavIcon name="less" size={16} />
       </div>
     )
@@ -389,8 +362,8 @@ export function RowCells({
 
   if (type === '2 icons') {
     return (
-      <div style={{ ...base, flexDirection: 'column', height: '32px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', flex: '1 0 0', width: '100%', padding: '0 8px' }}>
+      <div className={`${baseClass} dc:flex-col dc:h-[32px]`}>
+        <div className="dc:flex dc:items-center dc:w-full dc:px-gap8" style={{ flex: '1 0 0' }}>
           {iconTop    && <NavIcon name={iconTop}    size={24} />}
           {iconBottom && <NavIcon name={iconBottom} size={16} />}
         </div>
@@ -400,9 +373,9 @@ export function RowCells({
 
   // Primary Text (PCC small, default)
   return (
-    <div style={{ ...base, gap: spacing.gap8 }}>
+    <div className={`${baseClass} dc:gap-gap8`} style={{ height: cellH }}>
       {navIconLeft  && <NavIcon name={navIconLeft}  size={20} />}
-      <span style={textSm}>{text}</span>
+      <span className="dc:font-montserrat dc:text-xs dc:font-regular dc:leading-sm dc:text-primary dc:whitespace-nowrap">{text}</span>
       {navIconRight && <NavIcon name={navIconRight} size={20} />}
     </div>
   )
