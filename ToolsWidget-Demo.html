@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolsWidget Component Demo</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background: #f5f5f5;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #222;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 40px;
+      font-size: 16px;
+    }
+
+    .demo-section {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .variants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .variant-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .variant-label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .variant-preview {
+      background: #f9f9f9;
+      padding: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      width: 100%;
+    }
+
+    .code-section {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 20px;
+    }
+
+    .code-section code {
+      color: #d4d4d4;
+    }
+
+    .highlight {
+      color: #ce9178;
+    }
+
+    .keyword {
+      color: #569cd6;
+    }
+
+    .function {
+      color: #dcdcaa;
+    }
+
+    .icon-placeholder {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 4px;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 ToolsWidget Component</h1>
+    <p class="subtitle">Interactive demo of the DolphinCare ToolsWidget component</p>
+
+    <div class="demo-section">
+      <div class="section-title">Component Overview</div>
+      <p style="color: #666; margin-bottom: 20px;">
+        A collapsible toolbar widget with configurable tools, supporting both vertical and horizontal layouts.
+        Tools can display icons with optional notification badges.
+      </p>
+
+      <div class="variants-grid" id="root"></div>
+    </div>
+
+    <div class="demo-section">
+      <div class="section-title">Component Props</div>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background: #f5f5f5; border-bottom: 2px solid #ddd;">
+            <th style="padding: 12px; text-align: left; font-weight: 600;">Prop</th>
+            <th style="padding: 12px; text-align: left; font-weight: 600;">Type</th>
+            <th style="padding: 12px; text-align: left; font-weight: 600;">Default</th>
+            <th style="padding: 12px; text-align: left; font-weight: 600;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 12px;">isOpen</td>
+            <td style="padding: 12px;">boolean</td>
+            <td style="padding: 12px;">true</td>
+            <td style="padding: 12px;">Whether widget starts expanded</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 12px;">orientation</td>
+            <td style="padding: 12px;">'vertical' | 'horizontal'</td>
+            <td style="padding: 12px;">'vertical'</td>
+            <td style="padding: 12px;">Layout direction</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 12px;">size</td>
+            <td style="padding: 12px;">'big'</td>
+            <td style="padding: 12px;">'big'</td>
+            <td style="padding: 12px;">Widget size (currently only 'big')</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 12px;">tools</td>
+            <td style="padding: 12px;">Tool[]</td>
+            <td style="padding: 12px;">[]</td>
+            <td style="padding: 12px;">Array of tool objects with icon, label, badge, onClick</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px;">className</td>
+            <td style="padding: 12px;">string</td>
+            <td style="padding: 12px;">undefined</td>
+            <td style="padding: 12px;">Custom CSS classes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo-section">
+      <div class="section-title">Usage Example</div>
+      <div class="code-section"><pre><code><span class="keyword">import</span> { ToolsWidget } <span class="keyword">from</span> <span class="highlight">'./components/ToolsWidget/ToolsWidget'</span>
+
+<span class="keyword">export function</span> <span class="function">App</span>() {
+  <span class="keyword">const</span> tools = [
+    { icon: <span class="highlight">'ai'</span>, label: <span class="highlight">'AI Tool'</span>, badge: <span class="highlight">7</span> },
+    { icon: <span class="highlight">'comment'</span>, label: <span class="highlight">'Comments'</span>, badge: <span class="highlight">2</span> },
+    { icon: <span class="highlight">'info-small'</span>, label: <span class="highlight">'Info'</span> },
+    { icon: <span class="highlight">'checkmark'</span>, label: <span class="highlight">'Verify'</span>, badge: <span class="highlight">1</span> },
+  ]
+
+  <span class="keyword">return</span> (
+    &lt;<span class="function">ToolsWidget</span>
+      isOpen={<span class="keyword">true</span>}
+      orientation=<span class="highlight">"vertical"</span>
+      tools={tools}
+    /&gt;
+  )
+}</code></pre></div>
+    </div>
+  </div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    // Mock NavIcon component for demo
+    function NavIcon({ name, size = 24 }) {
+      const icons = {
+        'ai': '🤖',
+        'comment': '💬',
+        'info-small': 'ℹ️',
+        'checkmark': '✓',
+      };
+      return (
+        <span style={{ fontSize: size, display: 'inline-block' }}>
+          {icons[name] || '•'}
+        </span>
+      );
+    }
+
+    function ToolsWidget({
+      isOpen = true,
+      orientation = 'vertical',
+      size = 'big',
+      tools = [],
+      onToolClick,
+      className,
+    }) {
+      const [expanded, setExpanded] = useState(isOpen);
+
+      const isVertical = orientation === 'vertical';
+      const isHorizontal = orientation === 'horizontal';
+
+      const containerStyle = {
+        display: 'inline-flex',
+        flexDirection: isVertical ? 'column' : 'row',
+        gap: 0,
+        alignItems: 'center',
+        borderRadius: '100px',
+        boxShadow: '0px 0px 15px 0px rgba(0,0,0,0.1)',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        padding: expanded
+          ? isVertical
+            ? '0 0 8px 0'
+            : '0 8px 0 0'
+          : 0,
+      };
+
+      const headerStyle = {
+        display: 'flex',
+        flexDirection: isVertical ? 'column' : 'row',
+        gap: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderTopLeftRadius: '100px',
+        borderTopRightRadius: '100px',
+        flexShrink: 0,
+        padding: isVertical
+          ? expanded ? '8px 8px 0 8px' : 0
+          : expanded ? '8px 0 8px 8px' : '8px',
+      };
+
+      return (
+        <div style={containerStyle} className={className}>
+          {/* Header with primary tool */}
+          <div style={headerStyle}>
+            {tools.length > 0 && (
+              <button
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 32,
+                  height: 32,
+                  borderRadius: 10,
+                  backgroundColor: 'white',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+                onClick={() => tools[0]?.onClick?.()}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#f1f1f1'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'white'}
+              >
+                <NavIcon name={tools[0]?.icon} size={24} />
+              </button>
+            )}
+            {expanded && (
+              <div style={{
+                position: 'relative',
+                flexShrink: 0,
+                width: isVertical ? 12 : 0,
+                height: isVertical ? 0 : 12,
+              }}>
+                {isVertical && (
+                  <svg width="12" height="13" viewBox="0 0 12 13" fill="none">
+                    <path d="M6 1V11M1 6H11" stroke="#222222" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Expanded tools area */}
+          {expanded && tools.length > 1 && (
+            <div style={{
+              display: 'flex',
+              flexDirection: isVertical ? 'column' : 'row',
+              gap: 8,
+              alignItems: isVertical ? 'flex-start' : 'center',
+              overflow: 'clip',
+              padding: isVertical ? '12px 8px 4px 8px' : '4px 8px 4px 8px',
+            }}>
+              {tools.slice(1).map((tool, idx) => (
+                <button
+                  key={idx}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    height: 40,
+                    paddingLeft: 8,
+                    paddingRight: 8,
+                    borderRadius: '100px',
+                    backgroundColor: '#8b5cf6',
+                    color: 'white',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s',
+                    fontSize: 14,
+                  }}
+                  onClick={() => tool.onClick?.()}
+                  disabled={tool.disabled}
+                  onMouseEnter={(e) => !tool.disabled && (e.target.style.backgroundColor = '#a78bfa')}
+                  onMouseLeave={(e) => !tool.disabled && (e.target.style.backgroundColor = '#8b5cf6')}
+                >
+                  <NavIcon name={tool.icon} size={22} />
+                  {tool.badge !== undefined && (
+                    <span style={{
+                      fontSize: 10,
+                      fontWeight: 600,
+                      backgroundColor: 'white',
+                      color: '#8b5cf6',
+                      paddingLeft: 4,
+                      paddingRight: 4,
+                      borderRadius: 3,
+                    }}>
+                      {tool.badge}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Collapse button */}
+          {expanded && (
+            <button
+              style={{
+                borderTop: '1px solid #d9d9d9',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingTop: 8,
+                paddingBottom: 3,
+                paddingLeft: 12,
+                paddingRight: 12,
+                borderBottomLeftRadius: '100px',
+                borderBottomRightRadius: '100px',
+                width: 56,
+                cursor: 'pointer',
+                border: 'none',
+                backgroundColor: 'transparent',
+                transition: 'background-color 0.2s',
+              }}
+              onClick={() => setExpanded(false)}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#f9f9f9'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+            >
+              <svg width="12" height="13" viewBox="0 0 12 13" fill="none">
+                <path d="M1 6H11" stroke="#D9D9D9" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+          )}
+        </div>
+      );
+    }
+
+    const defaultTools = [
+      { icon: 'ai', label: 'AI Tool', badge: 7 },
+      { icon: 'comment', label: 'Comments', badge: 2 },
+      { icon: 'info-small', label: 'Info' },
+      { icon: 'checkmark', label: 'Verify', badge: 1 },
+    ];
+
+    function Demo() {
+      return (
+        <div className="variants-grid">
+          <div className="variant-item">
+            <div className="variant-label">Vertical Open</div>
+            <div className="variant-preview">
+              <ToolsWidget isOpen={true} orientation="vertical" tools={defaultTools} />
+            </div>
+          </div>
+
+          <div className="variant-item">
+            <div className="variant-label">Vertical Closed</div>
+            <div className="variant-preview">
+              <ToolsWidget isOpen={false} orientation="vertical" tools={defaultTools} />
+            </div>
+          </div>
+
+          <div className="variant-item">
+            <div className="variant-label">Horizontal Open</div>
+            <div className="variant-preview">
+              <ToolsWidget isOpen={true} orientation="horizontal" tools={defaultTools} />
+            </div>
+          </div>
+
+          <div className="variant-item">
+            <div className="variant-label">Horizontal Closed</div>
+            <div className="variant-preview">
+              <ToolsWidget isOpen={false} orientation="horizontal" tools={defaultTools} />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<Demo />, document.getElementById('root'));
+  </script>
+</body>
+</html>
